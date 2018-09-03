@@ -11,9 +11,6 @@
           <actionMethod actionName="index"/>
         </controllerFile>
         <controllerFile controllerName="Error"/>
-        <controllerFile controllerName="Contact">
-          <actionMethod actionName="index"/>
-        </controllerFile>
         <controllerFile controllerName="Faq">
           <actionMethod actionName="index"/>
         </controllerFile>
@@ -21,6 +18,15 @@
           <actionMethod actionName="index"/>
         </controllerFile>
         <controllerFile controllerName="Service">
+          <actionMethod actionName="index"/>
+        </controllerFile>
+        <controllerFile controllerName="Contact">
+          <actionMethod actionName="index"/>
+        </controllerFile>
+        <controllerFile controllerName="Register">
+          <actionMethod actionName="index"/>
+        </controllerFile>
+        <controllerFile controllerName="Login">
           <actionMethod actionName="index"/>
         </controllerFile>
       </controllersDirectory>
@@ -55,6 +61,15 @@
             <viewScriptFile forActionName="index"/>
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Service">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Contact">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Register">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Login">
             <viewScriptFile forActionName="index"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
