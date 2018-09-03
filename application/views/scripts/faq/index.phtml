@@ -1,0 +1,11 @@
+<?php
+$rowsetArray = $this->faq->toArray();
+
+foreach ($rowsetArray as $rowArray) {
+	foreach ($rowArray as $column => $value) {
+		echo "<strong>$column</strong> => $value";
+		echo "<br>";
+	}
+	echo "<hr>";
+}
+?>
