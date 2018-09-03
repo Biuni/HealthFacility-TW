@@ -4,9 +4,15 @@
     <?= $this->headMeta(); ?>
     <?= $this->headTitle(); ?>
     <?= $this->headLink(); ?>
-    <?= $this->headScript(); ?>
 </head>
 <body>
+
+	<ul class="list-inline container my-4">
+		<li class="list-inline-item"><a href="<?=APP_URL?>">Homepage</a>&nbsp;&nbsp;-</li>
+		<li class="list-inline-item"><a href="<?=APP_URL?>/department">Dipartimenti</a>&nbsp;&nbsp;-</li>
+		<li class="list-inline-item"><a href="<?=APP_URL?>/faq">FAQ</a></li>
+	</ul>
+
 	<?= $this->layout()->content; ?>
 
     <?= $this->InlineScript(); ?>

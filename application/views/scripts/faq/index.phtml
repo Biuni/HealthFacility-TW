@@ -1,11 +1,25 @@
-<?php
-$rowsetArray = $this->faq->toArray();
+<div class="container">
 
-foreach ($rowsetArray as $rowArray) {
-	foreach ($rowArray as $column => $value) {
-		echo "<strong>$column</strong> => $value";
-		echo "<br>";
-	}
-	echo "<hr>";
-}
-?>
+	<h2 class="mb-3">FAQ</h2>
+
+	<div class="accordion" id="accordionFaq">
+		<?php foreach ($this->faq as $faq): ?>
+		  <div class="card">
+		    <div class="card-header" id="quest<?= $faq['faq_id']; ?>">
+		      <h5 class="mb-0">
+		        <button class="btn btn-link text-secondary" type="button" data-toggle="collapse" data-target="#question<?= $faq['faq_id']; ?>" aria-expanded="true" aria-controls="question<?= $faq['faq_id']; ?>">
+		          <?= $faq['question']; ?>
+		        </button>
+		      </h5>
+		    </div>
+
+		    <div id="question<?= $faq['faq_id']; ?>" class="collapse <?= ($faq['faq_id'] == 1)?'show':'hide'; ?>" aria-labelledby="quest<?= $faq['faq_id']; ?>" data-parent="#accordionFaq">
+		      <div class="card-body">
+		        <?= $faq['answer']; ?>
+		      </div>
+		    </div>
+		  </div>
+		<?php endforeach; ?>
+	</div>
+
+</div>

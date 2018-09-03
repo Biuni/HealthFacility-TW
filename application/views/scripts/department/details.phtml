@@ -1,0 +1,21 @@
+<div class="container">
+	<?php
+	foreach ($this->department as $detail) {
+		echo '<h2 class="text-success">'.$detail['name'].'</h2>';
+		echo '<p class="lead mb-0">'.$detail['description'].'</p>';
+		echo "<br>";
+	}
+	?>
+
+	<p class="mt-0"><strong>Prestazioni erogate:</strong></p>
+	<ul>
+		<?php
+		foreach ($this->service as $detail) {
+			echo '<li class="mb-3">';
+			echo '<u>'.$detail['name'] . '</u><br>';
+			echo '<a href="'.APP_URL.'/service?id='.$detail['service_id'].'">&raquo; Vedi i dettagli</a>';
+			echo '</li>';
+		}
+		?>
+	</ul>
+</div>

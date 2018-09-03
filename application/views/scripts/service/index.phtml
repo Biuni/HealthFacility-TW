@@ -1,0 +1,17 @@
+<div class="container">
+	<?php
+	foreach ($this->service as $detail) {
+		echo '<h2>'.$detail['name'].'</h2>';
+		echo '<p class="lead">'.$detail['description'].'</p>';
+		echo '<small>'.$detail['prescriptions'].'</small><br>';
+		foreach ($this->staff as $person) {
+			echo '<p class="lead text-info pt-2 text-right"><em>Dott. '.$person['name'].' '.$person['surname'].'</em></p>';
+		}
+		echo "<br>";
+	}
+	?>
+</div>
+
+<script>
+	var schedule = <?= $detail['schedule']; ?>
+</script>

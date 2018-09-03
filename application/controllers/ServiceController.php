@@ -1,6 +1,6 @@
 <?php
 
-class FaqController extends Zend_Controller_Action
+class ServiceController extends Zend_Controller_Action
 {
 
     public function init()
@@ -10,10 +10,19 @@ class FaqController extends Zend_Controller_Action
 
     public function indexAction()
     {
-    	$faq = new Application_Model_Faq();
+		$id = $this->_getParam('id', null);
+    	$service = new Application_Model_Service();
+    	$staff = new Application_Model_Staff();
+
+    	$serviceDetails = $service->find($id);
+
     	$this->view->assign(
-    		'faq',
-    		$this->extractResult($faq->get())
+    		'service',
+    		$this->extractResult($serviceDetails)
+    	);
+    	$this->view->assign(
+    		'staff',
+    		$this->extractResult($staff->find($serviceDetails[0]['staff']))
     	);
     }
 

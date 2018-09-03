@@ -17,6 +17,12 @@
         <controllerFile controllerName="Faq">
           <actionMethod actionName="index"/>
         </controllerFile>
+        <controllerFile controllerName="Department">
+          <actionMethod actionName="index"/>
+        </controllerFile>
+        <controllerFile controllerName="Service">
+          <actionMethod actionName="index"/>
+        </controllerFile>
       </controllersDirectory>
       <formsDirectory enabled="false"/>
       <layoutsDirectory enabled="false"/>
@@ -24,7 +30,13 @@
         <modelFile modelName="Faq"/>
         <dbTableDirectory>
           <dbTableFile dbTableName="Faq"/>
+          <dbTableFile dbTableName="Department"/>
+          <dbTableFile dbTableName="Service"/>
+          <dbTableFile dbTableName="User"/>
         </dbTableDirectory>
+        <modelFile modelName="Department"/>
+        <modelFile modelName="Service"/>
+        <modelFile modelName="Staff"/>
       </modelsDirectory>
       <modulesDirectory enabled="false"/>
       <servicesDirectory enabled="false"/>
@@ -37,6 +49,12 @@
             <viewScriptFile forActionName="error"/>
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Faq">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Department">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Service">
             <viewScriptFile forActionName="index"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>

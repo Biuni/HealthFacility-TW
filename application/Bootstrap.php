@@ -11,6 +11,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	*/
 	protected function _initViewSettings()
     {
+        define('APP_URL', 'http://localhost/HealthFacility/public');
+
         $this->bootstrap('view');
         $this->_view = $this->getResource('view');
         $this->_view->headMeta()->setCharset('UTF-8');
@@ -18,12 +20,12 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
         $this->_view->headTitle('Health Facility | Gianluca Bonifazi - Progetto Tecnologie Web');
 
-        $this->_view->headLink()->appendStylesheet('css/bootstrap.min.css');
-        $this->_view->headLink()->appendStylesheet('css/style.css');
+        $this->_view->headLink()->appendStylesheet(APP_URL.'/css/bootstrap.min.css');
+        $this->_view->headLink()->appendStylesheet(APP_URL.'/css/style.css');
 
-        $this->_view->InlineScript()->appendFile('js/jquery-3.3.1.slim.min.js');
-        $this->_view->InlineScript()->appendFile('js/popper.min.js');
-        $this->_view->InlineScript()->appendFile('js/bootstrap.min.js');
+        $this->_view->InlineScript()->appendFile(APP_URL.'/js/jquery-3.3.1.slim.min.js');
+        $this->_view->InlineScript()->appendFile(APP_URL.'/js/popper.min.js');
+        $this->_view->InlineScript()->appendFile(APP_URL.'/js/bootstrap.min.js');
     }
 
 	/**
@@ -45,14 +47,15 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	*/
 	protected function _initDbParms()
     {
-		require_once(APPLICATION_PATH . '/configs/global.php');
+		require_once(APPLICATION_PATH . '/configs/connection.php');
 
 		$db = new Zend_Db_Adapter_Pdo_Mysql(array(
     		'host'     => DB_HOST,
     		'username' => DB_USER,
     		'password' => DB_PWD,
-    		'dbname'   => DB_NAME
-		));  
+    		'dbname'   => DB_NAME,
+            'charset'  => 'utf8'
+		));
 		
 		Zend_Db_Table_Abstract::setDefaultAdapter($db);
 	}

@@ -1,0 +1,11 @@
+<div class="container">
+	<?php
+	foreach ($this->department as $detail) {
+		echo '<h2 class="mb-2 text-success">'.$detail['name'].'</h2>';
+		echo $detail['description'] . '<br>';
+		echo '<strong>'.$detail['place'].'</strong>' . '<br><br>';
+		echo '<a href="'.APP_URL.'/department/details/id/'.$detail['department_id'].'">&raquo; Tutti i servizi</a>' . '<br>';
+		echo "<hr>";
+	}
+	?>
+</div>
