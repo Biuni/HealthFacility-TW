@@ -1,1 +1,14 @@
-<?php echo $this->layout()->content; ?>
+<?= $this->doctype(); ?>
+<html lang="it-IT">
+<head>
+    <?= $this->headMeta(); ?>
+    <?= $this->headTitle(); ?>
+    <?= $this->headLink(); ?>
+    <?= $this->headScript(); ?>
+</head>
+<body>
+	<?= $this->layout()->content; ?>
+
+    <?= $this->InlineScript(); ?>
+</body>
+</html>
