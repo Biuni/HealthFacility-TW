@@ -59,5 +59,31 @@ class Application_Model_Department
 		return $this->_dbTable->delete($id);
 	}
 
+
+	// -----------------------------
+	// Custom method for this model
+	// -----------------------------
+
+	/**
+	* Select services by department
+	*/
+	public function paginator($page)
+	{
+		$adapter = new Zend_Paginator_Adapter_DbSelect($this->_dbTable->select()->from('department'));
+		$paginator = new Zend_Paginator($adapter);
+
+		$paginator->setItemCountPerPage(5)->setCurrentPageNumber($page);
+
+		return $paginator;
+	}
+	/**
+	* Count number of rows
+	*/
+	public function countDepartments()
+	{
+		$countRows = $this->_dbTable->select()->from('department', array('rows' => 'COUNT(*)'));
+		return $this->_dbTable->fetchRow($countRows);
+	}
+
 }
 

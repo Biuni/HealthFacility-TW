@@ -12,10 +12,21 @@ class DepartmentController extends Zend_Controller_Action
     {
     	$department = new Application_Model_Department();
 
-    	$this->view->assign(
-    		'department',
-    		$this->extractResult($department->get())
-    	);
+        $page = $this->_getParam('page', 1);
+        $paginator = $department->paginator($page);
+
+        $this->view->assign(
+            'department',
+            $paginator
+        );
+        $this->view->assign(
+            'totalRows',
+            $this->extractResult($department->countDepartments())['rows']
+        );
+        $this->view->assign(
+            'page',
+            $page
+        );
     }
 
     public function detailsAction()

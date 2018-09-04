@@ -31,6 +31,9 @@
     position: relative;
     top: 3px;
 }
+.department-pagination {
+    justify-content: center;
+}
 .bootoast {
     opacity: 0;
     filter: alpha(opacity=0)

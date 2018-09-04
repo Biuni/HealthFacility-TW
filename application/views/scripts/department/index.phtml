@@ -2,10 +2,29 @@
 	<?php
 	foreach ($this->department as $detail) {
 		echo '<h2 class="mb-2 text-success">'.$detail['name'].'</h2>';
-		echo $detail['description'] . '<br>';
-		echo '<strong>'.$detail['place'].'</strong>' . '<br><br>';
-		echo '<a href="'.APP_URL.'/department/details/id/'.$detail['department_id'].'">&raquo; Tutte le prestazioni</a>' . '<br>';
-		echo "<hr>";
+		echo $detail['description'].'<br>';
+		echo '<strong>'.$detail['place'].'</strong><br><br>';
+		echo '<a href="'.APP_URL.'/department/details/id/'.$detail['department_id'].'">&raquo; Tutte le prestazioni</a><br>';
+		echo '<hr>';
 	}
 	?>
+	<nav>
+		<ul class="pagination department-pagination">
+		<?php
+			if($this->totalRows > 5) {
+				$numberOfPages = $this->totalRows / 5;
+				if (is_float($numberOfPages)) {
+					$numberOfPages = ceil($numberOfPages);
+				}
+				for ($i = 1; $i < $numberOfPages + 1; $i++) {
+					if ($i == $this->page) {
+						echo '<li class="page-item active"><a class="page-link" href="?page='.$i.'">'.$i.'</a></li>';
+					} else {
+						echo '<li class="page-item"><a class="page-link" href="?page='.$i.'">'.$i.'</a></li>';
+					}
+				}
+			}
+		?>
+		</ul>
+	</nav>
 </div>
