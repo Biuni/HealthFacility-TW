@@ -3,7 +3,10 @@
 		<div class="col-md-6">
 			<?php
 			foreach ($this->service as $detail) {
-				echo '<h2>'.$detail['name'].'</h2>';
+				echo '<h2 class="d-inline-block pr-3">'.$detail['name'].'</h2>';
+				foreach ($this->department as $name) {
+					echo '<span class="badge badge-secondary align-text-top">'.$name['name'].'</span>';
+				}
 				echo '<p class="lead">'.$detail['description'].'</p>';
 				echo '<small><u>PRESCRIZIONI</u>: '.$detail['prescriptions'].'</small><br>';
 				foreach ($this->staff as $person) {

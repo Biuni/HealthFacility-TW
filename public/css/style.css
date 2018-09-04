@@ -17,6 +17,20 @@
 #book {
     white-space: normal !important;
 }
+#chooseService,
+#viewService {
+    display: none;
+}
+#viewService a {
+    margin-top: 30px;
+}
+#searchResult .card-body {
+    padding: 15px;
+}
+#searchResult .card-body em {
+    position: relative;
+    top: 3px;
+}
 .bootoast {
     opacity: 0;
     filter: alpha(opacity=0)

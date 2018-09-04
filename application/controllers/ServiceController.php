@@ -11,8 +11,9 @@ class ServiceController extends Zend_Controller_Action
     public function indexAction()
     {
 		$id = $this->_getParam('id', null);
-    	$service = new Application_Model_Service();
-    	$staff = new Application_Model_Staff();
+        $service = new Application_Model_Service();
+        $staff = new Application_Model_Staff();
+        $department = new Application_Model_Department();
 
     	$serviceDetails = $service->find($id);
 
@@ -20,10 +21,14 @@ class ServiceController extends Zend_Controller_Action
     		'service',
     		$this->extractResult($serviceDetails)
     	);
-    	$this->view->assign(
-    		'staff',
-    		$this->extractResult($staff->find($serviceDetails[0]['staff']))
-    	);
+        $this->view->assign(
+            'staff',
+            $this->extractResult($staff->find($serviceDetails[0]['staff']))
+        );
+        $this->view->assign(
+            'department',
+            $this->extractResult($department->find($serviceDetails[0]['department']))
+        );
     }
 
     // -----------------------------------
