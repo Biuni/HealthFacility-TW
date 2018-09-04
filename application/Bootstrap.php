@@ -20,12 +20,17 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
         $this->_view->headTitle('Health Facility | Gianluca Bonifazi - Progetto Tecnologie Web');
 
+        $this->_view->headLink()->appendStylesheet('https://use.fontawesome.com/releases/v5.3.1/css/all.css');
         $this->_view->headLink()->appendStylesheet(APP_URL.'/css/bootstrap.min.css');
+        $this->_view->headLink()->appendStylesheet(APP_URL.'/css/bootstrap-datepicker.min.css');
         $this->_view->headLink()->appendStylesheet(APP_URL.'/css/style.css');
 
-        $this->_view->InlineScript()->appendFile(APP_URL.'/js/jquery-3.3.1.slim.min.js');
+        $this->_view->InlineScript()->appendFile(APP_URL.'/js/jquery-2.2.4.min.js');
         $this->_view->InlineScript()->appendFile(APP_URL.'/js/popper.min.js');
+        $this->_view->InlineScript()->appendFile(APP_URL.'/js/moment.min.js');
         $this->_view->InlineScript()->appendFile(APP_URL.'/js/bootstrap.min.js');
+        $this->_view->InlineScript()->appendFile(APP_URL.'/js/bootstrap-datepicker.min.js');
+        $this->_view->InlineScript()->appendFile(APP_URL.'/js/main.js');
     }
 
 	/**

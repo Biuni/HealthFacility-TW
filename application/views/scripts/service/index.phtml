@@ -1,17 +1,52 @@
 <div class="container">
-	<?php
-	foreach ($this->service as $detail) {
-		echo '<h2>'.$detail['name'].'</h2>';
-		echo '<p class="lead">'.$detail['description'].'</p>';
-		echo '<small>'.$detail['prescriptions'].'</small><br>';
-		foreach ($this->staff as $person) {
-			echo '<p class="lead text-info pt-2 text-right"><em>Dott. '.$person['name'].' '.$person['surname'].'</em></p>';
-		}
-		echo "<br>";
-	}
-	?>
+	<div class="row">
+		<div class="col-md-6">
+			<?php
+			foreach ($this->service as $detail) {
+				echo '<h2>'.$detail['name'].'</h2>';
+				echo '<p class="lead">'.$detail['description'].'</p>';
+				echo '<small><u>PRESCRIZIONI</u>: '.$detail['prescriptions'].'</small><br>';
+				foreach ($this->staff as $person) {
+					echo '<p class="lead text-info pt-2 mb-0 text-right"><em>Dott. '.$person['name'].' '.$person['surname'].'</em></p>';
+				}
+				echo "<br>";
+			}
+			?>
+		</div>
+
+		<div class="col-md-6">
+			<section class="schedule">
+				<div class="table-responsive">
+					<table class="table">
+						<thead class="thead-dark">
+							<tr>
+								<th scope="col">Giorno</th>
+								<th scope="col">Orario Mattina</th>
+								<th scope="col">Orario Pomeriggio</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
+			</section>
+		</div>
+	</div>
+
+	<div class="row mt-3">
+		<div class="col-md-2"></div>
+		<div class="col-md-8">
+			<small class="text-muted d-block mb-3 text-center"><em>Prenotata la tua visita direttamente online. Scegli il giorno e l'ora, poi clicca sul pulsante sottostante per controllare la disponibilità e per confermare la prenotazione.</em></small>
+			<div style="overflow:hidden;">
+				<div id="datetimepicker"></div>
+			</div>
+			<button class="btn btn-info btn-block mt-0 mb-5" id="book">Controlla disponibilità e prenota!</button>
+		</div>
+		<div class="col-md-2"></div>
+	</div>
+
 </div>
 
 <script>
-	var schedule = <?= $detail['schedule']; ?>
+	var schedule = '<?= $detail['schedule']; ?>';
+	var service = <?= $detail['service_id']; ?>;
 </script>
