@@ -20,7 +20,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
         $this->_view->headTitle('Health Facility | Gianluca Bonifazi - Progetto Tecnologie Web');
 
-        $this->_view->headLink()->appendStylesheet('https://use.fontawesome.com/releases/v5.3.1/css/all.css');
+        $this->_view->headLink(array('rel' => 'favicon', 'href' => APP_URL.'/favicon.ico'));
+        
+        $this->_view->headLink()->appendStylesheet(APP_URL.'/css/fontawesome.min.css');
         $this->_view->headLink()->appendStylesheet(APP_URL.'/css/bootstrap.min.css');
         $this->_view->headLink()->appendStylesheet(APP_URL.'/css/bootstrap-datepicker.min.css');
         $this->_view->headLink()->appendStylesheet(APP_URL.'/css/style.css');
