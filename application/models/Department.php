@@ -72,7 +72,7 @@ class Application_Model_Department
 		$adapter = new Zend_Paginator_Adapter_DbSelect($this->_dbTable->select()->from('department'));
 		$paginator = new Zend_Paginator($adapter);
 
-		$paginator->setItemCountPerPage(5)->setCurrentPageNumber($page);
+		$paginator->setItemCountPerPage(3)->setCurrentPageNumber($page);
 
 		return $paginator;
 	}

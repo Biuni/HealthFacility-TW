@@ -3,39 +3,71 @@
 	<h2 class="mb-3">Registrazione utente</h2>
 	<p class="lead">Registrati al sito web per poter prenotare direttamente online le varie prestazioni offerte dalla struttura sanitaria.</p>
 
-	<form>
+	<?php 
+		$error = isset($_GET['err']) ? $_GET['err'] : '';
+		if ($error == 1) {
+	?>
+		<div class="alert alert-danger" role="alert">
+			<strong>ATTENZIONE!</strong> Il sistema ha riscontrato un errore, <u>riprova più tardi</u>!
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+	<?php
+		}
+	?>
+
+	<form class="need-validation mb-3" action="<?php echo $this->url(array('controller' => 'register','action' => 'enter')); ?>" method="POST" novalidate>
 		<div class="form-group">
 			<label for="InputEmail">Email</label>
-			<input type="email" class="form-control" id="InputEmail" aria-describedby="emailHelp" placeholder="Inserisci la tua mail">
-			<small id="emailHelp" class="form-text text-muted">La mail deve essere valida, in quanto i promemoria delle prenotazioni saranno inviati a questo indirizzo.</small>
+			<input type="email" class="form-control" name="email" id="InputEmail" aria-describedby="emailHelp" placeholder="Inserisci la tua email" required>
+		    <div class="invalid-feedback">
+		    	Per favore inserisci una mail valida.
+		    </div>
 		</div>
 		<div class="form-group">
 			<label for="InputUsername">Username</label>
-			<input type="text" class="form-control" id="InputUsername" placeholder="Inserisci un'username">
-			<small id="emailHelp" class="form-text text-muted">Crea un username utilizzando lettere maiuscole e minuscole, i numeri e i caratteri "_", "-".</small>
+			<input type="text" class="form-control" name="username" id="InputUsername" placeholder="Inserisci un username" pattern="^[A-Za-z0-9_]{1,15}$" required>
+			<small id="usernameHelp" class="form-text text-muted">Crea un username utilizzando solamente numeri, lettere minuscole, maiuscole e l'underscore ("_"). Massimo 15 caratteri.</small>
+		    <div class="invalid-feedback">
+		    	Per favore inserisci un username valido.
+		    </div>
 		</div>
 		<div class="form-group">
 			<label for="InputPassword">Password</label>
-			<input type="password" class="form-control" id="InputPassword" placeholder="Inserisci la password">
-			<small id="emailHelp" class="form-text text-muted">Utilizza una password sicura che contenga numeri, lettere e che sia almeno di 8 caratteri.</small>
+			<input type="password" class="form-control" name="password" id="InputPassword" placeholder="Inserisci una password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{8,}$" required>
+			<small id="passwordHelp" class="form-text text-muted">Utilizza una password che contenga almeno una lettera minuscola, una maiuscola ed un numero. Minimo 8 caratteri.</small>
+		    <div class="invalid-feedback">
+		    	Per favore inserisci una password valida.
+		    </div>
 		</div>
 		<div class="form-group">
 			<label for="InputName">Nome</label>
-			<input type="text" class="form-control" id="InputName" placeholder="Inserisci il tuo nome">
-			<small id="emailHelp" class="form-text text-muted">Inserire il proprio nome in questo form.</small>
+			<input type="text" class="form-control" name="name" id="InputName" placeholder="Inserisci il tuo nome" pattern="[a-zA-Z]+" required>
+		    <div class="invalid-feedback">
+		    	Per favore inserisci il tuo nome.
+		    </div>
 		</div>
 		<div class="form-group">
 			<label for="InputSurname">Cognome</label>
-			<input type="text" class="form-control" id="InputSurname" placeholder="Inserisci il tuo nome">
-			<small id="emailHelp" class="form-text text-muted">Inserire il proprio cognome in questo form.</small>
+			<input type="text" class="form-control" name="surname" id="InputSurname" placeholder="Inserisci il tuo cognome" pattern="[a-zA-Z]+" required>
+		    <div class="invalid-feedback">
+		    	Per favore inserisci il tuo cognome.
+		    </div>
 		</div>
 		<div class="form-group">
 			<label for="InputCode">Codice Fiscale</label>
-			<input type="text" class="form-control" id="InputCode" placeholder="Inserisci il codice fiscale">
-			<small id="emailHelp" class="form-text text-muted">Inserire il proprio codice fiscale.</small>
+			<input type="text" class="form-control" name="code" id="InputCode" placeholder="Inserisci il tuo codice fiscale" pattern="^[A-Z]{6}\d{2}[A-Z]\d{2}[A-Z]\d{3}[A-Z]$" required>
+		    <div class="invalid-feedback">
+		    	Per favore inserisci il tuo codice fiscale.
+		    </div>
 		</div>
 
 		<button type="submit" class="btn btn-primary">Registrati</button>
 	</form>
 
 </div>
+
+<script>
+	var validationForm = true;
+</script>

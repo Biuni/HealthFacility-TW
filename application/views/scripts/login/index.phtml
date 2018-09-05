@@ -17,6 +17,20 @@
 		}
 	?>
 
+	<?php 
+		$registration = isset($_GET['reg']) ? $_GET['reg'] : '';
+		if ($registration == 1) {
+	?>
+		<div class="alert alert-success" role="alert">
+			<strong>Registrazione andata a buon fine!</strong> Effettua il login con le tue credenziali.
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+	<?php
+		}
+	?>
+
 	<form action="<?php echo $this->url(array('controller' => 'login','action' => 'enter')); ?>" method="POST">
 		<div class="form-group">
 			<label for="InputUsername">Username</label>

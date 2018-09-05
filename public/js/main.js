@@ -115,6 +115,31 @@ $(document).ready(function() {
     }
 });
 
+/**
+ * ------------------------
+ * - Register Page Script -
+ * ------------------------
+ */
+$(document).ready(function() {
+    // Check if validationForm variable is setted
+    if (typeof validationForm !== 'undefined') {
+      // Fetch the form we want to apply custom Bootstrap validation styles to
+      window.addEventListener('load', function() {
+        var forms = $('.need-validation');
+        // Loop over them and prevent submission
+        var validation = Array.prototype.filter.call(forms, function(form) {
+          form.addEventListener('submit', function(event) {
+            if (form.checkValidity() === false) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+          }, false);
+        });
+      }, false);
+    }
+});
+
 
 // ***************************************************************
 // ------------------- Helpers Function --------------------------
