@@ -1,0 +1,20 @@
+<?= $this->doctype(); ?>
+<html lang="it-IT">
+<head>
+    <?= $this->headMeta(); ?>
+    <?= $this->headTitle(); ?>
+    <?= $this->headLink(); ?>
+</head>
+<body>
+	<ul class="list-inline container my-4">
+		<li class="list-inline-item"><a href="<?=APP_URL?>/staff">Home</a>&nbsp;&nbsp;-</li>
+		<li class="list-inline-item"><a href="<?=APP_URL?>/staff/agenda">Agenda</a>&nbsp;&nbsp;-</li>
+		<li class="list-inline-item"><a href="<?=APP_URL?>/staff/data">Dati Personali</a>&nbsp;&nbsp;-</li>
+		<li class="list-inline-item"><a href="<?=APP_URL?>/staff/logout">Logout</a></li>
+	</ul>
+
+	<?= $this->layout()->content; ?>
+
+    <?= $this->InlineScript(); ?>
+</body>
+</html>

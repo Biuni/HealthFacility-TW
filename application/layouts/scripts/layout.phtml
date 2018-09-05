@@ -6,15 +6,19 @@
     <?= $this->headLink(); ?>
 </head>
 <body>
-
 	<ul class="list-inline container my-4">
 		<li class="list-inline-item"><a href="<?=APP_URL?>">Homepage</a>&nbsp;&nbsp;-</li>
 		<li class="list-inline-item"><a href="<?=APP_URL?>/department">Dipartimenti</a>&nbsp;&nbsp;-</li>
 		<li class="list-inline-item"><a href="<?=APP_URL?>/search">Cerca prestazione</a>&nbsp;&nbsp;-</li>
 		<li class="list-inline-item"><a href="<?=APP_URL?>/contact">Contatti</a>&nbsp;&nbsp;-</li>
 		<li class="list-inline-item"><a href="<?=APP_URL?>/faq">FAQ</a>&nbsp;&nbsp;-</li>
+		<?php if(Zend_Auth::getInstance()->hasIdentity()) : ?>
+		<li class="list-inline-item"><a href="<?=APP_URL?>/user">Area Riservata</a>&nbsp;&nbsp;-</li>
+		<li class="list-inline-item"><a href="<?=APP_URL?>/user/logout">Logout</a></li>
+		<?php else : ?>
 		<li class="list-inline-item"><a href="<?=APP_URL?>/register">Registrati</a>&nbsp;&nbsp;-</li>
 		<li class="list-inline-item"><a href="<?=APP_URL?>/login">Login</a></li>
+		<?php endif; ?>
 	</ul>
 
 	<?= $this->layout()->content; ?>

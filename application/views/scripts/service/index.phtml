@@ -35,6 +35,7 @@
 		</div>
 	</div>
 
+	<?php if(Zend_Auth::getInstance()->hasIdentity()) : ?>
 	<div class="row mt-3">
 		<div class="col-md-2"></div>
 		<div class="col-md-8">
@@ -46,6 +47,9 @@
 		</div>
 		<div class="col-md-2"></div>
 	</div>
+	<?php else : ?>
+		<small class="text-muted d-block mb-3 text-center"><em>Registrati o esegui il login per poter prenotare direttamente online la tua visita.</em></small>
+	<?php endif; ?>
 
 </div>
 
