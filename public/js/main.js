@@ -49,28 +49,52 @@ $(document).ready(function() {
                 previous: 'fas fa-caret-left'
             },
             sideBySide: true,
-            daysOfWeekDisabled: closingDay,
-            disabledHours: [0, 1, 2, 3, 4, 5, 6, 19, 20, 21, 22, 23]
+            daysOfWeekDisabled: closingDay
         });
         picker.on('dp.change', function(val) {
             choosedDate = val.date._d;
         });
         btnBook.click(function() {
-            var bookingDate = moment(choosedDate).format('YYYY-MM-DD H:00');
-            var serviceId = service;
-            // ****************************************
-            // ------------- SEND AJAX ----------------
-            // ****************************************
-            bootoast({
-                message: 'Prenotazione confermata!<br>Data: <strong>' + bookingDate + '</strong>',
-                type: 'success',
-                position: 'bottom-right'
-            });
-            bootoast({
-                message: '<strong>ATTENZIONE!</strong> Data <u>non disponibile</u>.<br>Prova a modificare ora o giorno.',
-                type: 'danger',
-                position: 'bottom-right'
-            });
+            var booking_date = moment(choosedDate).format('YYYY-MM-DD H:00');
+            var service_id = service;
+            var user_id = userId;
+
+            if (userLogged == 0) {
+                bootoast({
+                    message: '<strong>INFO:</strong> registrati o esegui il login per poterti prenotare!',
+                    type: 'warning',
+                    timeout: 6,
+                    position: 'bottom-right'
+                });
+            } else {
+                // ****************************************
+                // ------------- SEND AJAX ----------------
+                // ****************************************
+
+                $.ajax({
+                    type : 'POST',
+                    url : urlAjax,
+                    data : {
+                        userId: user_id,
+                        seriviceId: service_id,
+                        date: booking_date
+                    },
+                    dataType : 'JSON',
+                    success : function(res){
+                        if (res.result == 1) {
+                            var type = 'success';
+                        } else {
+                            var type = 'danger';
+                        }
+                        bootoast({
+                            message: res.message,
+                            type: type,
+                            timeout: 6,
+                            position: 'bottom-right'
+                        });
+                    }
+                });
+            }
         });
     }
 });

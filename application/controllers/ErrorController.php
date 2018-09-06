@@ -28,11 +28,20 @@ class ErrorController extends Zend_Controller_Action
                 $this->view->message = 'Application error';
                 break;
         }
-        
         // Log exception, if logger available
         if ($log = $this->getLog()) {
-            $log->log($this->view->message, $priority, $errors->exception);
-            $log->log('Request Parameters', $priority, $errors->request->getParams());
+            print_r($priority);
+            switch ($priority) {
+                case 5:
+                    $log->notice('Page not found => '. $errors->exception->getMessage());
+                    break;
+                case 2:
+                    $log->crit('Application error => '. $errors->exception->getMessage());
+                    break;
+                default:
+                    $log->warn('General error => '. $errors->exception->getMessage());
+                    break;
+            }
         }
         
         // conditionally display exceptions
@@ -40,16 +49,16 @@ class ErrorController extends Zend_Controller_Action
             $this->view->exception = $errors->exception;
         }
         
-        $this->view->request   = $errors->request;
+        $this->view->request = $errors->request;
     }
 
     public function getLog()
     {
         $bootstrap = $this->getInvokeArg('bootstrap');
-        if (!$bootstrap->hasResource('Log')) {
+        if (!$bootstrap->_logger) {
             return false;
         }
-        $log = $bootstrap->getResource('Log');
+        $log = $bootstrap->_logger;
         return $log;
     }
 

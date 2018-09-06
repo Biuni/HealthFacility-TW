@@ -2,7 +2,7 @@
 
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
-	protected $_logger;
+	public $_logger;
 	protected $_view;
 
 	/**
@@ -43,10 +43,10 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $writer = new Zend_Log_Writer_Stream(APPLICATION_PATH . '/data/log/logger.log');        
         $logger = new Zend_Log($writer);
 
-        Zend_Registry::set('log', $logger);
+        Zend_Registry::set('Log', $logger);
 
         $this->_logger = $logger;
-    	$this->_logger->info('Bootstrap ' . __METHOD__);
+    	$this->_logger->info('Bootstrap => ' . __METHOD__);
     }
 
     /**

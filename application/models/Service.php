@@ -76,6 +76,30 @@ class Application_Model_Service
         return $this->_dbTable->fetchAll($select);
 	}
 
+	/**
+	* Select services by department
+	*/
+	public function checkServiceOpen($service_id, $date)
+	{
+		$schedule = $this->_dbTable->find($service_id)->toArray()[0]['schedule'];
+
+		$result = 1;
+		$timestamp = strtotime($date);
+		$dayId = date('w', $timestamp);
+		$parsedSchedule = json_decode($schedule)->schedule[$dayId];
+		$bookingHour = date('H:i', $timestamp);
+
+		if ($bookingHour < $parsedSchedule->m_opening) {
+			$result = 0;
+		} else if($bookingHour >= $parsedSchedule->m_closing && $bookingHour < $parsedSchedule->a_opening) {
+			$result = 0;
+		} else if ($bookingHour >= $parsedSchedule->a_closing) {
+			$result = 0;
+		}
+
+		return $result;
+	}
+
 
 }
 

@@ -35,7 +35,6 @@
 		</div>
 	</div>
 
-	<?php if(Zend_Auth::getInstance()->hasIdentity()) : ?>
 	<div class="row mt-3">
 		<div class="col-md-2"></div>
 		<div class="col-md-8">
@@ -47,13 +46,19 @@
 		</div>
 		<div class="col-md-2"></div>
 	</div>
-	<?php else : ?>
-		<small class="text-muted d-block mb-3 text-center"><em>Registrati o esegui il login per poter prenotare direttamente online la tua visita.</em></small>
-	<?php endif; ?>
 
 </div>
 
 <script>
 	var schedule = '<?= $detail['schedule']; ?>';
 	var service = <?= $detail['service_id']; ?>;
+	var urlAjax = '<?=$this->url(array('controller' => 'service', 'action' => 'booking'))?>';
+
+	<?php if (Zend_Auth::getInstance()->hasIdentity() == '') : ?>
+		var userLogged = 0;
+		var userId = 0;
+	<?php else : ?>
+		var userLogged = 1;
+		var userId = <?= Zend_Auth::getInstance()->getIdentity()->user_id; ?>;
+	<?php endif; ?>
 </script>
