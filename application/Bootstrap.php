@@ -49,6 +49,15 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     	$this->_logger->info('Bootstrap ' . __METHOD__);
     }
 
+    /**
+    * Initalize the ACL plugin
+    */
+    protected function _initFrontControllerPlugin()
+    {
+        $front = Zend_Controller_Front::getInstance();
+        $front->registerPlugin(new Application_Plugin_Acl());
+    }
+
 	/**
 	* Initalize database connection
 	*/
