@@ -6,7 +6,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	protected $_view;
 
 	/**
-	* Initalize the layout metadata
+	* Initialize the layout metadata
 	* and the CSS / Javascript files
 	*/
 	protected function _initViewSettings()
@@ -36,7 +36,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     }
 
 	/**
-	* Initalize the logger
+	* Initialize the logger
 	*/
     protected function _initLogging()
     {
@@ -50,7 +50,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     }
 
     /**
-    * Initalize the ACL plugin
+    * Initialize the ACL plugin
     */
     protected function _initFrontControllerPlugin()
     {
@@ -59,7 +59,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     }
 
 	/**
-	* Initalize database connection
+	* Initialize database connection
 	*/
 	protected function _initDbParms()
     {

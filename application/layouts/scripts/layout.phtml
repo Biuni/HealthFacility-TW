@@ -6,22 +6,61 @@
     <?= $this->headLink(); ?>
 </head>
 <body>
-	<ul class="list-inline container my-4">
-		<li class="list-inline-item"><a href="<?=APP_URL?>">Homepage</a>&nbsp;&nbsp;-</li>
-		<li class="list-inline-item"><a href="<?=APP_URL?>/department">Dipartimenti</a>&nbsp;&nbsp;-</li>
-		<li class="list-inline-item"><a href="<?=APP_URL?>/search">Cerca prestazione</a>&nbsp;&nbsp;-</li>
-		<li class="list-inline-item"><a href="<?=APP_URL?>/contact">Contatti</a>&nbsp;&nbsp;-</li>
-		<li class="list-inline-item"><a href="<?=APP_URL?>/faq">FAQ</a>&nbsp;&nbsp;-</li>
-		<?php if(Zend_Auth::getInstance()->hasIdentity()) : ?>
-		<li class="list-inline-item"><a href="<?=APP_URL?>/user">Area Riservata</a>&nbsp;&nbsp;-</li>
-		<li class="list-inline-item"><a href="<?=APP_URL?>/user/logout">Logout</a></li>
-		<?php else : ?>
-		<li class="list-inline-item"><a href="<?=APP_URL?>/register">Registrati</a>&nbsp;&nbsp;-</li>
-		<li class="list-inline-item"><a href="<?=APP_URL?>/login">Login</a></li>
-		<?php endif; ?>
-	</ul>
+	<header class="mb-4">
+		<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+			<div class="container">
+				<a class="navbar-brand" href="<?= $this->url(array('controller' => 'index')); ?>"><img src="<?=APP_URL?>/img/hospital.png"></a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarCollapse">
+					<ul class="navbar-nav mr-auto">
+						<li class="nav-item">
+							<a class="nav-link" href="<?= $this->url(array('controller' => 'index', 'action' => 'index', 'id' => null, 'page' => null)); ?>">Homepage</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<?= $this->url(array('controller' => 'department', 'action' => 'index', 'id' => null, 'page' => null)); ?>">Dipartimenti</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<?= $this->url(array('controller' => 'search', 'action' => 'index', 'id' => null, 'page' => null)); ?>">Cerca prestazione</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<?= $this->url(array('controller' => 'contact', 'action' => 'index', 'id' => null, 'page' => null)); ?>">Contatti</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<?= $this->url(array('controller' => 'faq', 'action' => 'index', 'id' => null, 'page' => null)); ?>">FAQ</a>
+						</li>
+						<?php if(Zend_Auth::getInstance()->hasIdentity() && Zend_Auth::getInstance()->getIdentity()->role === 'user') : ?>
+						<li class="nav-item">
+							<a class="nav-link" href="<?= $this->url(array('controller' => 'user', 'action' => 'index', 'id' => null, 'page' => null)); ?>">Area Riservata</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<?= $this->url(array('controller' => 'user', 'action' => 'logout', 'id' => null, 'page' => null)); ?>">Logout</a>
+						</li>
+						<?php else : ?>
+						<li class="nav-item">
+							<a class="nav-link" href="<?= $this->url(array('controller' => 'register', 'action' => 'index', 'id' => null, 'page' => null)); ?>">Registrati</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<?= $this->url(array('controller' => 'login', 'action' => 'index', 'id' => null, 'page' => null)); ?>">Login</a>
+						</li>
+						<?php endif; ?>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
 
 	<?= $this->layout()->content; ?>
+
+	<footer class="footer">
+		<div class="container">
+			<span class="text-muted">
+				&copy; <em>Gianluca Bonifazi</em> ~ <small>1082209</small>
+				<a href="" class="float-right">Documentazione</a>
+			</span>
+		</div>
+	</footer>
 
     <?= $this->InlineScript(); ?>
 </body>

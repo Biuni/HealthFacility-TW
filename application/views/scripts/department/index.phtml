@@ -4,7 +4,7 @@
 		echo '<h2 class="mb-2 text-muted">'.$detail['name'].'</h2>';
 		echo $detail['description'].'<br>';
 		echo '<strong>'.$detail['place'].'</strong><br><br>';
-		echo '<a href="'.APP_URL.'/department/details/id/'.$detail['department_id'].'">&raquo; Tutte le prestazioni</a><br>';
+		echo '<a href="'.$this->url(array('controller' => 'department', 'action' => 'details', 'id' => $detail['department_id'])).'">&raquo; Tutte le prestazioni</a><br>';
 		echo '<hr>';
 	}
 	?>
@@ -18,9 +18,9 @@
 				}
 				for ($i = 1; $i < $numberOfPages + 1; $i++) {
 					if ($i == $this->page) {
-						echo '<li class="page-item active"><a class="page-link" href="?page='.$i.'">'.$i.'</a></li>';
+						echo '<li class="page-item active"><a class="page-link" href="'.$this->url(array('controller' => 'department', 'action' => 'index', 'page' => $i)).'">'.$i.'</a></li>';
 					} else {
-						echo '<li class="page-item"><a class="page-link" href="?page='.$i.'">'.$i.'</a></li>';
+						echo '<li class="page-item"><a class="page-link" href="'.$this->url(array('controller' => 'department', 'action' => 'index', 'page' => $i)).'">'.$i.'</a></li>';
 					}
 				}
 			}

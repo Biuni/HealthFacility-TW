@@ -263,7 +263,7 @@ function searchIntoJSON(searchJSON) {
         if (searchJSON[i].service.length > 0) {
             for (j = 0; j < searchJSON[i].service.length; j++) {
                 if (searchJSON[i].service[j].name.toUpperCase().indexOf(filter) > -1) {
-                    var btnService = '<a href="service?id='+searchJSON[i].service[j].service_id+'" class="btn btn-sm btn-info float-right">Vedi dettagli</a>'
+                    var btnService = '<a href="service/index/id/'+searchJSON[i].service[j].service_id+'" class="btn btn-sm btn-info float-right">Vedi dettagli</a>'
                     $('#searchResult').append('<div class="card"><div class="card-body"><em>'+searchJSON[i].service[j].name+'</em>'+btnService+'</div></div>')
                 }
             }
