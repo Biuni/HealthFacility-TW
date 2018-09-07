@@ -124,6 +124,9 @@ body {
   clear: both;
   overflow: hidden;
 }
+.incoming_msg {
+  margin: 26px 0 26px;
+}
 .incoming_msg_img img {
   max-width: 100%;
 }
@@ -216,7 +219,7 @@ body {
 }
 .outgoing_msg {
   overflow: hidden;
-  margin: 26px 0 26px;
+  margin: 13px 0 13px;
 }
 .sent_msg {
   float: right;

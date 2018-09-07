@@ -175,31 +175,34 @@ $(document).ready(function() {
         $('.bookingTables .deleteBooking').on('click', function(){
             var booking_id = $(this).attr('data-booking');
 
-            // ****************************************
-            // ------------- SEND AJAX ----------------
-            // ****************************************
-            $.ajax({
-                type : 'POST',
-                url : urlAjax,
-                data : {
-                    bookingId: booking_id,
-                },
-                dataType : 'JSON',
-                success : function(res){
-                    if (res.result == 1) {
-                        var type = 'success';
-                        $('#row'+booking_id).fadeOut();
-                    } else {
-                        var type = 'danger';
+            var result = confirm('Sicuro di voler annullare la prenotazione?');
+            if (result) {
+                // ****************************************
+                // ------------- SEND AJAX ----------------
+                // ****************************************
+                $.ajax({
+                    type : 'POST',
+                    url : urlAjax,
+                    data : {
+                        bookingId: booking_id,
+                    },
+                    dataType : 'JSON',
+                    success : function(res){
+                        if (res.result == 1) {
+                            var type = 'success';
+                            $('#row'+booking_id).fadeOut();
+                        } else {
+                            var type = 'danger';
+                        }
+                        bootoast({
+                            message: res.message,
+                            type: type,
+                            timeout: 6,
+                            position: 'bottom-right'
+                        });
                     }
-                    bootoast({
-                        message: res.message,
-                        type: type,
-                        timeout: 6,
-                        position: 'bottom-right'
-                    });
-                }
-            });
+                });
+            }
         })
     }
 });
@@ -210,9 +213,69 @@ $(document).ready(function() {
  * -------------------------
  */
 $(document).ready(function() {
+
+    // Moment Europe TIMEZONE
+    moment.tz.add(["Europe/Rome|CET CEST|-10 -20|0101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-2as10 M00 1cM0 1cM0 14o0 1o00 WM0 1qM0 17c0 1cM0 M3A0 5M20 WM0 1fA0 1cM0 16K0 1iO0 16m0 1de0 1lc0 14m0 1lc0 WO0 1qM0 GTW0 On0 1C10 Lz0 1C10 Lz0 1EN0 Lz0 1C10 Lz0 1zd0 Oo0 1C00 On0 1C10 Lz0 1zd0 On0 1C10 LA0 1C00 LA0 1zc0 Oo0 1C00 Oo0 1zc0 Oo0 1fC0 1a00 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|39e5"]);
+
     // Check if chatPage variable is setted
     if (typeof chatPage !== 'undefined') {
-        $(".msg_history").scrollTop($(".msg_history")[0].scrollHeight);
+        // Scroll down the chat
+        $('.msg_history').scrollTop($('.msg_history')[0].scrollHeight);
+
+        // Send a new message
+        $('.msg_send_btn').on('click', function(){
+            var text = $('.write_msg');
+            var message = text.val();
+            var userId = user_id;
+            // ****************************************
+            // ------------- SEND AJAX ----------------
+            // ****************************************
+            if (message != '') {
+                $.ajax({
+                    type : 'POST',
+                    url : urlAjaxSend,
+                    data : {
+                        message: message,
+                        userId: userId
+                    },
+                    dataType : 'JSON',
+                    success : function(res){
+                        if (res.result == 1) {
+                            text.val('');
+                        }
+                    }
+                });
+            }
+        });
+
+        // Refresh the chat
+        setInterval(function(){
+            // ****************************************
+            // ------------- SEND AJAX ----------------
+            // ****************************************
+            $.ajax({
+                type : 'GET',
+                url : urlAjaxGet,
+                data : {
+                    lastData: lastRefresh
+                },
+                dataType : 'JSON',
+                success : function(res){
+                    if (res.messages.length > 0) {
+                        for (var i = 0; i < res.messages.length; i++) {
+                            var timeMsg = moment(res.messages[i].time).format('HH:mm:ss');
+                            if (res.messages[i].user == user_id) {
+                                $('.msg_history').append('<div class="outgoing_msg"><div class="sent_msg"><p>'+res.messages[i].message+'</p><span class="time_date"><strong>'+res.messages[i].name+' '+res.messages[i].surname+'</strong> - '+timeMsg+'</span></div></div>');
+                            } else {
+                                $('.msg_history').append('<div class="incoming_msg"><div class="incoming_msg_img"><img src="'+imgUrl+'/img/chat_doctor.png" alt="doctor"></div><div class="received_msg"><div class="received_withd_msg"><p>'+res.messages[i].message+'</p><span class="time_date"><strong>'+res.messages[i].name+' '+res.messages[i].surname+'</strong> - '+timeMsg+'</span></div></div></div>');
+                            }
+                            $('.msg_history').scrollTop($('.msg_history')[0].scrollHeight);
+                        }
+                    }
+                    lastRefresh = moment(new Date()).tz('Europe/Rome').format('YYYY-MM-DD HH:mm:ss');
+                }
+            });
+        }, timeRefresh);
     }
 });
 

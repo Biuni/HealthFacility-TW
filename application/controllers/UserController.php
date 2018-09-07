@@ -26,33 +26,7 @@ class UserController extends Zend_Controller_Action
         );
     }
 
-    public function chatAction()
-    {
-        $userId = $this->_authService->getIdentity()->user_id;
-        $chat = new Application_Model_Chat();
-        $allMessages = $this->extractResult($chat->get($userId));
-
-        $this->view->assign(
-            'userId',
-            $userId
-        );
-        $this->view->assign(
-            'messages',
-            $allMessages
-        );
-    }
-
-    public function profileAction()
-    {
-        
-    }
-
-    public function logoutAction()
-    {
-        $this->_authService->clear();
-        return $this->_redirect('login');
-    }
-
+    // Delete a reservation
     public function deleteAction()
     {
         $request = $this->getRequest();
@@ -77,6 +51,88 @@ class UserController extends Zend_Controller_Action
         } else {
             return $this->_redirect('user');
         }
+    }
+
+    // Get the chat message from loading page
+    public function chatAction()
+    {
+        $userId = $this->_authService->getIdentity()->user_id;
+        $chat = new Application_Model_Chat();
+        $allMessages = $this->extractResult($chat->get($userId));
+
+        $this->view->assign(
+            'userId',
+            $userId
+        );
+        $this->view->assign(
+            'messages',
+            $allMessages
+        );
+    }
+
+    // Insert new messagge into database
+    public function sendAction()
+    {
+        $request = $this->getRequest();
+        $this->_helper->getHelper('layout')->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
+        $chat = new Application_Model_Chat();
+        $result = 0;
+
+        // --------------------------------
+            $message = $request->getPost('message');
+            $userId = $request->getPost('userId');
+        // --------------------------------
+
+        $params = array(
+            'message' => $message,
+            'user' => $userId,
+            'user_chat_id' => $userId
+        );
+        
+        if ($chat->create($params)) {
+            $result = 1;
+        }
+
+        if ($request->isXmlHttpRequest()) { 
+            $this->getResponse()->setHeader('Content-type','application/json')->setBody('{ "result": '.$result.' }');
+        } else {
+            return $this->_redirect('user');
+        }
+    }
+
+    // Get new messagge to refresh chat
+    public function getAction()
+    {
+        $userId = $this->_authService->getIdentity()->user_id;
+        $request = $this->getRequest();
+        $this->_helper->getHelper('layout')->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
+        $chat = new Application_Model_Chat();
+        $result = 0;
+
+        // --------------------------------
+            $data = $request->getParam('lastData');
+        // --------------------------------
+
+        $newMessages = $this->extractResult($chat->getLastMessage($userId, $data));
+
+        if ($request->isXmlHttpRequest()) {
+            $this->getResponse()->setHeader('Content-type','application/json')->setBody('{ "result": '.$result.', "messages": '.json_encode($newMessages).' }');
+        } else {
+            return $this->_redirect('user');
+        }
+    }
+
+    public function profileAction()
+    {
+        
+    }
+
+    public function logoutAction()
+    {
+        $this->_authService->clear();
+        return $this->_redirect('login');
     }
 
     // -----------------------------------

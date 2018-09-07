@@ -30,6 +30,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $this->_view->InlineScript()->appendFile(APP_URL.'/js/jquery-2.2.4.min.js');
         $this->_view->InlineScript()->appendFile(APP_URL.'/js/popper.min.js');
         $this->_view->InlineScript()->appendFile(APP_URL.'/js/moment.min.js');
+        $this->_view->InlineScript()->appendFile(APP_URL.'/js/moment-timezone.min.js');
         $this->_view->InlineScript()->appendFile(APP_URL.'/js/bootstrap.min.js');
         $this->_view->InlineScript()->appendFile(APP_URL.'/js/bootstrap-datepicker.min.js');
         $this->_view->InlineScript()->appendFile(APP_URL.'/js/main.js');

@@ -27,19 +27,18 @@
 				<div class="msg_history">
 					<?php
 						$exData = null;
-						$row = 0;
 						foreach ($this->messages as $value) {
 							$timestamp = strtotime($value['time']);
 							$day = date('M d', $timestamp);
 							$time = date('H:i:s', $timestamp);
-							if ($exData != $day && $row > 0) {
+							if ($exData != $day) {
 								echo '<hr class="hr-text" data-content="'.$day.'">';
 							}
 							if ($value['user'] == $this->userId) {
 								echo '<div class="outgoing_msg">';
 								echo '<div class="sent_msg">';
 								echo '<p>'.$value['message'].'</p>';
-								echo '<span class="time_date"><strong>'.$value['name'].' '.$value['surname'].'</strong> - '.$time.' | '.$day.'</span></div>';
+								echo '<span class="time_date"><strong>'.$value['name'].' '.$value['surname'].'</strong> - '.$time.'</span></div>';
 								echo '</div>';
 							} else {
 								echo '<div class="incoming_msg">';
@@ -47,12 +46,11 @@
 								echo '<div class="received_msg">';
 								echo '<div class="received_withd_msg">';
 								echo '<p>'.$value['message'].'</p>';
-								echo '<span class="time_date"><strong>'.$value['name'].' '.$value['surname'].'</strong> - '.$time.' | '.$day.'</span></div>';
+								echo '<span class="time_date"><strong>'.$value['name'].' '.$value['surname'].'</strong> - '.$time.'</span></div>';
 								echo '</div>';
 								echo '</div>';
 							}
 							$exData = $day;
-							$row++;
 						}
 					?>
 				</div>
@@ -69,5 +67,16 @@
 </section>
 
 <script>
+	<?php
+		$dateTime = new DateTime();
+		$dateTime->setTimezone(new DateTimeZone('Europe/Rome'));
+		$dateNow = $dateTime->format('Y-m-d H:i:s');
+	?>
 	var chatPage = true;
+	var urlAjaxSend = '<?= $this->url(array('controller' => 'user', 'action' => 'send')); ?>';
+	var urlAjaxGet = '<?= $this->url(array('controller' => 'user', 'action' => 'get')); ?>';
+	var user_id = <?= Zend_Auth::getInstance()->getIdentity()->user_id; ?>;
+	var lastRefresh = '<?= $dateNow; ?>';
+	var timeRefresh = 1500;
+	var imgUrl = '<?=APP_URL?>';
 </script>
