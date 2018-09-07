@@ -13,7 +13,7 @@
 		foreach ($this->service as $detail) {
 			echo '<li class="mb-3">';
 			echo '<u>'.$detail['name'] . '</u><br>';
-			echo '<a href="'.$this->url(array('controller' => 'service', 'action' => 'index', 'id' => $detail['service_id'])).'">&raquo; Vedi i dettagli</a>';
+			echo '<a href="'.$this->url(array('controller' => 'service', 'action' => 'index', 'id' => $detail['service_id'], 'page' => null)).'">&raquo; Vedi i dettagli</a>';
 			echo '</li>';
 		}
 		?>

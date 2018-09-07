@@ -14,10 +14,10 @@ class Application_Model_Booking
 	/**
 	* Fetches all reservation.
 	*/
-	public function get()
+	public function get($param)
 	{
 		// return: The row results of the Zend_Db_Adapter fetch mode.
-		return $this->_dbTable->fetchAll();
+		return $this->_dbTable->fetchAll($param);
 	}
 
 	/**
@@ -55,7 +55,7 @@ class Application_Model_Booking
 	public function delete($id)
 	{
 		// return: The number of rows deleted.
-		return $this->_dbTable->delete($id);
+		return $this->_dbTable->delete(array('booking_id = '.$id.''));
 	}
 
 

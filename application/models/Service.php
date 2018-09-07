@@ -89,12 +89,35 @@ class Application_Model_Service
 		$parsedSchedule = json_decode($schedule)->schedule[$dayId];
 		$bookingHour = date('H:i', $timestamp);
 
-		if ($bookingHour < $parsedSchedule->m_opening) {
+		// If all day is closed
+		if ($parsedSchedule->m_opening == null && $parsedSchedule->a_opening == null) {
 			$result = 0;
-		} else if($bookingHour >= $parsedSchedule->m_closing && $bookingHour < $parsedSchedule->a_opening) {
-			$result = 0;
-		} else if ($bookingHour >= $parsedSchedule->a_closing) {
-			$result = 0;
+		// If not all day is closed
+		// Check if the morning is closed
+		} elseif ($parsedSchedule->m_opening == null) {
+			if($bookingHour < $parsedSchedule->a_opening) {
+				$result = 0;
+			} else if ($bookingHour >= $parsedSchedule->a_closing) {
+				$result = 0;
+			}
+		// If the morning isn't closed
+		// Check if the afternoon is closed
+		} else if($parsedSchedule->a_opening == null) {
+			if($bookingHour < $parsedSchedule->m_opening) {
+				$result = 0;
+			} else if ($bookingHour >= $parsedSchedule->m_closing) {
+				$result = 0;
+			}
+		// If the structure is open morning
+		// and afternoon check all times
+		} else {
+			if ($bookingHour < $parsedSchedule->m_opening) {
+				$result = 0;
+			} else if($bookingHour >= $parsedSchedule->m_closing && $bookingHour < $parsedSchedule->a_opening) {
+				$result = 0;
+			} else if ($bookingHour >= $parsedSchedule->a_closing) {
+				$result = 0;
+			}
 		}
 
 		return $result;

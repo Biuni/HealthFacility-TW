@@ -164,6 +164,58 @@ $(document).ready(function() {
     }
 });
 
+/**
+ * ----------------------------------
+ * - Reserved User Area Page Script -
+ * ----------------------------------
+ */
+$(document).ready(function() {
+    // Check if reservedUserArea variable is setted
+    if (typeof reservedUserArea !== 'undefined') {
+        $('.bookingTables .deleteBooking').on('click', function(){
+            var booking_id = $(this).attr('data-booking');
+
+            // ****************************************
+            // ------------- SEND AJAX ----------------
+            // ****************************************
+            $.ajax({
+                type : 'POST',
+                url : urlAjax,
+                data : {
+                    bookingId: booking_id,
+                },
+                dataType : 'JSON',
+                success : function(res){
+                    if (res.result == 1) {
+                        var type = 'success';
+                        $('#row'+booking_id).fadeOut();
+                    } else {
+                        var type = 'danger';
+                    }
+                    bootoast({
+                        message: res.message,
+                        type: type,
+                        timeout: 6,
+                        position: 'bottom-right'
+                    });
+                }
+            });
+        })
+    }
+});
+
+/**
+ * -------------------------
+ * - Chat User Page Script -
+ * -------------------------
+ */
+$(document).ready(function() {
+    // Check if chatPage variable is setted
+    if (typeof chatPage !== 'undefined') {
+        $(".msg_history").scrollTop($(".msg_history")[0].scrollHeight);
+    }
+});
+
 
 // ***************************************************************
 // ------------------- Helpers Function --------------------------

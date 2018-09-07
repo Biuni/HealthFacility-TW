@@ -1,0 +1,73 @@
+<div class="container">
+	<ul class="list-inline text-right">
+		<li class="list-inline-item">
+			<i class="far fa-calendar-alt"></i> 
+			<a class="text-info font-weight-light" href="<?= $this->url(array('controller' => 'user', 'action' => 'index')); ?>">Prenotazioni</a>
+		</li>
+		<li class="list-inline-item"> - </li>
+		<li class="list-inline-item">
+			<i class="fas fa-user-edit"></i> 
+			<a class="text-info font-weight-light" href="<?= $this->url(array('controller' => 'user', 'action' => 'profile')); ?>">Modifica Profilo</a>
+		</li>
+		<li class="list-inline-item"> - </li>
+		<li class="list-inline-item">
+			<i class="fas fa-comments"></i> 
+			<a class="text-info font-weight-light" href="<?= $this->url(array('controller' => 'user', 'action' => 'chat')); ?>"><u>Assistenza</u></a>
+		</li>
+	</ul>
+</div>
+
+<section class="container">
+	<h2 class="mb-3">Chat</h2>
+	<p class="lead pb-3">Hai bisogno di aiuto? Usa questa chat per parlare con l'assistenza.</p>
+
+	<div class="messaging">
+		<div class="inbox_msg">
+			<div class="mesgs">
+				<div class="msg_history">
+					<?php
+						$exData = null;
+						$row = 0;
+						foreach ($this->messages as $value) {
+							$timestamp = strtotime($value['time']);
+							$day = date('M d', $timestamp);
+							$time = date('H:i:s', $timestamp);
+							if ($exData != $day && $row > 0) {
+								echo '<hr class="hr-text" data-content="'.$day.'">';
+							}
+							if ($value['user'] == $this->userId) {
+								echo '<div class="outgoing_msg">';
+								echo '<div class="sent_msg">';
+								echo '<p>'.$value['message'].'</p>';
+								echo '<span class="time_date"><strong>'.$value['name'].' '.$value['surname'].'</strong> - '.$time.' | '.$day.'</span></div>';
+								echo '</div>';
+							} else {
+								echo '<div class="incoming_msg">';
+								echo '<div class="incoming_msg_img"> <img src="'.APP_URL.'/img/chat_doctor.png" alt="doctor"> </div>';
+								echo '<div class="received_msg">';
+								echo '<div class="received_withd_msg">';
+								echo '<p>'.$value['message'].'</p>';
+								echo '<span class="time_date"><strong>'.$value['name'].' '.$value['surname'].'</strong> - '.$time.' | '.$day.'</span></div>';
+								echo '</div>';
+								echo '</div>';
+							}
+							$exData = $day;
+							$row++;
+						}
+					?>
+				</div>
+				<div class="type_msg mt-3">
+					<div class="input_msg_write">
+						<input type="text" class="write_msg" placeholder="Scrivi un messaggio..." />
+						<button class="msg_send_btn" type="button"><i class="fas fa-paper-plane"></i></button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</section>
+
+<script>
+	var chatPage = true;
+</script>

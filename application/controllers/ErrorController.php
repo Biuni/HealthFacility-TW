@@ -30,7 +30,6 @@ class ErrorController extends Zend_Controller_Action
         }
         // Log exception, if logger available
         if ($log = $this->getLog()) {
-            print_r($priority);
             switch ($priority) {
                 case 5:
                     $log->notice('Page not found => '. $errors->exception->getMessage());

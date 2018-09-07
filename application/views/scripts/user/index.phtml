@@ -1,4 +1,95 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>UserArea</b> and script/action name <b>index</b></p>
+<div class="container">
+	<ul class="list-inline text-right">
+		<li class="list-inline-item">
+			<i class="far fa-calendar-alt"></i> 
+			<a class="text-info font-weight-light" href="<?= $this->url(array('controller' => 'user', 'action' => 'index')); ?>"><u>Prenotazioni</u></a>
+		</li>
+		<li class="list-inline-item"> - </li>
+		<li class="list-inline-item">
+			<i class="fas fa-user-edit"></i> 
+			<a class="text-info font-weight-light" href="<?= $this->url(array('controller' => 'user', 'action' => 'profile')); ?>">Modifica Profilo</a>
+		</li>
+		<li class="list-inline-item"> - </li>
+		<li class="list-inline-item">
+			<i class="fas fa-comments"></i> 
+			<a class="text-info font-weight-light" href="<?= $this->url(array('controller' => 'user', 'action' => 'chat')); ?>">Assistenza</a>
+		</li>
+	</ul>
 </div>
+
+<section class="container bookingTables">
+	<h2 class="mb-3">Gestione Prenotazioni</h2>
+	<p class="lead pb-3">In questa pagina è possibile vedere le prenotazioni effettuate e, nell'eventualità, annullarle.</p>
+
+	<h6 class="text-success">Prossimi appuntamenti</h6>
+	<div class="table-responsive mb-4">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th scope="col">Data</th>
+					<th scope="col">Ora</th>
+					<th scope="col">Servizio</th>
+					<th scope="col">Dipartimento</th>
+					<th scope="col">Medico</th>
+					<th scope="col"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php
+					foreach ($this->reservations as $value) {
+						echo '<tr id="row'.$value['booking_id'].'">';
+						echo '<td>'.date('l, d/m/Y', strtotime($value['date'])).'</td>';
+						echo '<td>'.date('H:i', strtotime($value['date'])).'</td>';
+						echo '<td>'.$value['service'].'</td>';
+						echo '<td>'.$value['department'].'</td>';
+						echo '<td>'.$value['name'].' '.$value['surname'].'</td>';
+						echo '<td><a class="text-dark deleteBooking" data-booking="'.$value['booking_id'].'"><i class="fas fa-trash-alt"></i></a></td>';
+						echo '</tr>';
+					}
+
+					if (empty($this->reservations)) {
+						echo '<tr><td colspan="6" class="table-light text-dark text-center">Nessuna prenotazione prevista!</td></tr>';
+					}
+				?>
+			</tbody>
+		</table>
+	</div>
+
+	<h6 class="text-danger">Appuntamenti passati</h6>
+	<div class="table-responsive pb-4">
+		<table class="table table-dark">
+			<thead>
+				<tr>
+					<th scope="col">Data</th>
+					<th scope="col">Ora</th>
+					<th scope="col">Servizio</th>
+					<th scope="col">Dipartimento</th>
+					<th scope="col">Medico</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php
+					foreach ($this->pastReservations as $value) {
+						echo '<tr class="table-secondary text-dark">';
+						echo '<td>'.date('l, d/m/Y', strtotime($value['date'])).'</td>';
+						echo '<td>'.date('H:i', strtotime($value['date'])).'</td>';
+						echo '<td>'.$value['service'].'</td>';
+						echo '<td>'.$value['department'].'</td>';
+						echo '<td>'.$value['name'].' '.$value['surname'].'</td>';
+						echo '</tr>';
+					}
+
+					if (empty($this->pastReservations)) {
+						echo '<tr><td colspan="5" class="table-light text-dark text-center">Nessun appuntamento effettuato!</td></tr>';
+					}
+				?>
+			</tbody>
+		</table>
+	</div>
+
+</section>
+
+<script>
+	var reservedUserArea = true;
+	var urlAjax = '<?=$this->url(array('controller' => 'user', 'action' => 'delete'))?>';
+</script>
