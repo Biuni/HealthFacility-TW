@@ -70,7 +70,7 @@ class UserController extends Zend_Controller_Action
         );
     }
 
-    // Insert new messagge into database
+    // Insert a new messagge into database
     public function sendAction()
     {
         $request = $this->getRequest();
@@ -101,7 +101,7 @@ class UserController extends Zend_Controller_Action
         }
     }
 
-    // Get new messagge to refresh chat
+    // Get new messagge to refresh chat messages
     public function getAction()
     {
         $userId = $this->_authService->getIdentity()->user_id;
@@ -124,8 +124,69 @@ class UserController extends Zend_Controller_Action
         }
     }
 
+    // Profile page 
     public function profileAction()
     {
+        $userId = $this->_authService->getIdentity()->user_id;
+        $user = new Application_Model_User();
+
+        $this->view->assign(
+            'userData',
+            $this->extractResult($user->find($userId))
+        );
+    }
+
+    // Update the password
+    public function passwordAction()
+    {
+        $userId = $this->_authService->getIdentity()->user_id;
+        $user = new Application_Model_User();
+
+        $oldpassword = $this->getRequest()->getPost('oldpassword', null);
+        $newpassword1 = $this->getRequest()->getPost('newpassword1', null);
+        $newpassword2 = $this->getRequest()->getPost('newpassword2', null);
+
+        if ($oldpassword == null || $oldpassword == '') {
+            return $this->_redirect('user/profile?err=1');
+        } else if($newpassword1 !== $newpassword2) {
+            return $this->_redirect('user/profile?err=2');
+        } else if($user->checkPassword($userId, $oldpassword)) {
+            $newPwd = array(
+                'password' => hash('SHA256', $newpassword1)
+            );
+            if ($user->update($newPwd, $userId)) {
+                return $this->_redirect('user/profile?ok=1');
+            } else {
+                return $this->_redirect('user/profile?err=3');
+            }
+        } else {
+            return $this->_redirect('user/profile?err=4');
+        }
+        
+    }
+
+    // Update the email
+    public function emailAction()
+    {
+        $userId = $this->_authService->getIdentity()->user_id;
+        $user = new Application_Model_User();
+
+        $newMail = $this->getRequest()->getPost('email', null);
+
+        if ($newMail == null || $newMail == '') {
+            return $this->_redirect('user/profile?err=5');
+        } else if (!filter_var($newMail, FILTER_VALIDATE_EMAIL)) {
+            return $this->_redirect('user/profile?err=6');
+        } else {
+            $mail = array(
+                'email' => $newMail
+            );
+            if ($user->update($mail, $userId)) {
+                return $this->_redirect('user/profile?ok=2');
+            } else {
+                return $this->_redirect('user/profile?err=7');
+            }
+        }
         
     }
 

@@ -32,7 +32,7 @@
         <controllerFile controllerName="Search">
           <actionMethod actionName="index"/>
         </controllerFile>
-        <controllerFile controllerName="UserArea">
+        <controllerFile controllerName="User">
           <actionMethod actionName="index"/>
         </controllerFile>
         <controllerFile controllerName="Staff">

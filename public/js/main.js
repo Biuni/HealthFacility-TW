@@ -140,9 +140,9 @@ $(document).ready(function() {
 });
 
 /**
- * ------------------------
- * - Register Page Script -
- * ------------------------
+ * ------------------------------------
+ * - Form Validation | Multiple Pages -
+ * ------------------------------------
  */
 $(document).ready(function() {
     // Check if validationForm variable is setted

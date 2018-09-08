@@ -18,5 +18,133 @@
 </div>
 
 <section class="container">
-	Modifica Profilo
+	<h2 class="mb-3">Modifica Profilo</h2>
+	<p class="lead pb-3">In questa pagina potrai modificare la tua password e la tua email.</p>
+	<?php 
+		$error = isset($_GET['err']) ? $_GET['err'] : '';
+		$ok = isset($_GET['ok']) ? $_GET['ok'] : '';
+	?>
+
+	<div class="row">
+		<div class="col-md-6">
+			<?php if ($error == 1) : ?>
+				<div class="alert alert-danger" role="alert">
+					<strong>ATTENZIONE!</strong> Inserisci la password attuale.
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			<?php elseif ($error == 2) : ?>
+				<div class="alert alert-danger" role="alert">
+					<strong>ATTENZIONE!</strong> Le nuove password non sono uguali.
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			<?php elseif ($error == 3) : ?>
+				<div class="alert alert-danger" role="alert">
+					<strong>ATTENZIONE!</strong> Errore nella modifica. Riprovare!
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			<?php elseif ($error == 4) : ?>
+				<div class="alert alert-danger" role="alert">
+					<strong>ATTENZIONE!</strong> La password attuale è errata.
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			<?php endif; ?>
+			<?php if ($ok == 1) : ?>
+				<div class="alert alert-success" role="alert">
+					<strong>Password aggiornata!</strong> La utilizzerai dal prossimo login.
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			<?php endif; ?>
+			
+			<h6 class="text-success">Modifica Password</h6>
+			<form class="need-validation" method="POST" action="<?= $this->url(array('controller' => 'user', 'action' => 'password')); ?>" novalidate>
+				<div class="form-group">
+					<input type="password" class="form-control" id="inputPassword1" name="oldpassword" placeholder="Password attuale" required>
+				</div>
+				<div class="form-group">
+					<input type="password" class="form-control" id="inputPassword2" name="newpassword1" placeholder="Nuova password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{8,}$" required>
+					<div class="invalid-feedback">
+						Per favore inserisci una password valida.
+					</div>
+				</div>
+				<div class="form-group">
+					<input type="password" class="form-control" id="inputPassword3" name="newpassword2" placeholder="Ripeti nuova password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{8,}$" required>
+					<div class="invalid-feedback">
+						Per favore inserisci una password valida.
+					</div>
+				</div>
+				<small id="passwordHelp" class="form-text text-muted pb-3 text-center">La password deve contenere almeno una lettera minuscola, una maiuscola ed un numero. Minimo 8 caratteri.</small>
+				<button type="submit" class="btn btn-primary mb-2">Aggiorna</button>
+			</form>
+		</div>
+
+		<div class="col-md-6">
+			<?php if ($error == 5) : ?>
+				<div class="alert alert-danger" role="alert">
+					<strong>ATTENZIONE!</strong> Inserisci la mail.
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			<?php elseif ($error == 6) : ?>
+				<div class="alert alert-danger" role="alert">
+					<strong>ATTENZIONE!</strong> Inserisci una mail valida.
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			<?php elseif ($error == 7) : ?>
+				<div class="alert alert-danger" role="alert">
+					<strong>ATTENZIONE!</strong> Errore nella modifica. Riprovare!
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			<?php endif; ?>
+			<?php if ($ok == 2) : ?>
+				<div class="alert alert-success" role="alert">
+					<strong>Email aggiornata!</strong>
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			<?php endif; ?>
+			<h6 class="text-success">Modifica Email</h6>
+			<form method="POST" action="<?= $this->url(array('controller' => 'user', 'action' => 'email')); ?>">
+				<div class="form-group">
+					<input type="email" class="form-control" id="inputEmail" name="email" placeholder="Nuova Email">
+				</div>
+				<button type="submit" class="btn btn-primary mb-2">Aggiorna</button>
+			</form>
+		</div>
+	</div>
+	<div class="row mt-3 pb-3">
+		<div class="col-md-12">
+			<div class="card userCard">
+				<?php 
+					foreach ($this->userData as $value) {
+						echo '<div class="card-header">'.$value['name'].' '.$value['surname'].'</div>';
+						echo '<ul class="list-group list-group-flush">';
+						echo '<li class="list-group-item"><strong>username:</strong> '.$value['username'].'</li>';
+						echo '<li class="list-group-item"><strong>codice fiscale:</strong> '.$value['code'].'</li>';
+						echo '<li class="list-group-item"><strong>email:</strong> '.$value['email'].'</li>';
+						echo '</ul>';
+					}
+				?>
+			</div>
+		</div>
+	</div>
 </section>
+
+<script>
+	var validationForm = true;
+</script>

@@ -90,5 +90,24 @@ class Application_Model_User
 		// return: The row results of the Zend_Db_Adapter fetch mode.
         return $this->_dbTable->fetchAll($select);
 	}
+
+	/**
+	* Verify password
+	*/
+	public function checkPassword($user_id, $password)
+	{
+		$result = 0;
+		$select = $this->_dbTable->select()
+								 ->from('user', array('password'))
+								 ->where('password = "'.hash('SHA256', $password).'"')
+								 ->where('user_id = '.$user_id);
+		// return: The row results of the Zend_Db_Adapter fetch mode.
+        $row = $this->_dbTable->fetchAll($select);
+        foreach ($row->toArray() as $key => $value) {
+        	$result = 1;
+        }
+
+        return $result;
+	}
 }
 

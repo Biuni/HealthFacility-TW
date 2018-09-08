@@ -14,7 +14,7 @@ body {
   bottom: 0;
   width: 100%;
   height: 60px;
-  line-height: 60px;
+  line-height: 59px;
   background-color: #f5f5f5;
 }
 .accordion .card-header h5>button {
@@ -55,6 +55,14 @@ body {
 }
 .department-pagination {
   justify-content: center;
+}
+.userCard {
+  max-width: 320px;
+  margin: 0 auto;
+}
+.userCard strong {
+  text-transform: uppercase;
+  font-size: 12px;
 }
 
 /**
@@ -286,4 +294,11 @@ body {
   line-height: 1.5em;
   color: #818078;
   background-color: #ffffff;
+}
+
+@media only screen and (max-width: 500px) {
+  .received_withd_msg,
+  .sent_msg {
+      width: 100%;
+  }
 }
