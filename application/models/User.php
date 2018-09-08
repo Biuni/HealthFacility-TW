@@ -18,8 +18,8 @@ class Application_Model_User
 	public function get()
 	{
 		$select = $this->_dbTable->select()
-								 ->from('user', array('username', 'role', 'name', 'surname', 'code'))
-								 ->where("role = user");
+								 ->from('user', array('user_id', 'username', 'role', 'name', 'surname', 'code'))
+								 ->where("role = 'user'");
 		// return: The row results of the Zend_Db_Adapter fetch mode.
         return $this->_dbTable->fetchAll($select);
 	}

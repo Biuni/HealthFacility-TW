@@ -227,6 +227,12 @@ $(document).ready(function() {
             var text = $('.write_msg');
             var message = text.val();
             var userId = user_id;
+
+            if (typeof userChatId !== 'undefined') {
+                var sendData = { message: message, userId: userId, userChatId: userChatId };
+            } else {
+                var sendData = { message: message, userId: userId };
+            }
             // ****************************************
             // ------------- SEND AJAX ----------------
             // ****************************************
@@ -234,10 +240,7 @@ $(document).ready(function() {
                 $.ajax({
                     type : 'POST',
                     url : urlAjaxSend,
-                    data : {
-                        message: message,
-                        userId: userId
-                    },
+                    data : sendData,
                     dataType : 'JSON',
                     success : function(res){
                         if (res.result == 1) {
@@ -250,15 +253,20 @@ $(document).ready(function() {
 
         // Refresh the chat
         setInterval(function(){
+            if (typeof userChatId !== 'undefined') {
+                var sendData = { lastData: lastRefresh, userChatId: userChatId };
+                var image = 'chat_user';
+            } else {
+                var sendData = { lastData: lastRefresh };
+                var image = 'chat_doctor';
+            }
             // ****************************************
             // ------------- SEND AJAX ----------------
             // ****************************************
             $.ajax({
                 type : 'GET',
                 url : urlAjaxGet,
-                data : {
-                    lastData: lastRefresh
-                },
+                data : sendData,
                 dataType : 'JSON',
                 success : function(res){
                     if (res.messages.length > 0) {
@@ -267,7 +275,7 @@ $(document).ready(function() {
                             if (res.messages[i].user == user_id) {
                                 $('.msg_history').append('<div class="outgoing_msg"><div class="sent_msg"><p>'+res.messages[i].message+'</p><span class="time_date"><strong>'+res.messages[i].name+' '+res.messages[i].surname+'</strong> - '+timeMsg+'</span></div></div>');
                             } else {
-                                $('.msg_history').append('<div class="incoming_msg"><div class="incoming_msg_img"><img src="'+imgUrl+'/img/chat_doctor.png" alt="doctor"></div><div class="received_msg"><div class="received_withd_msg"><p>'+res.messages[i].message+'</p><span class="time_date"><strong>'+res.messages[i].name+' '+res.messages[i].surname+'</strong> - '+timeMsg+'</span></div></div></div>');
+                                $('.msg_history').append('<div class="incoming_msg"><div class="incoming_msg_img"><img src="'+imgUrl+'/img/'+image+'.png" alt="doctor"></div><div class="received_msg"><div class="received_withd_msg"><p>'+res.messages[i].message+'</p><span class="time_date"><strong>'+res.messages[i].name+' '+res.messages[i].surname+'</strong> - '+timeMsg+'</span></div></div></div>');
                             }
                             $('.msg_history').scrollTop($('.msg_history')[0].scrollHeight);
                         }
