@@ -1,0 +1,100 @@
+<div class="container pb-4">
+	<h2 class="mb-3">Gestione Servizi</h2>
+	<p class="lead pb-3">In questa pagina è possibile vedere tutte le prestazioni offerte con la possibilitò di modificarli, inserirne nuovi e/o cancellarli.</p>
+
+	<div class="text-center">
+		<a href="<?= $this->url(array('controller' => 'admin', 'action' => 'insertservice')); ?>" class="btn btn-outline-success"><i class="fas fa-plus-circle"></i> Inserisci nuovo</a>
+	</div>
+	
+	<div class="table-responsive mt-2">
+		<table id="dataTable" class="table table-striped table-bordered">
+	        <thead>
+	            <tr>
+	                <th>Servizio</th>
+	                <th>Dipartimento</th>
+	                <th>Descrizione</th>
+	                <th>Dottore</th>
+	                <th>Prescrizioni</th>
+	                <th>Orario</th>
+	                <th>Azioni</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	        	<?php
+	        		foreach ($this->allService as $value) {
+	        			$desc = strlen($value['description']) > 100 ? substr($value['description'], 0, 100).'...' : $value['description'];
+	        			echo '<tr>';
+	        			echo '<td>'.$value['name'].'</td>';
+	        			echo '<td>'.$value['department'].'</td>';
+	        			echo '<td>'.$desc.'</td>';
+	        			echo '<td>'.$value['staff_name'].' '.$value['surname'].'</td>';
+	        			echo '<td>'.$value['prescriptions'].'</td>';
+	        			echo '<td class="text-center text-white"><a class="btn btn-info btn-sm openScheduleModal" data-schedule=\''.$value['schedule'].'\'>Vedi</a></td>';
+						echo '<td class="text-center">';
+							echo '<a class="text-dark deleteAction" data-toggle="tooltip" data-placement="top" title="Cancella" data-booking="'.$value['service_id'].'"><i class="fas fa-trash-alt"></i></a>';
+							echo '&nbsp;&nbsp;&nbsp;';
+							echo '<a class="text-dark updateAction" data-toggle="tooltip" data-placement="top" title="Modifica" data-booking="'.$value['service_id'].'" data-toggle="modal" data-target="#updateModal"><i class="fas fa-edit"></i></a>';
+						echo '</td>';
+	        			echo '</tr>';
+	        		}
+	        	?>
+	        </tbody>
+	    </table>
+	</div>
+</div>
+
+
+<!-- Update Modal -->
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateModalLabel">Modifica Record</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      	...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+        <button type="button" class="btn btn-primary" id="sendUpdateBook">Modifica</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Hours Modal -->
+<div class="modal fade" id="hoursModal" tabindex="-1" role="dialog" aria-labelledby="hoursModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="hoursModalLabel">Orario Servizio</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+			<section class="schedule">
+				<div class="table-responsive">
+					<table class="table">
+						<thead class="thead-dark">
+							<tr>
+								<th scope="col">Giorno</th>
+								<th scope="col">Orario Mattina</th>
+								<th scope="col">Orario Pomeriggio</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
+			</section>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+	var dataTableInit = true;
+</script>

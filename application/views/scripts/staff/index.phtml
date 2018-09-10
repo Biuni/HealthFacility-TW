@@ -1,4 +1,56 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Staff</b> and script/action name <b>index</b></p>
+<div class="container">
+	<?php
+		$italianDays = array('Domenica','Lunedì','Martedì','Mercoledì','Giovedì','Venerdì','Sabato');
+		$italianMonths = array('Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre');
+		$toItalian = strtotime(date('Y-m-d H:i:s'));
+		$italianDay = $italianDays[date('w',$toItalian)];
+		$italianMonth = $italianMonths[date('n',$toItalian)-1];
+
+		foreach ($this->details as $value) {
+			echo '<p class="text-right">'.$italianDay.', '.date('d').' '.$italianMonth.' '.date('Y').' ~ <em>Dott. <strong>'.$value['name'].' '.$value['surname'].'</strong></em></p>';
+		}
+	?>
+
+	<div class="row my-3">
+		<div class="col-md-6 col-lg-3 col-xlg-3 my-2">
+			<div class="card card-inverse card-warning">
+				<div class="box bg-secondary text-center py-4">
+					<h1 class="font-light text-white"><?= $this->day; ?></h1>
+					<h6 class="font-light text-white">Appuntamenti<br><u>oggi</u></h6>
+				</div>
+			</div>
+		</div>
+	
+		<div class="col-md-6 col-lg-3 col-xlg-3 my-2">
+			<div class="card card-inverse card-info">
+				<div class="box bg-info text-center py-4">
+					<h1 class="font-light text-white"><?= $this->week; ?></h1>
+					<h6 class="font-light text-white">Appuntamenti<br><u>della settimana</u></h6>
+				</div>
+			</div>
+		</div>
+		
+		<div class="col-md-6 col-lg-3 col-xlg-3 my-2">
+			<div class="card card-inverse card-success">
+				<div class="box bg-primary text-center py-4">
+					<h1 class="font-light text-white"><?= $this->month; ?></h1>
+					<h6 class="font-light text-white">Appuntamenti<br><u>del mese</u></h6>
+				</div>
+			</div>
+		</div>
+		
+		<div class="col-md-6 col-lg-3 col-xlg-3 my-2">
+			<div class="card card-primary card-inverse">
+				<div class="box bg-success text-center py-4">
+					<h1 class="font-light text-white"><?= $this->year; ?></h1>
+					<h6 class="font-light text-white">Appuntamenti<br><u>dell'anno</u></h6>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="text-center">
+		<small class="text-muted d-block">Le cifre si riferiscono a tutti gli appuntamenti: sia quelli sostenuti, sia quelli da sostenere.</small>
+		<a class="btn btn-outline-dark my-3" href="<?= $this->url(array('controller'=>'staff', 'action'=>'agenda')); ?>"><i class="fas fa-calendar-check"></i> Vedi l'agenda</a>
+	</div>
 </div>

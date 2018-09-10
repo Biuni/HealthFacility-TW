@@ -18,8 +18,8 @@ class Application_Model_Staff
 	public function get()
 	{
 		$select = $this->_dbTable->select()
-								 ->from('user', array('username', 'role', 'name', 'surname', 'code'))
-								 ->where("role = staff");
+								 ->from('user', array('user_id', 'username', 'name', 'surname', 'code', 'email', 'role'))
+								 ->where("role = 'staff'");
 		// return: The row results of the Zend_Db_Adapter fetch mode.
         return $this->_dbTable->fetchAll($select);
 	}
@@ -60,6 +60,45 @@ class Application_Model_Staff
 	{
 		// return: The number of rows deleted.
 		return $this->_dbTable->delete($id);
+	}
+
+	// -----------------------------
+	// Custom method for this model
+	// -----------------------------
+
+	/**
+	* Get the number of appointments
+	*/
+	public function getAppointments($staff_id)
+	{
+
+		$select = $this->_dbTable->select()
+				->from(array('b' => 'booking'), array('b.date', 'b.service'))
+				->joinInner(array('s' => 'service'), 'b.service = s.service_id', array('s.staff', 's.service_id'))
+				->where('s.staff = ?', $staff_id)
+				->setIntegrityCheck(false);
+
+		// return: The row results of the Zend_Db_Adapter fetch mode.
+        return $this->_dbTable->fetchAll($select);
+	}
+
+	/**
+	* Get the appointments of the day
+	*/
+	public function getAppointmentsToday($staff_id, $data)
+	{
+
+		$select = $this->_dbTable->select()
+				->from(array('b' => 'booking'), array('b.date', 'b.booking_id'))
+				->joinInner(array('s' => 'service'), 'b.service = s.service_id', array('s.name', 's.service_id'))
+				->joinInner(array('u' => 'user'), 'b.user = u.user_id', array('patient_name' => 'u.name', 'patient_surname' => 'u.surname', 'u.user_id'))
+				->where('s.staff = ?', $staff_id)
+				->where('b.date >= ?', $data.' 00:00')
+				->where('b.date <= ?', $data.' 23:59')
+				->setIntegrityCheck(false);
+
+		// return: The row results of the Zend_Db_Adapter fetch mode.
+        return $this->_dbTable->fetchAll($select);
 	}
 }
 

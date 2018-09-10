@@ -1,0 +1,77 @@
+<div class="container">
+	<h2 class="mb-3">Agenda</h2>
+	<p class="lead pb-3">Seleziona un giorno dal calendario per vedere quali sono gli appuntamenti in programma.</p>
+	<div class="row">
+		<div class="col-md-4" style="overflow:hidden;">
+			<div id="datetimepicker"></div>
+		</div>
+		<div class="col-md-8">
+			<h6 class="text-center text-muted">Appuntamenti del <strong class="dateChoosed"><?= $this->dateToday; ?></strong></h6>
+			<div class="table-responsive my-4 pl-3">
+				<table class="appointmentsTable table table-striped">
+					<thead>
+						<tr>
+							<th scope="col">Ora</th>
+							<th scope="col">Servizio</th>
+							<th scope="col">Paziente</th>
+							<th scope="col">Azioni</th>
+						</tr>
+					</thead>
+					<tbody>
+					<?php
+						foreach ($this->appointmentsToday as $value) {
+							echo '<tr id="row'.$value['booking_id'].'">';
+							echo '<td>'.date('H:i', strtotime($value['date'])).'</td>';
+							echo '<td>'.$value['name'].'</td>';
+							echo '<td>'.$value['patient_name'].' '.$value['patient_surname'].'</td>';
+							echo '<td style="width: 100px; text-align: center;">';
+								echo '<a class="text-dark deleteBooking" data-toggle="tooltip" data-placement="top" title="Cancella prenotazione" data-booking="'.$value['booking_id'].'"><i class="fas fa-trash-alt"></i></a>';
+								echo '&nbsp;&nbsp;';
+								echo '<a class="text-dark updateBooking" data-toggle="tooltip" data-placement="top" title="Modifica prenotazione" data-booking="'.$value['booking_id'].'" data-toggle="modal" data-target="#updateModal"><i class="fas fa-edit"></i></a>';
+								echo '&nbsp;&nbsp;';
+								echo '<a class="text-dark" data-toggle="tooltip" data-placement="top" title="Apri chat" href="'.$this->url(array('controller' => 'staff', 'action' => 'chat', 'id' => $value['user_id'])).'">';
+								echo '<i class="fas fa-comment"></i></a>';
+							echo '</td>';
+							echo '</tr>';
+						}
+
+						if (empty($this->appointmentsToday)) {
+							echo '<tr><td colspan="4" class="table-light text-dark text-center">Nessun appuntamento previsto!</td></tr>';
+						}
+					?>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateModalLabel">Modifica prenotazione</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      	<div id="calendarModify"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+        <button type="button" class="btn btn-primary" id="sendUpdateBook">Modifica</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+	var staffAgenda = true;
+	var ajaxUrlAgenda = '<?= $this->url(array('controller' => 'staff', 'action' => 'readagenda')); ?>';
+	var chatLink = '<?= $this->url(array('controller' => 'staff', 'action' => 'chat')); ?>';
+	var ajaxUrlDelete = '<?= $this->url(array('controller' => 'staff', 'action' => 'deletebook')); ?>';
+	var ajaxUrlUpdate = '<?= $this->url(array('controller' => 'staff', 'action' => 'updatebook')); ?>';
+	var appointmentsToday = <?= json_encode($this->appointmentsToday); ?>;
+</script>

@@ -286,6 +286,230 @@ $(document).ready(function() {
         }, timeRefresh);
     }
 });
+/**
+ * ----------------------------
+ * - Staff Agenda Page Script -
+ * ----------------------------
+ */
+$(document).ready(function() {
+    // Check if schedule and service variables are setted
+    if (typeof staffAgenda !== 'undefined') {
+
+        $('[data-toggle="tooltip"]').tooltip();
+
+        var d = new Date();
+        var dateToday = new Date(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours() + 1);
+
+        // Agenda calendar
+        var picker = $('#datetimepicker');
+        picker.datetimepicker({
+            minDate: dateToday,
+            locale: 'it',
+            inline: true,
+            stepping: 60,
+            format: 'DD/MM/YYYY',
+            icons: {
+                time: 'far fa-clock',
+                date: 'far fa-calendar-alt',
+                up: 'fas fa-arrow-up',
+                down: 'fas fa-arrow-down',
+                next: 'fas fa-caret-right',
+                previous: 'fas fa-caret-left'
+            }
+        });
+        picker.on('dp.change', function(val) {
+            var newDate = val.date._d;
+            $('.dateChoosed').html(moment(newDate).format('YYYY-MM-DD'));
+            $.ajax({
+                type : 'GET',
+                url : ajaxUrlAgenda,
+                data : {
+                    data: moment(newDate).format('YYYY-MM-DD')
+                },
+                dataType : 'JSON',
+                success : function(res){
+                    $('.appointmentsTable tbody').find('tr').remove();
+                    if (res.result == 1) {
+                        for (var i = 0; i < res.message.length; i++) {
+                            var columns = '<td>'+moment(res.message[i].date).format('H:mm')+'</td>';
+                            columns += '<td>'+res.message[i].name+'</td>';
+                            columns += '<td>'+res.message[i].patient_name+' '+res.message[i].patient_surname+'</td>';
+                            columns += '<td style="width: 100px; text-align: center;">';
+                            columns += '<a class="text-dark deleteBooking" data-toggle="tooltip" data-placement="top" title="Cancella prenotazione" data-booking="'+res.message[i].booking_id+'"><i class="fas fa-trash-alt"></i></a>';
+                            columns += '&nbsp;&nbsp;';
+                            columns += '<a class="text-dark updateBooking" data-toggle="tooltip" data-placement="top" title="Modifica prenotazione" data-booking="'+res.message[i].booking_id+'" data-toggle="modal" data-target="#updateModal"><i class="fas fa-edit"></i></a>';
+                            columns += '&nbsp;&nbsp;';
+                            columns += '<a class="text-dark" data-toggle="tooltip" data-placement="top" title="Apri chat" href="'+chatLink+'/id/'+res.message[i].user_id+'"><i class="fas fa-comment"></i></a>';
+                            columns += '</td>';
+                            $('.appointmentsTable tbody').append('<tr id="row'+res.message[i].booking_id+'">'+columns+'</tr>');
+                            $('[data-toggle="tooltip"]').tooltip();
+                            $('.deleteBooking').on('click', function(){
+                                var booking_id = $(this).attr('data-booking');
+                                var result = confirm('Sicuro di voler cancellare la prenotazione?');
+                                if (result) { deleteElement(booking_id); }
+                            });
+                            $('.updateBooking').on('click', function(){
+                                $('#updateModal').modal();
+                                var booking_id = $(this).attr('data-booking');
+                                updateElement(booking_id);
+                            });
+                        }
+                        appointmentsToday = res.message;
+                    } else {
+                        $('.appointmentsTable tbody').append('<tr><td colspan="4" class="table-light text-dark text-center">Nessun appuntamento previsto!</td></tr>');
+                    }
+                }
+            });
+        });
+        $('.updateBooking').on('click', function(){
+            $('#updateModal').modal();
+            var booking_id = $(this).attr('data-booking');
+            updateElement(booking_id);
+        });
+        $('.deleteBooking').on('click', function(){
+            var booking_id = $(this).attr('data-booking');
+            var result = confirm('Sicuro di voler cancellare la prenotazione?');
+            if (result) { deleteElement(booking_id); }
+        });
+
+        function deleteElement(booking_id) {
+            // ****************************************
+            // ------------- SEND AJAX ----------------
+            // ****************************************
+            $.ajax({
+                type : 'POST',
+                url : ajaxUrlDelete,
+                data : {
+                    bookingId: booking_id,
+                },
+                dataType : 'JSON',
+                success : function(res){
+                    if (res.result == 1) {
+                        var type = 'success';
+                        $('#row'+booking_id).fadeOut();
+                    } else {
+                        var type = 'danger';
+                    }
+                    bootoast({
+                        message: res.message,
+                        type: type,
+                        timeout: 6,
+                        position: 'bottom-right'
+                    });
+                }
+            });
+        }
+
+        // Function to update booking
+        function updateElement(booking_id) {
+            var i;
+            var service_id;
+            var bookingId;
+            var choosedDate;
+            var d = new Date();
+            var dateToday = new Date(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours() + 1);
+
+            for (i = 0; i < appointmentsToday.length; i++) {
+                if(appointmentsToday[i].booking_id == booking_id) {
+
+                    service_id = appointmentsToday[i].service_id;
+                    bookingId = appointmentsToday[i].booking_id;
+
+                    var picker2 = $('#calendarModify');
+                    picker2.datetimepicker({
+                        defaultDate: moment(appointmentsToday[i].date).format('YYYY-MM-DD H'),
+                        minDate: dateToday,
+                        locale: 'it',
+                        inline: true,
+                        stepping: 60,
+                        format: 'dd/MM/YYYY H',
+                        icons: {
+                            time: 'far fa-clock',
+                            date: 'far fa-calendar-alt',
+                            up: 'fas fa-arrow-up',
+                            down: 'fas fa-arrow-down',
+                            next: 'fas fa-caret-right',
+                            previous: 'fas fa-caret-left'
+                        },
+                        sideBySide: true
+                    });
+                    picker2.on('dp.change', function(val) {
+                        choosedDate = val.date._d;
+                    });
+                    $('#sendUpdateBook').click(function() {
+                        var booking_date = moment(choosedDate).format('YYYY-MM-DD H:00');
+                        // ****************************************
+                        // ------------- SEND AJAX ----------------
+                        // ****************************************
+                        $.ajax({
+                            type : 'POST',
+                            url : ajaxUrlUpdate,
+                            data : {
+                                bookingId: bookingId,
+                                seriviceId: service_id,
+                                date: booking_date
+                            },
+                            dataType : 'JSON',
+                            success : function(res){
+                                if (res.result == 1) {
+                                    var type = 'success';
+                                } else {
+                                    var type = 'danger';
+                                }
+                                bootoast({
+                                    message: res.message,
+                                    type: type,
+                                    timeout: 6,
+                                    position: 'bottom-right'
+                                });
+                            }
+                        });
+                    });
+
+                }
+            }
+        }
+    }
+});
+
+/**
+ * -----------------------------------
+ * - Admin DataTables Initialization -
+ * -----------------------------------
+ */
+$(document).ready(function() {
+    // Check if dataTableInit variable is setted
+    if (typeof dataTableInit !== 'undefined') {
+        // View the dataTable
+        $('#dataTable').DataTable({
+            responsive: true,
+            order: []
+        });
+        // Open Update modal
+        $('.updateAction').on('click', function(){
+            $('#updateModal').modal();
+        });
+        $('[data-toggle="tooltip"]').tooltip();
+
+        // Open the schedule
+        $('.openScheduleModal').on('click', function(){
+            $('.schedule .table tbody').find('tr').remove();
+            var dataSchedule = $(this).attr('data-schedule');
+            var schedule = JSON.parse(dataSchedule).schedule;
+
+            for (var i = 0; i < schedule.length; i++) {
+                var day = schedule[i].day;
+                var morOpening = (schedule[i].m_opening !== null) ? '<i class="fas fa-door-open"></i> ' + schedule[i].m_opening : '<i class="fas fa-door-closed"></i> chiuso';
+                var morClosing = (schedule[i].m_closing !== null) ? ' - ' + schedule[i].m_closing : '';
+                var aftOpening = (schedule[i].a_opening !== null) ? '<i class="fas fa-door-open"></i> ' + schedule[i].a_opening : '<i class="fas fa-door-closed"></i> chiuso';
+                var aftClosing = (schedule[i].a_closing !== null) ? ' - ' + schedule[i].a_closing : '';
+                $('.schedule .table tbody').append('<tr><td><em>' + day + '</em></td><td>' + morOpening + morClosing + '</td><td>' + aftOpening + aftClosing + '</td></tr>')
+            }
+
+            $('#hoursModal').modal();
+        });
+    }
+});
 
 
 // ***************************************************************

@@ -1,0 +1,63 @@
+<div class="container pb-4">
+	<h2 class="mb-3">Gestione Dipartimenti</h2>
+	<p class="lead pb-3">In questa pagina è possibile vedere tutti i dipartimenti con la possibilitò di modificarli, inserirne nuovi e/o cancellarli.</p>
+
+	<div class="text-center">
+		<a href="<?= $this->url(array('controller' => 'admin', 'action' => 'insertdepartment')); ?>" class="btn btn-outline-success"><i class="fas fa-plus-circle"></i> Inserisci nuovo</a>
+	</div>
+	
+	<div class="table-responsive mt-2">
+		<table id="dataTable" class="table table-striped table-bordered">
+	        <thead>
+	            <tr>
+	                <th>Nome</th>
+	                <th>Descrizione</th>
+	                <th>Luogo</th>
+	                <th>Azioni</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	        	<?php
+	        		foreach ($this->allDepartment as $value) {
+	        			echo '<tr>';
+	        			echo '<td>'.$value['name'].'</td>';
+	        			echo '<td>'.$value['description'].'</td>';
+	        			echo '<td>'.$value['place'].'</td>';
+						echo '<td class="text-center">';
+							echo '<a class="text-dark deleteAction" data-toggle="tooltip" data-placement="top" title="Cancella" data-booking="'.$value['department_id'].'"><i class="fas fa-trash-alt"></i></a>';
+							echo '&nbsp;&nbsp;&nbsp;';
+							echo '<a class="text-dark updateAction" data-toggle="tooltip" data-placement="top" title="Modifica" data-booking="'.$value['department_id'].'" data-toggle="modal" data-target="#updateModal"><i class="fas fa-edit"></i></a>';
+						echo '</td>';
+	        			echo '</tr>';
+	        		}
+	        	?>
+	        </tbody>
+	    </table>
+	</div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateModalLabel">Modifica Record</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      	...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+        <button type="button" class="btn btn-primary" id="sendUpdateBook">Modifica</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+	var dataTableInit = true;
+</script>

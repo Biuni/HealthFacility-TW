@@ -83,6 +83,7 @@ class Application_Model_Booking
 
 		return $result;
 	}
+
 	/**
 	* Booking a new service
 	*/
@@ -102,6 +103,21 @@ class Application_Model_Booking
 		}
 
 		return $result;
+	}
+
+	/**
+	* Booking a new service
+	*/
+	public function getAllReservations()
+	{
+		$select = $this->_dbTable->select()
+				->from(array('b' => 'booking'), array('b.date', 'b.booking_id'))
+				->joinInner(array('s' => 'service'), 's.service_id = b.service', array('service' => 's.name'))
+				->joinInner(array('u' => 'user'), 'b.user = u.user_id', array('u.name','u.surname'))
+				->setIntegrityCheck(false);
+
+		// return: The row results of the Zend_Db_Adapter fetch mode.
+        return $this->_dbTable->fetchAll($select);
 	}
 
 }

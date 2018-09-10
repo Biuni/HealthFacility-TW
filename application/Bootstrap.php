@@ -25,6 +25,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $this->_view->headLink()->appendStylesheet(APP_URL.'/css/fontawesome.min.css');
         $this->_view->headLink()->appendStylesheet(APP_URL.'/css/bootstrap.min.css');
         $this->_view->headLink()->appendStylesheet(APP_URL.'/css/bootstrap-datepicker.min.css');
+        $this->_view->headLink()->appendStylesheet(APP_URL.'/css/dataTables.bootstrap4.min.css');
         $this->_view->headLink()->appendStylesheet(APP_URL.'/css/style.css');
 
         $this->_view->InlineScript()->appendFile(APP_URL.'/js/jquery-2.2.4.min.js');
@@ -33,6 +34,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $this->_view->InlineScript()->appendFile(APP_URL.'/js/moment-timezone.min.js');
         $this->_view->InlineScript()->appendFile(APP_URL.'/js/bootstrap.min.js');
         $this->_view->InlineScript()->appendFile(APP_URL.'/js/bootstrap-datepicker.min.js');
+        $this->_view->InlineScript()->appendFile(APP_URL.'/js/jquery.dataTables.min.js');
         $this->_view->InlineScript()->appendFile(APP_URL.'/js/main.js');
     }
 

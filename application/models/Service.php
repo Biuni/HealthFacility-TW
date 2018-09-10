@@ -122,6 +122,20 @@ class Application_Model_Service
 
 		return $result;
 	}
+	/**
+	* Get all services informations
+	*/
+	public function getServiceInfo()
+	{
+		$select = $this->_dbTable->select()
+				->from(array('s' => 'service'), array('s.name', 's.description', 's.prescriptions', 's.schedule', 's.service_id'))
+				->joinInner(array('d' => 'department'), 's.department = d.department_id', array('department' => 'd.name'))
+				->joinInner(array('u' => 'user'), 's.staff = u.user_id', array('staff_name' => 'u.name','u.surname'))
+				->setIntegrityCheck(false);
+
+		// return: The row results of the Zend_Db_Adapter fetch mode.
+        return $this->_dbTable->fetchAll($select);
+	}
 
 
 }

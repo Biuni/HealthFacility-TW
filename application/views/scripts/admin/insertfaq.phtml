@@ -1,0 +1,38 @@
+<div class="container">
+	<p class="lead pb-3">Inserisci una nuova FAQ.</p>
+
+	<?php
+		$ok = isset($_GET['ok']) ? $_GET['ok'] : '';
+	?>
+	<?php if ($ok == 1) : ?>
+		<div class="alert alert-success" role="alert">
+			<strong>FAQ inserita correttamente!</strong> Ora visibile alla pagina <a href="<?=$this->url(array('controller' => 'faq', 'action' => 'index'));?>">FAQ</a>.
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+	<?php endif; ?>
+
+	<form class="need-validation mb-3" action="<?php echo $this->url(array('controller' => 'admin','action' => 'insertfaq')); ?>" method="POST" novalidate>
+		<div class="form-group">
+			<label for="InputQuestion">Domanda</label>
+			<input type="text" class="form-control" name="question" id="InputQuestion" placeholder="Inserisci una domanda" required>
+		    <div class="invalid-feedback">
+		    	Per favore inserisci una domanda.
+		    </div>
+		</div>
+		<div class="form-group">
+			<label for="InputAnswer">Risposta</label>
+			<textarea class="form-control" id="InputAnswer" rows="3" name="answer" placeholder="Inserisci una risposta" required></textarea>
+		    <div class="invalid-feedback">
+		    	Per favore inserisci una risposta.
+		    </div>
+		</div>
+
+		<button type="submit" class="btn btn-primary">Inserisci</button>
+	</form>
+</div>
+
+<script>
+	var validationForm = true;
+</script>
