@@ -19,14 +19,14 @@
 	        <tbody>
 	        	<?php
 	        		foreach ($this->allDepartment as $value) {
-	        			echo '<tr>';
+	        			echo '<tr id="row'.$value['department_id'].'">';
 	        			echo '<td>'.$value['name'].'</td>';
 	        			echo '<td>'.$value['description'].'</td>';
 	        			echo '<td>'.$value['place'].'</td>';
 						echo '<td class="text-center">';
-							echo '<a class="text-dark deleteAction" data-toggle="tooltip" data-placement="top" title="Cancella" data-booking="'.$value['department_id'].'"><i class="fas fa-trash-alt"></i></a>';
+							echo '<a class="text-dark deleteAction" data-toggle="tooltip" data-placement="top" title="Cancella" data-primary="'.$value['department_id'].'"><i class="fas fa-trash-alt"></i></a>';
 							echo '&nbsp;&nbsp;&nbsp;';
-							echo '<a class="text-dark updateAction" data-toggle="tooltip" data-placement="top" title="Modifica" data-booking="'.$value['department_id'].'" data-toggle="modal" data-target="#updateModal"><i class="fas fa-edit"></i></a>';
+							echo '<a class="text-dark updateAction" data-toggle="tooltip" data-placement="top" title="Modifica" data-primary="'.$value['department_id'].'" data-toggle="modal" data-target="#updateModal"><i class="fas fa-edit"></i></a>';
 						echo '</td>';
 	        			echo '</tr>';
 	        		}
@@ -48,7 +48,22 @@
         </button>
       </div>
       <div class="modal-body">
-      	...
+		<form>
+			<div class="form-group">
+				<label>Dipartimento</label>
+      			<input type="text" name="name" class="form-control modalInput-name">
+			</div>
+			<div class="form-group">
+				<label>Descrizione</label>
+				<textarea class="form-control modalInput-description" name="description" rows="4"></textarea>
+			</div>
+			<div class="form-group">
+				<label>Luogo</label>
+      			<input type="text" name="place" class="form-control modalInput-place">
+			</div>
+      		<input type="hidden" name="typeOfRecord" value="department">
+      		<input type="hidden" name="primariKey" class="modalInput-key">
+		</form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
@@ -60,4 +75,9 @@
 
 <script>
 	var dataTableInit = true;
+
+	var typeOfRecord = 'department';
+	var ajaxUrlDel   = '<?= $this->url(array('controller' => 'admin', 'action' => 'deleterecord')); ?>';
+	var ajaxUrlGet   = '<?= $this->url(array('controller' => 'admin', 'action' => 'getrecord')); ?>';
+	var ajaxUrlUpd 	 = '<?= $this->url(array('controller' => 'admin', 'action' => 'updaterecord')); ?>';
 </script>

@@ -1,0 +1,436 @@
+<div class="container pb-3">
+	<p class="lead pb-3">Inserisci un nuovo servizio.</p>
+
+	<?php
+		$ok = isset($_GET['ok']) ? $_GET['ok'] : '';
+	?>
+	<?php if ($ok == 1) : ?>
+		<div class="alert alert-success" role="alert">
+			<strong>Servizio inserito correttamente!</strong>
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+	<?php endif; ?>
+
+	<form class="need-validation mb-3" action="<?php echo $this->url(array('controller' => 'admin','action' => 'insertservice')); ?>" method="POST" novalidate>
+		<div class="form-group">
+			<label for="InputService">Nome Servizio</label>
+			<input type="text" class="form-control" name="name" id="InputService" placeholder="Inserisci il nome del servizio" required>
+		    <div class="invalid-feedback">
+		    	Per favore inserisci il nome del servizio.
+		    </div>
+		</div>
+		<div class="form-group">
+			<label for="InputDepartment">Dipartimento</label>
+			<select class="form-control" name="department">
+				<?php
+					foreach ($this->allDepartment as $value) {
+						echo '<option value="'.$value['department_id'].'">'.$value['name'].'</option>';
+					}
+				?>
+			</select>
+		</div>
+		<div class="form-group">
+			<label for="InputDescription">Descrizione</label>
+			<textarea class="form-control" id="InputDescription" rows="3" name="description" placeholder="Inserisci una descrizione" required></textarea>
+		    <div class="invalid-feedback">
+		    	Per favore inserisci la descrizione del servizio.
+		    </div>
+		</div>
+		<div class="form-group">
+			<label for="InputDepartment">Dottore</label>
+			<select class="form-control" name="staff">
+				<?php
+					foreach ($this->allStaff as $value) {
+						echo '<option value="'.$value['user_id'].'">'.$value['name'].' '.$value['surname'].'</option>';
+					}
+				?>
+			</select>
+		</div>
+		<div class="form-group">
+			<label for="InputHours">Orari di apertura e chiusura</label><br>
+
+			<div class="row mb-4">
+				<div class="col-md-6">
+					<!-- ////////////// LUNEDI ////////////// -->
+					<h6 class="text-center">Lunedì</h6>
+					<small class="d-block text-center position-relative pt-2 matPom"><mark>&nbsp;mattina&nbsp;</mark></small>
+					<div class="row">
+						<div class="col-sm-1"></div>
+						<div class="col-sm-5">
+							<label class="text-left"><em>Apertura</em></label>
+							<select class="form-control" name="m_opening-1">
+							    <option value="">Chiuso</option>
+							    <?php
+							    	for ($i = 0; $i < 24; $i++) { 
+							    		echo '<option value="'.$i.':00">'.$i.':00</option>';
+							    	}
+							    ?>
+							</select>
+						</div>
+						<div class="col-sm-5">
+							<label class="d-block text-right"><em>Chiusura</em></label>
+							<select class="form-control" name="m_closing-1">
+							    <option value="">Chiuso</option>
+							    <?php for ($i = 0; $i < 24; $i++) { echo '<option value="'.$i.':00">'.$i.':00</option>'; } ?>
+							</select>
+						</div>
+						<div class="col-sm-1"></div>
+					</div>
+					<small class="d-block text-center position-relative pt-2 matPom"><mark>&nbsp;pomeriggio&nbsp;</mark></small>
+					<div class="row">
+						<div class="col-sm-1"></div>
+						<div class="col-sm-5">
+							<label class="text-left"><em>Apertura</em></label>
+							<select class="form-control" name="a_opening-1">
+							    <option value="">Chiuso</option>
+							    <?php
+							    	for ($i = 0; $i < 24; $i++) { 
+							    		echo '<option value="'.$i.':00">'.$i.':00</option>';
+							    	}
+							    ?>
+							</select>
+						</div>
+						<div class="col-sm-5">
+							<label class="d-block text-right"><em>Chiusura</em></label>
+							<select class="form-control" name="a_closing-1">
+							    <option value="">Chiuso</option>
+							    <?php for ($i = 0; $i < 24; $i++) { echo '<option value="'.$i.':00">'.$i.':00</option>'; } ?>
+							</select>
+						</div>
+						<div class="col-sm-1"></div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<!-- ////////////// MARTEDI ////////////// -->
+					<h6 class="text-center">Martedì</h6>
+					<small class="d-block text-center position-relative pt-2 matPom"><mark>&nbsp;mattina&nbsp;</mark></small>
+					<div class="row">
+						<div class="col-sm-1"></div>
+						<div class="col-sm-5">
+							<label class="text-left"><em>Apertura</em></label>
+							<select class="form-control" name="m_opening-2">
+							    <option value="">Chiuso</option>
+							    <?php
+							    	for ($i = 0; $i < 24; $i++) { 
+							    		echo '<option value="'.$i.':00">'.$i.':00</option>';
+							    	}
+							    ?>
+							</select>
+						</div>
+						<div class="col-sm-5">
+							<label class="d-block text-right"><em>Chiusura</em></label>
+							<select class="form-control" name="m_closing-2">
+							    <option value="">Chiuso</option>
+							    <?php for ($i = 0; $i < 24; $i++) { echo '<option value="'.$i.':00">'.$i.':00</option>'; } ?>
+							</select>
+						</div>
+						<div class="col-sm-1"></div>
+					</div>
+					<small class="d-block text-center position-relative pt-2 matPom"><mark>&nbsp;pomeriggio&nbsp;</mark></small>
+					<div class="row">
+						<div class="col-sm-1"></div>
+						<div class="col-sm-5">
+							<label class="text-left"><em>Apertura</em></label>
+							<select class="form-control" name="a_opening-2">
+							    <option value="">Chiuso</option>
+							    <?php
+							    	for ($i = 0; $i < 24; $i++) { 
+							    		echo '<option value="'.$i.':00">'.$i.':00</option>';
+							    	}
+							    ?>
+							</select>
+						</div>
+						<div class="col-sm-5">
+							<label class="d-block text-right"><em>Chiusura</em></label>
+							<select class="form-control" name="a_closing-2">
+							    <option value="">Chiuso</option>
+							    <?php for ($i = 0; $i < 24; $i++) { echo '<option value="'.$i.':00">'.$i.':00</option>'; } ?>
+							</select>
+						</div>
+						<div class="col-sm-1"></div>
+					</div>
+				</div>
+			</div><!-- /row - LUN MAR -->
+
+			<hr>
+
+			<div class="row mt-3">
+				<div class="col-md-6">
+					<!-- ////////////// MERCOLEDI ////////////// -->
+					<h6 class="text-center">Mercoledì</h6>
+					<small class="d-block text-center position-relative pt-2 matPom"><mark>&nbsp;mattina&nbsp;</mark></small>
+					<div class="row">
+						<div class="col-sm-1"></div>
+						<div class="col-sm-5">
+							<label class="text-left"><em>Apertura</em></label>
+							<select class="form-control" name="m_opening-3">
+							    <option value="">Chiuso</option>
+							    <?php
+							    	for ($i = 0; $i < 24; $i++) { 
+							    		echo '<option value="'.$i.':00">'.$i.':00</option>';
+							    	}
+							    ?>
+							</select>
+						</div>
+						<div class="col-sm-5">
+							<label class="d-block text-right"><em>Chiusura</em></label>
+							<select class="form-control" name="m_closing-3">
+							    <option value="">Chiuso</option>
+							    <?php for ($i = 0; $i < 24; $i++) { echo '<option value="'.$i.':00">'.$i.':00</option>'; } ?>
+							</select>
+						</div>
+						<div class="col-sm-1"></div>
+					</div>
+					<small class="d-block text-center position-relative pt-2 matPom"><mark>&nbsp;pomeriggio&nbsp;</mark></small>
+					<div class="row">
+						<div class="col-sm-1"></div>
+						<div class="col-sm-5">
+							<label class="text-left"><em>Apertura</em></label>
+							<select class="form-control" name="a_opening-3">
+							    <option value="">Chiuso</option>
+							    <?php
+							    	for ($i = 0; $i < 24; $i++) { 
+							    		echo '<option value="'.$i.':00">'.$i.':00</option>';
+							    	}
+							    ?>
+							</select>
+						</div>
+						<div class="col-sm-5">
+							<label class="d-block text-right"><em>Chiusura</em></label>
+							<select class="form-control" name="a_closing-3">
+							    <option value="">Chiuso</option>
+							    <?php for ($i = 0; $i < 24; $i++) { echo '<option value="'.$i.':00">'.$i.':00</option>'; } ?>
+							</select>
+						</div>
+						<div class="col-sm-1"></div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<!-- ////////////// GIOVEDI ////////////// -->
+					<h6 class="text-center">Giovedì</h6>
+					<small class="d-block text-center position-relative pt-2 matPom"><mark>&nbsp;mattina&nbsp;</mark></small>
+					<div class="row">
+						<div class="col-sm-1"></div>
+						<div class="col-sm-5">
+							<label class="text-left"><em>Apertura</em></label>
+							<select class="form-control" name="m_opening-4">
+							    <option value="">Chiuso</option>
+							    <?php
+							    	for ($i = 0; $i < 24; $i++) { 
+							    		echo '<option value="'.$i.':00">'.$i.':00</option>';
+							    	}
+							    ?>
+							</select>
+						</div>
+						<div class="col-sm-5">
+							<label class="d-block text-right"><em>Chiusura</em></label>
+							<select class="form-control" name="m_closing-4">
+							    <option value="">Chiuso</option>
+							    <?php for ($i = 0; $i < 24; $i++) { echo '<option value="'.$i.':00">'.$i.':00</option>'; } ?>
+							</select>
+						</div>
+						<div class="col-sm-1"></div>
+					</div>
+					<small class="d-block text-center position-relative pt-2 matPom"><mark>&nbsp;pomeriggio&nbsp;</mark></small>
+					<div class="row">
+						<div class="col-sm-1"></div>
+						<div class="col-sm-5">
+							<label class="text-left"><em>Apertura</em></label>
+							<select class="form-control" name="a_opening-4">
+							    <option value="">Chiuso</option>
+							    <?php
+							    	for ($i = 0; $i < 24; $i++) { 
+							    		echo '<option value="'.$i.':00">'.$i.':00</option>';
+							    	}
+							    ?>
+							</select>
+						</div>
+						<div class="col-sm-5">
+							<label class="d-block text-right"><em>Chiusura</em></label>
+							<select class="form-control" name="a_closing-4">
+							    <option value="">Chiuso</option>
+							    <?php for ($i = 0; $i < 24; $i++) { echo '<option value="'.$i.':00">'.$i.':00</option>'; } ?>
+							</select>
+						</div>
+						<div class="col-sm-1"></div>
+					</div>
+				</div>
+			</div><!-- /row - MER GIO -->
+
+			<hr>
+
+			<div class="row mt-3">
+				<div class="col-md-6">
+					<!-- ////////////// VENERDI ////////////// -->
+					<h6 class="text-center">Venerdì</h6>
+					<small class="d-block text-center position-relative pt-2 matPom"><mark>&nbsp;mattina&nbsp;</mark></small>
+					<div class="row">
+						<div class="col-sm-1"></div>
+						<div class="col-sm-5">
+							<label class="text-left"><em>Apertura</em></label>
+							<select class="form-control" name="m_opening-5">
+							    <option value="">Chiuso</option>
+							    <?php
+							    	for ($i = 0; $i < 24; $i++) { 
+							    		echo '<option value="'.$i.':00">'.$i.':00</option>';
+							    	}
+							    ?>
+							</select>
+						</div>
+						<div class="col-sm-5">
+							<label class="d-block text-right"><em>Chiusura</em></label>
+							<select class="form-control" name="m_closing-5">
+							    <option value="">Chiuso</option>
+							    <?php for ($i = 0; $i < 24; $i++) { echo '<option value="'.$i.':00">'.$i.':00</option>'; } ?>
+							</select>
+						</div>
+						<div class="col-sm-1"></div>
+					</div>
+					<small class="d-block text-center position-relative pt-2 matPom"><mark>&nbsp;pomeriggio&nbsp;</mark></small>
+					<div class="row">
+						<div class="col-sm-1"></div>
+						<div class="col-sm-5">
+							<label class="text-left"><em>Apertura</em></label>
+							<select class="form-control" name="a_opening-5">
+							    <option value="">Chiuso</option>
+							    <?php
+							    	for ($i = 0; $i < 24; $i++) { 
+							    		echo '<option value="'.$i.':00">'.$i.':00</option>';
+							    	}
+							    ?>
+							</select>
+						</div>
+						<div class="col-sm-5">
+							<label class="d-block text-right"><em>Chiusura</em></label>
+							<select class="form-control" name="a_closing-5">
+							    <option value="">Chiuso</option>
+							    <?php for ($i = 0; $i < 24; $i++) { echo '<option value="'.$i.':00">'.$i.':00</option>'; } ?>
+							</select>
+						</div>
+						<div class="col-sm-1"></div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<!-- ////////////// SABATO ////////////// -->
+					<h6 class="text-center">Sabato</h6>
+					<small class="d-block text-center position-relative pt-2 matPom"><mark>&nbsp;mattina&nbsp;</mark></small>
+					<div class="row">
+						<div class="col-sm-1"></div>
+						<div class="col-sm-5">
+							<label class="text-left"><em>Apertura</em></label>
+							<select class="form-control" name="m_opening-6">
+							    <option value="">Chiuso</option>
+							    <?php
+							    	for ($i = 0; $i < 24; $i++) { 
+							    		echo '<option value="'.$i.':00">'.$i.':00</option>';
+							    	}
+							    ?>
+							</select>
+						</div>
+						<div class="col-sm-5">
+							<label class="d-block text-right"><em>Chiusura</em></label>
+							<select class="form-control" name="m_closing-6">
+							    <option value="">Chiuso</option>
+							    <?php for ($i = 0; $i < 24; $i++) { echo '<option value="'.$i.':00">'.$i.':00</option>'; } ?>
+							</select>
+						</div>
+						<div class="col-sm-1"></div>
+					</div>
+					<small class="d-block text-center position-relative pt-2 matPom"><mark>&nbsp;pomeriggio&nbsp;</mark></small>
+					<div class="row">
+						<div class="col-sm-1"></div>
+						<div class="col-sm-5">
+							<label class="text-left"><em>Apertura</em></label>
+							<select class="form-control" name="a_opening-6">
+							    <option value="">Chiuso</option>
+							    <?php
+							    	for ($i = 0; $i < 24; $i++) { 
+							    		echo '<option value="'.$i.':00">'.$i.':00</option>';
+							    	}
+							    ?>
+							</select>
+						</div>
+						<div class="col-sm-5">
+							<label class="d-block text-right"><em>Chiusura</em></label>
+							<select class="form-control" name="a_closing-6">
+							    <option value="">Chiuso</option>
+							    <?php for ($i = 0; $i < 24; $i++) { echo '<option value="'.$i.':00">'.$i.':00</option>'; } ?>
+							</select>
+						</div>
+						<div class="col-sm-1"></div>
+					</div>
+				</div>
+			</div><!-- /row - VEN SAB -->
+
+			<hr>
+
+			<div class="row mt-3">
+				<div class="col-md-3"></div>
+				<div class="col-md-6">
+					<!-- ////////////// DOMENICA ////////////// -->
+					<h6 class="text-center">Domenica</h6>
+					<small class="d-block text-center position-relative pt-2 matPom"><mark>&nbsp;mattina&nbsp;</mark></small>
+					<div class="row">
+						<div class="col-sm-1"></div>
+						<div class="col-sm-5">
+							<label class="text-left"><em>Apertura</em></label>
+							<select class="form-control" name="m_opening-0">
+							    <option value="">Chiuso</option>
+							    <?php
+							    	for ($i = 0; $i < 24; $i++) { 
+							    		echo '<option value="'.$i.':00">'.$i.':00</option>';
+							    	}
+							    ?>
+							</select>
+						</div>
+						<div class="col-sm-5">
+							<label class="d-block text-right"><em>Chiusura</em></label>
+							<select class="form-control" name="m_closing-0">
+							    <option value="">Chiuso</option>
+							    <?php for ($i = 0; $i < 24; $i++) { echo '<option value="'.$i.':00">'.$i.':00</option>'; } ?>
+							</select>
+						</div>
+						<div class="col-sm-1"></div>
+					</div>
+					<small class="d-block text-center position-relative pt-2 matPom"><mark>&nbsp;pomeriggio&nbsp;</mark></small>
+					<div class="row">
+						<div class="col-sm-1"></div>
+						<div class="col-sm-5">
+							<label class="text-left"><em>Apertura</em></label>
+							<select class="form-control" name="a_opening-0">
+							    <option value="">Chiuso</option>
+							    <?php
+							    	for ($i = 0; $i < 24; $i++) { 
+							    		echo '<option value="'.$i.':00">'.$i.':00</option>';
+							    	}
+							    ?>
+							</select>
+						</div>
+						<div class="col-sm-5">
+							<label class="d-block text-right"><em>Chiusura</em></label>
+							<select class="form-control" name="a_closing-0">
+							    <option value="">Chiuso</option>
+							    <?php for ($i = 0; $i < 24; $i++) { echo '<option value="'.$i.':00">'.$i.':00</option>'; } ?>
+							</select>
+						</div>
+						<div class="col-sm-1"></div>
+					</div>
+				</div>
+				<div class="col-md-3"></div>
+			</div><!-- /row - DOM -->
+
+		</div><!-- /form-group -->
+		<div class="form-group">
+			<label for="InputPlace">Prescrizione</label>
+			<input type="text" class="form-control" name="prescriptions" id="InputPlace" placeholder="Inserisci eventuali prescrizioni">
+		</div>
+
+		<button type="submit" class="btn btn-primary">Inserisci</button>
+	</form>
+</div>
+
+<script>
+	var validationForm = true;
+</script>

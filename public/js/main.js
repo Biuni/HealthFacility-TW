@@ -480,14 +480,66 @@ $(document).ready(function() {
 $(document).ready(function() {
     // Check if dataTableInit variable is setted
     if (typeof dataTableInit !== 'undefined') {
-        // View the dataTable
-        $('#dataTable').DataTable({
-            responsive: true,
-            order: []
-        });
         // Open Update modal
         $('.updateAction').on('click', function(){
             $('#updateModal').modal();
+            var primaryKey = $(this).attr('data-primary');
+            var type = typeOfRecord;
+            
+            $('.modalInput-key').val(primaryKey);
+            // ****************************************
+            // ------------- SEND AJAX ----------------
+            // ****************************************
+            $.ajax({
+                type : 'POST',
+                url : ajaxUrlGet,
+                data : {
+                    type: type,
+                    id: primaryKey
+                },
+                dataType : 'JSON',
+                success : function(res){
+                    if (res.result == 1) {
+                        if (res.record == 'faq') {
+                            $('.modalInput-question').val(res.message[0].question);
+                            $('.modalInput-answer').val(res.message[0].answer);
+                        } else if(res.record == 'service') {
+                            $('.modalInput-name').val(res.message[0].name);
+                            $('.modalInput-description').val(res.message[0].description);
+                            $('.modalInput-prescriptions').val(res.message[0].prescriptions);
+                            $('.modalInput-department').find('option').remove().end();
+                            $('.modalInput-doctor').find('option').remove().end();
+                            for (var i = 0; i < res.message.department_list.length; i++) {
+                                var selected = (res.message.department_list[i].department_id == res.message[0].department) ? 'selected' : '';
+                                $('.modalInput-department').append('<option value="'+res.message.department_list[i].department_id+'" '+selected+'>'+res.message.department_list[i].name+'</option>');
+                            }
+                            for (var a = 0; a < res.message.staff_list.length; a++) {
+                                var selected = (res.message.staff_list[a].user_id == res.message[0].staff) ? 'selected' : '';
+                                $('.modalInput-doctor').append('<option value="'+res.message.staff_list[a].user_id+'" '+selected+'>'+res.message.staff_list[a].name+' '+res.message.staff_list[a].surname+'</option>');
+                            }
+                        } else if(res.record == 'booking') {
+                            $('.modalInput-user').val(res.message[0].user);
+                            $('.modalInput-service').val(res.message[0].service);
+                        } else if(res.record == 'department') {
+                            $('.modalInput-place').val(res.message[0].place);
+                            $('.modalInput-name').val(res.message[0].name);
+                            $('.modalInput-description').val(res.message[0].description);
+                        } else if(res.record == 'staff') {
+                            $('.modalInput-username').val(res.message[0].username);
+                            $('.modalInput-name').val(res.message[0].name);
+                            $('.modalInput-surname').val(res.message[0].surname);
+                            $('.modalInput-code').val(res.message[0].code);
+                            $('.modalInput-email').val(res.message[0].email);
+                        } else if(res.record == 'user') {
+                            $('.modalInput-username').val(res.message[0].username);
+                            $('.modalInput-name').val(res.message[0].name);
+                            $('.modalInput-surname').val(res.message[0].surname);
+                            $('.modalInput-code').val(res.message[0].code);
+                            $('.modalInput-email').val(res.message[0].email);
+                        }
+                    }
+                }
+            });
         });
         $('[data-toggle="tooltip"]').tooltip();
 
@@ -508,9 +560,244 @@ $(document).ready(function() {
 
             $('#hoursModal').modal();
         });
+
+        // View the dataTable
+        $('#dataTable').DataTable({
+            responsive: true,
+            order: []
+        });
     }
 });
 
+/**
+ * -----------------------
+ * - Admin Inser Booking -
+ * -----------------------
+ */
+$(document).ready(function() {
+    // Check if dataTableInit variable is setted
+    if (typeof adminInsertBooking !== 'undefined') {
+        // Booking calendar
+        var picker = $('#datetimepicker');
+        var d = new Date();
+        var dateToday = new Date(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours() + 1);
+        var choosedDate = dateToday;
+        var userId;
+        var serviceId;
+        picker.datetimepicker({
+            minDate: dateToday,
+            locale: 'it',
+            inline: true,
+            stepping: 60,
+            format: 'dd/MM/YYYY H',
+            icons: {
+                time: 'far fa-clock',
+                date: 'far fa-calendar-alt',
+                up: 'fas fa-arrow-up',
+                down: 'fas fa-arrow-down',
+                next: 'fas fa-caret-right',
+                previous: 'fas fa-caret-left'
+            },
+            sideBySide: true
+        });
+        picker.on('dp.change', function(val) {
+            choosedDate = val.date._d;
+            userId = $('#InputUser').val();
+            serviceId = $('#InputService').val();
+
+            $('#InputDate').val(moment(choosedDate).format('YYYY-MM-DD H:00'));
+
+            if (userId != '' && serviceId != '') {
+                // ****************************************
+                // ------------- SEND AJAX ----------------
+                // ****************************************
+                $.ajax({
+                    type : 'POST',
+                    url : urlAjaxBookingCheck,
+                    data : {
+                        userId: userId,
+                        seriviceId: serviceId,
+                        date: moment(choosedDate).format('YYYY-MM-DD H:00')
+                    },
+                    dataType : 'JSON',
+                    success : function(res){
+                        if (res.result == 1) {
+                            var type = 'success';
+                        } else {
+                            var type = 'danger';
+                        }
+                        bootoast({
+                            message: res.message,
+                            type: type,
+                            timeout: 6,
+                            position: 'bottom-right'
+                        });
+                    }
+                });
+            } else {
+                bootoast({
+                    message: 'Prima di scegliere la data devi selezionare un\'utente ed un servizio!',
+                    type: 'warning',
+                    timeout: 6,
+                    position: 'bottom-right'
+                });
+            }
+        });
+    }
+});
+
+/**
+ * -----------------------
+ * - Admin Delete Record -
+ * -----------------------
+ */
+$(document).ready(function() {
+    // Check if typeOfRecord variable is setted
+    if (typeof typeOfRecord !== 'undefined') {
+        $('.deleteAction').on('click', function(){
+            var primaryKey = $(this).attr('data-primary');
+            var type = typeOfRecord;
+
+            var result = confirm('Sicuro di voler eliminare il record dalla tabella?');
+            if (result) {
+                // ****************************************
+                // ------------- SEND AJAX ----------------
+                // ****************************************
+                $.ajax({
+                    type : 'POST',
+                    url : ajaxUrlDel,
+                    data : {
+                        type: type,
+                        id: primaryKey
+                    },
+                    dataType : 'JSON',
+                    success : function(res){
+                        if (res.result == 1) {
+                            var type = 'success';
+                            $('#row'+primaryKey).fadeOut();
+                        } else {
+                            var type = 'danger';
+                        }
+                        bootoast({
+                            message: res.message,
+                            type: type,
+                            timeout: 6,
+                            position: 'bottom-right'
+                        });
+                    }
+                });
+            }
+        });
+    }
+});
+
+/**
+ * -----------------------
+ * - Admin Update Record -
+ * -----------------------
+ */
+$(document).ready(function() {
+    // Check if typeOfRecord variable is setted
+    if (typeof typeOfRecord !== 'undefined') {
+        $('#sendUpdateBook').on('click', function(){
+            var formData = JSON.parse(JSON.stringify($('#updateModal form').serializeArray()));
+            var data, type, updatedId;
+
+            for (var i = 0; i < formData.length; i++) {
+                if (formData[i].name == 'typeOfRecord' &&  formData[i].value == 'faq') {
+                    // Update FAQ
+                    type = 'faq';
+                    updatedId = formData[3].value;
+                    data = {
+                        question:   formData[0].value,
+                        answer:     formData[1].value
+                    }
+                } else if(formData[i].name == 'typeOfRecord' &&  formData[i].value == 'booking') {
+                    // Update BOOKING
+                    type = 'booking';
+                    updatedId = formData[7].value;
+                    data = {
+                        user:         formData[4].value,
+                        service:      formData[5].value,
+                        date:         formData[2].value+'-'+formData[0].value+'-'+formData[1].value+' '+formData[3].value
+                    }
+                } else if(formData[i].name == 'typeOfRecord' &&  formData[i].value == 'service') {
+                    // Update SERVICE
+                    type = 'service';
+                    updatedId = formData[34].value;
+                    data = {
+                        name:          formData[0].value,
+                        description:   formData[2].value,
+                        department:    formData[1].value,
+                        staff:         formData[3].value,
+                        prescriptions: formData[32].value
+                    }
+                } else if(formData[i].name == 'typeOfRecord' &&  formData[i].value == 'department') {
+                    // Update DEPARTMENT
+                    type = 'department';
+                    updatedId = formData[4].value;
+                    data = {
+                        name:           formData[0].value,
+                        description:    formData[1].value,
+                        place:          formData[2].value
+                    }
+                } else if(formData[i].name == 'typeOfRecord' &&  formData[i].value == 'staff') {
+                    // Update STAFF
+                    type = 'staff';
+                    updatedId = formData[6].value;
+                    data = {
+                        username: formData[0].value,
+                        name:     formData[1].value,
+                        surname:  formData[2].value,
+                        code:     formData[3].value,
+                        email:    formData[4].value
+                    }
+                } else if(formData[i].name == 'typeOfRecord' &&  formData[i].value == 'user') {
+                    // Update USER
+                    type = 'user';
+                    updatedId = formData[6].value;
+                    data = {
+                        username: formData[0].value,
+                        name:     formData[1].value,
+                        surname:  formData[2].value,
+                        code:     formData[3].value,
+                        email:    formData[4].value
+                    }
+                }
+            }
+
+            if (formData) {
+                // ****************************************
+                // ------------- SEND AJAX ----------------
+                // ****************************************
+                $.ajax({
+                    type : 'POST',
+                    url : ajaxUrlUpd,
+                    data : {
+                        jsonData: data,
+                        type: type,
+                        id: updatedId
+                    },
+                    dataType : 'JSON',
+                    success : function(res){
+                        if (res.result == 1) {
+                            var type = 'success';
+                            $('#updateModal').modal('toggle');
+                        } else {
+                            var type = 'danger';
+                        }
+                        bootoast({
+                            message: res.message,
+                            type: type,
+                            timeout: 6,
+                            position: 'bottom-right'
+                        });
+                    }
+                });
+            }
+        });
+    }
+});
 
 // ***************************************************************
 // ------------------- Helpers Function --------------------------

@@ -56,7 +56,7 @@ class Application_Model_Service
 	public function delete($id)
 	{
 		// return: The number of rows deleted.
-		return $this->_dbTable->delete($id);
+		return $this->_dbTable->delete("$this->_primaryKey = $id");
 	}
 
 

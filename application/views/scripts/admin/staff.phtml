@@ -21,16 +21,16 @@
 	        <tbody>
 	        	<?php
 	        		foreach ($this->allStaff as $value) {
-	        			echo '<tr>';
+	        			echo '<tr id="row'.$value['user_id'].'">';
 	        			echo '<td>'.$value['username'].'</td>';
 	        			echo '<td>'.$value['name'].'</td>';
 	        			echo '<td>'.$value['surname'].'</td>';
 	        			echo '<td>'.$value['code'].'</td>';
 	        			echo '<td>'.$value['email'].'</td>';
 						echo '<td class="text-center">';
-							echo '<a class="text-dark deleteAction" data-toggle="tooltip" data-placement="top" title="Cancella" data-booking="'.$value['user_id'].'"><i class="fas fa-trash-alt"></i></a>';
+							echo '<a class="text-dark deleteAction" data-toggle="tooltip" data-placement="top" title="Cancella" data-primary="'.$value['user_id'].'"><i class="fas fa-trash-alt"></i></a>';
 							echo '&nbsp;&nbsp;&nbsp;';
-							echo '<a class="text-dark updateAction" data-toggle="tooltip" data-placement="top" title="Modifica" data-booking="'.$value['user_id'].'" data-toggle="modal" data-target="#updateModal"><i class="fas fa-edit"></i></a>';
+							echo '<a class="text-dark updateAction" data-toggle="tooltip" data-placement="top" title="Modifica" data-primary="'.$value['user_id'].'" data-toggle="modal" data-target="#updateModal"><i class="fas fa-edit"></i></a>';
 						echo '</td>';
 	        			echo '</tr>';
 	        		}
@@ -52,7 +52,30 @@
         </button>
       </div>
       <div class="modal-body">
-      	...
+		<form>
+			<div class="form-group">
+				<label>Username</label>
+      			<input type="text" name="username" class="form-control modalInput-username">
+			</div>
+			<div class="form-group">
+				<label>Nome</label>
+      			<input type="text" name="name" class="form-control modalInput-name">
+			</div>
+			<div class="form-group">
+				<label>Cognome</label>
+      			<input type="text" name="surname" class="form-control modalInput-surname">
+			</div>
+			<div class="form-group">
+				<label>Codice Fiscale</label>
+      			<input type="text" name="code" class="form-control modalInput-code">
+			</div>
+			<div class="form-group">
+				<label>Email</label>
+      			<input type="text" name="email" class="form-control modalInput-email">
+			</div>
+      		<input type="hidden" name="typeOfRecord" value="staff">
+      		<input type="hidden" name="primariKey" class="modalInput-key">
+		</form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
@@ -64,4 +87,9 @@
 
 <script>
 	var dataTableInit = true;
+
+	var typeOfRecord = 'staff';
+	var ajaxUrlDel   = '<?= $this->url(array('controller' => 'admin', 'action' => 'deleterecord')); ?>';
+	var ajaxUrlGet   = '<?= $this->url(array('controller' => 'admin', 'action' => 'getrecord')); ?>';
+	var ajaxUrlUpd 	 = '<?= $this->url(array('controller' => 'admin', 'action' => 'updaterecord')); ?>';
 </script>

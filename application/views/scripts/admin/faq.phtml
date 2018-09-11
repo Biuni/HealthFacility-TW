@@ -18,13 +18,13 @@
 	        <tbody>
 	        	<?php
 	        		foreach ($this->allFaq as $value) {
-	        			echo '<tr>';
+	        			echo '<tr id="row'.$value['faq_id'].'">';
 	        			echo '<td>'.$value['question'].'</td>';
 	        			echo '<td>'.$value['answer'].'</td>';
 						echo '<td class="text-center">';
-							echo '<a class="text-dark deleteAction" data-toggle="tooltip" data-placement="top" title="Cancella" data-booking="'.$value['faq_id'].'"><i class="fas fa-trash-alt"></i></a>';
+							echo '<a class="text-dark deleteAction" data-toggle="tooltip" data-placement="top" title="Cancella" data-primary="'.$value['faq_id'].'"><i class="fas fa-trash-alt"></i></a>';
 							echo '&nbsp;&nbsp;&nbsp;';
-							echo '<a class="text-dark updateAction" data-toggle="tooltip" data-placement="top" title="Modifica" data-booking="'.$value['faq_id'].'" data-toggle="modal" data-target="#updateModal"><i class="fas fa-edit"></i></a>';
+							echo '<a class="text-dark updateAction" data-toggle="tooltip" data-placement="top" title="Modifica" data-primary="'.$value['faq_id'].'" data-toggle="modal" data-target="#updateModal"><i class="fas fa-edit"></i></a>';
 						echo '</td>';
 	        			echo '</tr>';
 	        		}
@@ -46,7 +46,18 @@
         </button>
       </div>
       <div class="modal-body">
-      	...
+		<form>
+			<div class="form-group">
+				<label>Domanda</label>
+      			<input type="text" name="question" class="form-control modalInput-question">
+			</div>
+			<div class="form-group">
+				<label>Risposta</label>
+				<textarea class="form-control modalInput-answer" name="answer" rows="4"></textarea>
+			</div>
+      		<input type="hidden" name="typeOfRecord" value="faq">
+      		<input type="hidden" name="primariKey" class="modalInput-key">
+		</form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
@@ -58,4 +69,9 @@
 
 <script>
 	var dataTableInit = true;
+
+	var typeOfRecord = 'faq';
+	var ajaxUrlDel   = '<?= $this->url(array('controller' => 'admin', 'action' => 'deleterecord')); ?>';
+	var ajaxUrlGet   = '<?= $this->url(array('controller' => 'admin', 'action' => 'getrecord')); ?>';
+	var ajaxUrlUpd 	 = '<?= $this->url(array('controller' => 'admin', 'action' => 'updaterecord')); ?>';
 </script>

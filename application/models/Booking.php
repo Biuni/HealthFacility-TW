@@ -55,7 +55,7 @@ class Application_Model_Booking
 	public function delete($id)
 	{
 		// return: The number of rows deleted.
-		return $this->_dbTable->delete(array('booking_id = '.$id.''));
+		return $this->_dbTable->delete("$this->_primaryKey = $id");
 	}
 
 
