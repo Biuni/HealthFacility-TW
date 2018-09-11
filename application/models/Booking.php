@@ -120,5 +120,24 @@ class Application_Model_Booking
         return $this->_dbTable->fetchAll($select);
 	}
 
+	public function countPerService($service_id)
+	{
+		$countRows = $this->_dbTable->select()->from('booking', array('rows' => 'COUNT(*)'))->where('service = '.$service_id.'');
+		return $this->_dbTable->fetchRow($countRows);
+	}
+
+	public function countPerDepartment($department_id)
+	{
+		$select = $this->_dbTable->select()
+				->from(array('b' => 'booking'), array('rows' => 'COUNT(*)', 'b.booking_id'))
+				->joinInner(array('s' => 'service'), 's.service_id = b.service', array('s.service_id'))
+				->joinInner(array('d' => 'department'), 'd.department_id = s.department', array('d.department_id'))
+				->group(array('d.department_id'))
+				->where('s.department = ?', $department_id)
+				->setIntegrityCheck(false);
+
+		return $this->_dbTable->fetchRow($select);
+	}
+
 }
 

@@ -35,6 +35,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $this->_view->InlineScript()->appendFile(APP_URL.'/js/bootstrap.min.js');
         $this->_view->InlineScript()->appendFile(APP_URL.'/js/bootstrap-datepicker.min.js');
         $this->_view->InlineScript()->appendFile(APP_URL.'/js/jquery.dataTables.min.js');
+        $this->_view->InlineScript()->appendFile(APP_URL.'/js/chart.min.js');
+        $this->_view->InlineScript()->appendFile(APP_URL.'/js/adminChart.js');
         $this->_view->InlineScript()->appendFile(APP_URL.'/js/main.js');
     }
 

@@ -1,4 +1,25 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Admin</b> and script/action name <b>index</b></p>
+<div class="container pb-5">
+	<h2 class="mb-3">Appuntamenti mensili</h2>
+	<p class="lead pb-3">In questo grafico vengono mostrati il numero di appuntamenti erogati suddivisi per mese di qualsiasi anno.</p>
+	<canvas id="myChart1"></canvas>
+
+	<h2 class="mt-5 mb-3">Appuntamenti per servizio</h2>
+	<p class="lead pb-3">In questo grafico vengono mostrati il numero di appuntamenti erogati suddivisi per tipo di prestazione.</p>
+	<canvas id="myChart2"></canvas>
+
+	<h2 class="mt-5 mb-3">Appuntamenti per dipartimento</h2>
+	<p class="lead pb-3">In questo grafico vengono mostrati il numero di appuntamenti erogati suddivisi per dipartimenti.</p>
+	<canvas id="myChart3"></canvas>
 </div>
+
+<script>
+	var adminChartInit = true;
+	var dataOfBookingPerMonth = <?= json_encode($this->dataOfBookingPerMonth); ?>;
+	var labelsOfBookingPerMonth = <?= json_encode($this->labelsOfBookingPerMonth); ?>;
+
+	var dataOfBookingPerService = <?= json_encode($this->dataOfBookingPerService); ?>;
+	var labelsOfBookingPerService = <?= json_encode($this->labelsOfBookingPerService); ?>;
+
+	var dataOfBookingPerDepartment = <?= json_encode($this->dataOfBookingPerDepartment); ?>;
+	var labelsOfBookingPerDepartment = <?= json_encode($this->labelsOfBookingPerDepartment); ?>;
+</script>
