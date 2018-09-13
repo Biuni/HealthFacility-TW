@@ -14,6 +14,7 @@ class DepartmentController extends Zend_Controller_Action
 
         $page = $this->_getParam('page', 1);
         $paginator = $department->paginator($page);
+        $numberOfDepartments = $this->extractResult($department->countDepartments());
 
         $this->view->assign(
             'department',
@@ -21,7 +22,7 @@ class DepartmentController extends Zend_Controller_Action
         );
         $this->view->assign(
             'totalRows',
-            $this->extractResult($department->countDepartments())['rows']
+            $numberOfDepartments['rows']
         );
         $this->view->assign(
             'page',
@@ -51,7 +52,7 @@ class DepartmentController extends Zend_Controller_Action
 	* Clean an prettifier SQL query result
 	*/
     public function extractResult($result){
-    	$data = [];
+    	$data = array();
     	$rowsetArray = $result->toArray();
 		foreach ($rowsetArray as $column => $value) {
 			$data[$column] = $value;

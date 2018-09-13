@@ -262,7 +262,7 @@ class StaffController extends Zend_Controller_Action
     * Clean an prettifier SQL query result
     */
     public function extractResult($result){
-        $data = [];
+        $data = array();
         $rowsetArray = $result->toArray();
         foreach ($rowsetArray as $column => $value) {
             $data[$column] = $value;

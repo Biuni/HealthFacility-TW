@@ -1,16 +1,51 @@
-<div class="container">
-
-	<div class="jumbotron">
-		<p class="text-center"><img src="img/heartbeats.png" style="max-width: 256px"></p>
+<div class="jumbotron">
+	<div class="container">
+		<p class="text-center"><img src="<?=APP_URL?>/img/healthfacility.png"></p>
 		<h1 class="display-4">Health Facility</h1>
-		<p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-		<hr class="my-4">
-		<p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+		<p class="lead">Professionisti sempre a vostra disposizione.</p>
+		<div style="clear:both;"></div>
 	</div>
+</div>
 
-	<p class="text-danger">
-	- Mission della struttura<br>
-	- Organizzazione interna dei servizi<br>
-	- Informazioni generali
-	</p>
+<div class="container">
+	<section class="homeSection pb-5">
+		<h3>Mission della struttura</h3>
+		<p class="lead">La Health Facility è un struttura polispecialistica in cui si erogano prestazioni sanitarie in regime ambulatoriale. I servizi offerti ai nostri clienti sono i più svariati. La struttura è in continua espansione. Momentaneamente è composta da 7 dipartimenti specialistici, tre dei quali sono:</p>
+		<div class="row text-center">
+			<div class="col-sm-4 my-2">
+				<img src="<?=APP_URL?>/img/cardiogram.png">
+				<em class="d-block mt-2">Cardiologia</em>
+			</div>
+			<div class="col-sm-4 my-2">
+				<img src="<?=APP_URL?>/img/x-ray.png">
+				<em class="d-block mt-2">Radiologia</em>
+			</div>
+			<div class="col-sm-4 my-2">
+				<img src="<?=APP_URL?>/img/brain.png">
+				<em class="d-block mt-2">Neurologia</em>
+			</div>
+		</div>
+	</section>
+	<hr>
+	<section class="homeSection pt-5 pb-3">
+		<h3>Modalità di fornitura dei servizi</h3>
+		<p class="lead pb-4">Le prestazioni sanitarie offerte sono divise per <a href="<?= $this->url(array('controller' => 'department', 'action' => 'index')); ?>">dipartimenti</a>. Ogni dipartimento mette a disposizione la possiblità, ad utenti <a href="<?= $this->url(array('controller' => 'register', 'action' => 'index')); ?>">registrati</a> al sito, di prenotarsi autonomamente per una visita. In alternativa è a disposizione degli utenti una pagina di <a href="<?= $this->url(array('controller' => 'search', 'action' => 'index')); ?>">ricerca</a> per trovare più velocemente il servizio richiesto. Per qualsiasi altra informazioni vi inviatiamo a visitare la pagina <a href="<?= $this->url(array('controller' => 'faq', 'action' => 'index')); ?>">FAQ</a> o di contattare la nostra assistenza utilizzando i recapiti presenti alla pagina <a href="<?= $this->url(array('controller' => 'contact', 'action' => 'index')); ?>">contatti</a>.</p>
+
+		<hr>
+		<div class="row stepper">
+			<div class="col-sm-4 text-left">
+				<span class="step">1</span>
+				<span class="step stepTitle text-info text-left"><span>Registrati al sito</span></span>
+			</div>
+			<div class="col-sm-4 text-center">
+				<span class="step">2</span>
+				<span class="step stepTitle text-info text-center"><span>Scegli il sevizio</span></span>
+			</div>
+			<div class="col-sm-4 text-right">
+				<span class="step">3</span>
+				<span class="step stepTitle text-info text-right"><span>Prenota la visita</span></span>
+			</div>
+		</div>
+
+	</section>
 </div>

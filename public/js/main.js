@@ -55,7 +55,7 @@ $(document).ready(function() {
             choosedDate = val.date._d;
         });
         btnBook.click(function() {
-            var booking_date = moment(choosedDate).format('YYYY-MM-DD H:00');
+            var booking_date = moment(choosedDate).format('YYYY-MM-DD HH:00');
             var service_id = service;
             var user_id = userId;
 
@@ -331,13 +331,13 @@ $(document).ready(function() {
                     $('.appointmentsTable tbody').find('tr').remove();
                     if (res.result == 1) {
                         for (var i = 0; i < res.message.length; i++) {
-                            var columns = '<td>'+moment(res.message[i].date).format('H:mm')+'</td>';
+                            var columns = '<td>'+moment(res.message[i].date).format('HH:mm')+'</td>';
                             columns += '<td>'+res.message[i].name+'</td>';
                             columns += '<td>'+res.message[i].patient_name+' '+res.message[i].patient_surname+'</td>';
                             columns += '<td style="width: 100px; text-align: center;">';
                             columns += '<a class="text-dark deleteBooking" data-toggle="tooltip" data-placement="top" title="Cancella prenotazione" data-booking="'+res.message[i].booking_id+'"><i class="fas fa-trash-alt"></i></a>';
                             columns += '&nbsp;&nbsp;';
-                            columns += '<a class="text-dark updateBooking" data-toggle="tooltip" data-placement="top" title="Modifica prenotazione" data-booking="'+res.message[i].booking_id+'" data-toggle="modal" data-target="#updateModal"><i class="fas fa-edit"></i></a>';
+                            columns += '<a class="text-dark updateBookingNew" data-toggle="tooltip" data-placement="top" title="Modifica prenotazione" data-booking="'+res.message[i].booking_id+'" data-toggle="modal" data-target="#updateModal"><i class="fas fa-edit"></i></a>';
                             columns += '&nbsp;&nbsp;';
                             columns += '<a class="text-dark" data-toggle="tooltip" data-placement="top" title="Apri chat" href="'+chatLink+'/id/'+res.message[i].user_id+'"><i class="fas fa-comment"></i></a>';
                             columns += '</td>';
@@ -348,7 +348,7 @@ $(document).ready(function() {
                                 var result = confirm('Sicuro di voler cancellare la prenotazione?');
                                 if (result) { deleteElement(booking_id); }
                             });
-                            $('.updateBooking').on('click', function(){
+                            $('.updateBookingNew').on('click', function(){
                                 $('#updateModal').modal();
                                 var booking_id = $(this).attr('data-booking');
                                 updateElement(booking_id);
@@ -400,24 +400,24 @@ $(document).ready(function() {
             });
         }
 
+            var choosedDateUp;
+            var service_idUp;
+            var bookingIdUp;
         // Function to update booking
         function updateElement(booking_id) {
             var i;
-            var service_id;
-            var bookingId;
-            var choosedDate;
             var d = new Date();
             var dateToday = new Date(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours() + 1);
 
             for (i = 0; i < appointmentsToday.length; i++) {
                 if(appointmentsToday[i].booking_id == booking_id) {
 
-                    service_id = appointmentsToday[i].service_id;
-                    bookingId = appointmentsToday[i].booking_id;
+                    service_idUp = appointmentsToday[i].service_id;
+                    bookingIdUp = appointmentsToday[i].booking_id;
 
                     var picker2 = $('#calendarModify');
                     picker2.datetimepicker({
-                        defaultDate: moment(appointmentsToday[i].date).format('YYYY-MM-DD H'),
+                        defaultDate: moment(appointmentsToday[i].date).format('YYYY-MM-DD HH:00'),
                         minDate: dateToday,
                         locale: 'it',
                         inline: true,
@@ -434,41 +434,43 @@ $(document).ready(function() {
                         sideBySide: true
                     });
                     picker2.on('dp.change', function(val) {
-                        choosedDate = val.date._d;
-                    });
-                    $('#sendUpdateBook').click(function() {
-                        var booking_date = moment(choosedDate).format('YYYY-MM-DD H:00');
-                        // ****************************************
-                        // ------------- SEND AJAX ----------------
-                        // ****************************************
-                        $.ajax({
-                            type : 'POST',
-                            url : ajaxUrlUpdate,
-                            data : {
-                                bookingId: bookingId,
-                                seriviceId: service_id,
-                                date: booking_date
-                            },
-                            dataType : 'JSON',
-                            success : function(res){
-                                if (res.result == 1) {
-                                    var type = 'success';
-                                } else {
-                                    var type = 'danger';
-                                }
-                                bootoast({
-                                    message: res.message,
-                                    type: type,
-                                    timeout: 6,
-                                    position: 'bottom-right'
-                                });
-                            }
-                        });
+                        choosedDateUp = val.date._d;
                     });
 
                 }
             }
         }
+
+        $('#sendUpdateBook').click(function() {
+            console.log('dentro')
+            var booking_date = moment(choosedDateUp).format('YYYY-MM-DD HH:00');
+            // ****************************************
+            // ------------- SEND AJAX ----------------
+            // ****************************************
+            $.ajax({
+                type : 'POST',
+                url : ajaxUrlUpdate,
+                data : {
+                    bookingId: bookingIdUp,
+                    seriviceId: service_idUp,
+                    date: booking_date
+                },
+                dataType : 'JSON',
+                success : function(res){
+                    if (res.result == 1) {
+                        var type = 'success';
+                    } else {
+                        var type = 'danger';
+                    }
+                    bootoast({
+                        message: res.message,
+                        type: type,
+                        timeout: 6,
+                        position: 'bottom-right'
+                    });
+                }
+            });
+        });
     }
 });
 
@@ -605,7 +607,7 @@ $(document).ready(function() {
             userId = $('#InputUser').val();
             serviceId = $('#InputService').val();
 
-            $('#InputDate').val(moment(choosedDate).format('YYYY-MM-DD H:00'));
+            $('#InputDate').val(moment(choosedDate).format('YYYY-MM-DD HH:00'));
 
             if (userId != '' && serviceId != '') {
                 // ****************************************
@@ -617,7 +619,7 @@ $(document).ready(function() {
                     data : {
                         userId: userId,
                         seriviceId: serviceId,
-                        date: moment(choosedDate).format('YYYY-MM-DD H:00')
+                        date: moment(choosedDate).format('YYYY-MM-DD HH:00')
                     },
                     dataType : 'JSON',
                     success : function(res){

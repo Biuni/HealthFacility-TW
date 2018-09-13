@@ -81,7 +81,8 @@ class Application_Model_Service
 	*/
 	public function checkServiceOpen($service_id, $date)
 	{
-		$schedule = $this->_dbTable->find($service_id)->toArray()[0]['schedule'];
+		$getSchedule = $this->_dbTable->find($service_id)->toArray();
+		$schedule = $getSchedule[0]['schedule'];
 
 		$result = 1;
 		$timestamp = strtotime($date);

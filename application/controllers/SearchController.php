@@ -10,14 +10,14 @@ class SearchController extends Zend_Controller_Action
 
     public function indexAction()
     {
-    	$searchJson = [];
+    	$searchJson = array();
         $department = new Application_Model_Department();
         $service = new Application_Model_Service();
 
         // Get all departments
     	$departmentDetails = $this->extractResult($department->get());
 		foreach ($departmentDetails as $departmentDett) {
-			$serviceArray = [];
+			$serviceArray = array();
 			// Get all services of the department
     		$serviceDetails = $this->extractResult($service->selectByDepartment($departmentDett['department_id']));
 			foreach ($serviceDetails as $serviceDet) {
@@ -41,7 +41,7 @@ class SearchController extends Zend_Controller_Action
 	* Clean an prettifier SQL query result
 	*/
     public function extractResult($result){
-    	$data = [];
+    	$data = array();
     	$rowsetArray = $result->toArray();
 		foreach ($rowsetArray as $column => $value) {
 			$data[$column] = $value;

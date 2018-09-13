@@ -108,33 +108,66 @@ class Application_Model_Booking
 	/**
 	* Booking a new service
 	*/
-	public function getAllReservations()
+	public function getAllReservations($dateStart, $dateEnd)
 	{
-		$select = $this->_dbTable->select()
-				->from(array('b' => 'booking'), array('b.date', 'b.booking_id'))
-				->joinInner(array('s' => 'service'), 's.service_id = b.service', array('service' => 's.name'))
-				->joinInner(array('u' => 'user'), 'b.user = u.user_id', array('u.name','u.surname'))
-				->setIntegrityCheck(false);
+		if ($dateStart == null && $dateEnd == null) {
+			$select = $this->_dbTable->select()
+					->from(array('b' => 'booking'), array('b.date', 'b.booking_id'))
+					->joinInner(array('s' => 'service'), 's.service_id = b.service', array('service' => 's.name'))
+					->joinInner(array('u' => 'user'), 'b.user = u.user_id', array('u.name','u.surname'))
+					->setIntegrityCheck(false);
+		} else {
+			$select = $this->_dbTable->select()
+					->from(array('b' => 'booking'), array('b.date', 'b.booking_id'))
+					->joinInner(array('s' => 'service'), 's.service_id = b.service', array('service' => 's.name'))
+					->joinInner(array('u' => 'user'), 'b.user = u.user_id', array('u.name','u.surname'))
+					->where('b.date >= ?', $dateStart)
+					->where('b.date <= ?', $dateEnd)
+					->setIntegrityCheck(false);
+		}
 
 		// return: The row results of the Zend_Db_Adapter fetch mode.
         return $this->_dbTable->fetchAll($select);
 	}
 
-	public function countPerService($service_id)
+	public function countPerService($service_id, $dateStart, $dateEnd)
 	{
-		$countRows = $this->_dbTable->select()->from('booking', array('rows' => 'COUNT(*)'))->where('service = '.$service_id.'');
+		if ($dateStart == null && $dateEnd == null) {
+			$countRows = $this->_dbTable->select()
+						->from('booking', array('rows' => 'COUNT(*)'))
+						->where('service = '.$service_id.'');
+		} else {	
+			$countRows = $this->_dbTable->select()
+						->from('booking', array('rows' => 'COUNT(*)'))
+						->where('date >= ?', $dateStart)
+						->where('date <= ?', $dateEnd)
+						->where('service = ?', $service_id);
+		}
+
 		return $this->_dbTable->fetchRow($countRows);
 	}
 
-	public function countPerDepartment($department_id)
+	public function countPerDepartment($department_id, $dateStart, $dateEnd)
 	{
-		$select = $this->_dbTable->select()
-				->from(array('b' => 'booking'), array('rows' => 'COUNT(*)', 'b.booking_id'))
-				->joinInner(array('s' => 'service'), 's.service_id = b.service', array('s.service_id'))
-				->joinInner(array('d' => 'department'), 'd.department_id = s.department', array('d.department_id'))
-				->group(array('d.department_id'))
-				->where('s.department = ?', $department_id)
-				->setIntegrityCheck(false);
+		if ($dateStart == null && $dateEnd == null) {
+			$select = $this->_dbTable->select()
+					->from(array('b' => 'booking'), array('rows' => 'COUNT(*)', 'b.booking_id'))
+					->joinInner(array('s' => 'service'), 's.service_id = b.service', array('s.service_id'))
+					->joinInner(array('d' => 'department'), 'd.department_id = s.department', array('d.department_id'))
+					->group(array('d.department_id'))
+					->where('s.department = ?', $department_id)
+					->setIntegrityCheck(false);
+		} else {
+			$select = $this->_dbTable->select()
+					->from(array('b' => 'booking'), array('rows' => 'COUNT(*)', 'b.booking_id'))
+					->joinInner(array('s' => 'service'), 's.service_id = b.service', array('s.service_id'))
+					->joinInner(array('d' => 'department'), 'd.department_id = s.department', array('d.department_id'))
+					->group(array('d.department_id'))
+					->where('b.date >= ?', $dateStart)
+					->where('b.date <= ?', $dateEnd)
+					->where('s.department = ?', $department_id)
+					->setIntegrityCheck(false);
+		}
 
 		return $this->_dbTable->fetchRow($select);
 	}

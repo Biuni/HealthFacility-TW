@@ -4,11 +4,11 @@
 		echo '<h2 class="mb-2 text-muted">'.$detail['name'].'</h2>';
 		echo $detail['description'].'<br>';
 		echo '<strong>'.$detail['place'].'</strong><br><br>';
-		echo '<a href="'.$this->url(array('controller' => 'department', 'action' => 'details', 'id' => $detail['department_id'])).'">&raquo; Tutte le prestazioni</a><br>';
+		echo '<a href="'.$this->url(array('controller' => 'department', 'action' => 'details', 'id' => $detail['department_id'], 'page' => null)).'">&raquo; Tutte le prestazioni</a><br>';
 		echo '<hr>';
 	}
 	?>
-	<nav>
+	<nav class="pb-1">
 		<ul class="pagination department-pagination">
 		<?php
 			if($this->totalRows > 3) {

@@ -1,5 +1,5 @@
 <div class="container">
-	<ul class="list-inline text-right">
+	<ul class="list-inline text-right userMenu">
 		<li class="list-inline-item">
 			<i class="far fa-calendar-alt"></i> 
 			<a class="text-info font-weight-light" href="<?= $this->url(array('controller' => 'user', 'action' => 'index')); ?>">Prenotazioni</a>
@@ -77,6 +77,6 @@
 	var urlAjaxGet = '<?= $this->url(array('controller' => 'user', 'action' => 'get')); ?>';
 	var user_id = <?= Zend_Auth::getInstance()->getIdentity()->user_id; ?>;
 	var lastRefresh = '<?= $dateNow; ?>';
-	var timeRefresh = 1500;
+	var timeRefresh = 2500;
 	var imgUrl = '<?=APP_URL?>';
 </script>

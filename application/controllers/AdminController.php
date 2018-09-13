@@ -14,6 +14,14 @@ class AdminController extends Zend_Controller_Action
         $booking = new Application_Model_Booking();
         $service = new Application_Model_Service();
         $department = new Application_Model_Department();
+
+        $request = $this->getRequest();
+        $dateStart = $request->getPost('dateStart', null);
+        $dateEnd   = $request->getPost('dateEnd', null);
+        if ($dateStart != null || $dateEnd != null) {
+            $this->view->assign('dateStart', $dateStart);
+            $this->view->assign('dateEnd', $dateEnd);
+        }
         
         // **************
         // * GRAPH DATA *
@@ -22,7 +30,7 @@ class AdminController extends Zend_Controller_Action
         // ----------------------------
         // Number of bookings per month
         // ----------------------------
-        $allReservations = $this->extractResult($booking->getAllReservations());
+        $allReservations = $this->extractResult($booking->getAllReservations($dateStart, $dateEnd));
         $labels = array('Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre');
         $jan = $feb = $mar = $apr = $may = $jun = $jul = $aug = $sept = $oct = $nov = $dec = 0;
         foreach ($allReservations as $value) {
@@ -54,7 +62,7 @@ class AdminController extends Zend_Controller_Action
         }
         $this->view->assign(
             'dataOfBookingPerMonth',
-            [$jan, $feb, $mar, $apr, $may, $jun, $jul, $aug, $sept, $oct, $nov, $dec]
+            array($jan, $feb, $mar, $apr, $may, $jun, $jul, $aug, $sept, $oct, $nov, $dec)
         );
         $this->view->assign(
             'labelsOfBookingPerMonth',
@@ -65,11 +73,12 @@ class AdminController extends Zend_Controller_Action
         // Number of bookings per service
         // ------------------------------
         $allServices = $this->extractResult($service->get());
-        $labels2 = [];
-        $serviceCount = [];
+        $labels2 = array();
+        $serviceCount = array();
         foreach ($allServices as $value) {
             $labels2[] = $value['name'];
-            $serviceCount[] = $this->extractResult($booking->countPerService($value['service_id']))['rows'];
+            $getNumOfService = $this->extractResult($booking->countPerService($value['service_id'], $dateStart, $dateEnd));
+            $serviceCount[] = $getNumOfService['rows'];
         }
 
         $this->view->assign(
@@ -85,11 +94,11 @@ class AdminController extends Zend_Controller_Action
         // Number of bookings per department
         // ---------------------------------
         $allDepartment = $this->extractResult($department->get());
-        $labels3 = [];
-        $departmentCount = [];
+        $labels3 = array();
+        $departmentCount = array();
         foreach ($allDepartment as $value) {
             $labels3[] = $value['name'];
-            $countPerDepartment = $booking->countPerDepartment($value['department_id']);
+            $countPerDepartment = $booking->countPerDepartment($value['department_id'], $dateStart, $dateEnd);
             if ($countPerDepartment['rows'] == null) {
                 $departmentCount[] = 0;
             } else {
@@ -630,7 +639,7 @@ class AdminController extends Zend_Controller_Action
     * Clean an prettifier SQL query result
     */
     public function extractResult($result){
-        $data = [];
+        $data = array();
         $rowsetArray = $result->toArray();
         foreach ($rowsetArray as $column => $value) {
             $data[$column] = $value;

@@ -1,13 +1,39 @@
 <div class="container pb-5">
-	<h2 class="mb-3">Appuntamenti mensili</h2>
-	<p class="lead pb-3">In questo grafico vengono mostrati il numero di appuntamenti erogati suddivisi per mese di qualsiasi anno.</p>
+
+	<h2 class="mb-3">Analisi Statistiche</h2>
+	<p class="lead mt-3">Utilizza questo form per filtrare per intervallo di tempo.</p>
+	<form class="row mb-3 text-center" method="POST" action="<?= $this->url(); ?>">
+		<div class="col-sm-6 my-1">
+			<input type="text" name="dateStart" class="form-control" placeholder="Inserisci la data d'inizio (YYYY-MM-DD)">
+		</div>
+		<div class="col-sm-6 my-1">
+			<input type="text" name="dateEnd" class="form-control" placeholder="Inserisci la data di fine (YYYY-MM-DD)">
+		</div>
+		<div class="col-sm-12 my-2">
+			<input type="submit" class="btn btn-info" value="Invia">
+			<?php if($this->dateStart && $this->dateEnd) : ?>
+			<input type="submit" class="btn btn-light" value="Reset">
+			<?php endif; ?>
+		</div>
+	</form>
+
+	<hr class="my-4 sepAdmin">
+
+	<?php if($this->dateStart && $this->dateEnd) : ?>
+		<p class="text-center"><b><?= $this->dateStart; ?></b> / <b><?= $this->dateEnd; ?></b></p>
+	<?php else : ?>
+		<p class="text-center"><i class="fas fa-infinity infinityIcon"></i></p>
+	<?php endif; ?>
+
+	<h4 class="mb-2">Appuntamenti totali</h4>
+	<p class="lead pb-3">In questo grafico vengono mostrati il numero di appuntamenti erogati suddivisi per intervallo di tempo.</p>
 	<canvas id="myChart1"></canvas>
 
-	<h2 class="mt-5 mb-3">Appuntamenti per servizio</h2>
+	<h4 class="mt-5 mb-2">Appuntamenti per servizio</h4>
 	<p class="lead pb-3">In questo grafico vengono mostrati il numero di appuntamenti erogati suddivisi per tipo di prestazione.</p>
 	<canvas id="myChart2"></canvas>
 
-	<h2 class="mt-5 mb-3">Appuntamenti per dipartimento</h2>
+	<h4 class="mt-5 mb-2">Appuntamenti per dipartimento</h4>
 	<p class="lead pb-3">In questo grafico vengono mostrati il numero di appuntamenti erogati suddivisi per dipartimenti.</p>
 	<canvas id="myChart3"></canvas>
 </div>
