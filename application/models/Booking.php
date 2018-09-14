@@ -108,7 +108,7 @@ class Application_Model_Booking
 	/**
 	* Booking a new service
 	*/
-	public function getAllReservations($dateStart, $dateEnd)
+	public function getAllReservations($dateStart = null, $dateEnd = null)
 	{
 		if ($dateStart == null && $dateEnd == null) {
 			$select = $this->_dbTable->select()
@@ -168,6 +168,36 @@ class Application_Model_Booking
 					->where('s.department = ?', $department_id)
 					->setIntegrityCheck(false);
 		}
+
+		return $this->_dbTable->fetchRow($select);
+	}
+
+
+	// User stats
+	public function getAllReservationsByUser($user_id)
+	{
+		return $this->_dbTable->fetchAll('user = '.$user_id);
+	}
+
+	public function countPerServicePerUser($service_id, $user_id)
+	{
+		$countRows = $this->_dbTable->select()
+					->from('booking', array('rows' => 'COUNT(*)'))
+					->where('user = ?', $user_id)
+					->where('service = ?', $service_id);
+		return $this->_dbTable->fetchRow($countRows);
+	}
+
+	public function countPerDepartmentPerUser($department_id, $user_id)
+	{
+		$select = $this->_dbTable->select()
+				->from(array('b' => 'booking'), array('rows' => 'COUNT(*)', 'b.booking_id'))
+				->joinInner(array('s' => 'service'), 's.service_id = b.service', array('s.service_id'))
+				->joinInner(array('d' => 'department'), 'd.department_id = s.department', array('d.department_id'))
+				->group(array('d.department_id'))
+				->where('s.department = ?', $department_id)
+				->where('b.user = ?', $user_id)
+				->setIntegrityCheck(false);
 
 		return $this->_dbTable->fetchRow($select);
 	}

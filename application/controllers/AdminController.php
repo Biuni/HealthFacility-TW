@@ -127,6 +127,110 @@ class AdminController extends Zend_Controller_Action
         );
     }
 
+    // View stats of an user
+    public function userstatsAction()
+    {
+        $booking = new Application_Model_Booking();
+        $service = new Application_Model_Service();
+        $department = new Application_Model_Department();
+
+        $request = $this->getRequest();
+        $userId = $request->getParam('id', null);
+        
+        // *******************
+        // * USER GRAPH DATA *
+        // *******************
+
+        // ----------------------------
+        // Number of bookings per month
+        // ----------------------------
+
+        $allReservations = $booking->getAllReservationsByUser($userId);
+        $labels = array('Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre');
+        $jan = $feb = $mar = $apr = $may = $jun = $jul = $aug = $sept = $oct = $nov = $dec = 0;
+        foreach ($allReservations as $values) {
+            $monthNum = date('n', strtotime($values['date']));
+            // January
+            if ($monthNum - 1 == 0) { $jan++; }
+            // February
+            if ($monthNum - 1 == 1) { $feb++; }
+            // March
+            if ($monthNum - 1 == 2) { $mar++; }
+            // April
+            if ($monthNum - 1 == 3) { $apr++; }
+            // May
+            if ($monthNum - 1 == 4) { $may++; }
+            // June
+            if ($monthNum - 1 == 5) { $jun++; }
+            // July
+            if ($monthNum - 1 == 6) { $jul++; }
+            // August
+            if ($monthNum - 1 == 7) { $aug++; }
+            // September
+            if ($monthNum - 1 == 8) { $sept++; }
+            // October
+            if ($monthNum - 1 == 9) { $oct++; }
+            // November
+            if ($monthNum - 1 == 10) { $nov++; }
+            // December
+            if ($monthNum - 1 == 11) { $dec++; }
+        }
+        $this->view->assign(
+            'dataOfUserPerMonth',
+            array($jan, $feb, $mar, $apr, $may, $jun, $jul, $aug, $sept, $oct, $nov, $dec)
+        );
+        $this->view->assign(
+            'labelsOfUserPerMonth',
+            $labels
+        );
+
+        // ------------------------------
+        // Number of bookings per service
+        // ------------------------------
+        $allServices = $this->extractResult($service->get());
+        $labels2 = array();
+        $serviceCount = array();
+        foreach ($allServices as $value) {
+            $labels2[] = $value['name'];
+            $getNumOfService = $this->extractResult($booking->countPerServicePerUser($value['service_id'], $userId));
+            $serviceCount[] = $getNumOfService['rows'];
+        }
+
+        $this->view->assign(
+            'dataOfUserPerService',
+            $serviceCount
+        );
+        $this->view->assign(
+            'labelsOfUserPerService',
+            $labels2
+        );
+
+        // ---------------------------------
+        // Number of bookings per department
+        // ---------------------------------
+        $allDepartment = $this->extractResult($department->get());
+        $labels3 = array();
+        $departmentCount = array();
+        foreach ($allDepartment as $value) {
+            $labels3[] = $value['name'];
+            $countPerDepartment = $booking->countPerDepartmentPerUser($value['department_id'], $userId);
+            if ($countPerDepartment['rows'] == null) {
+                $departmentCount[] = 0;
+            } else {
+                $departmentCount[] = $countPerDepartment['rows'];
+            }
+        }
+
+        $this->view->assign(
+            'dataOfUserPerDepartment',
+            $departmentCount
+        );
+        $this->view->assign(
+            'labelsOfUserPerDepartment',
+            $labels3
+        );
+    }
+
     // List all staffs and update or delete it
     public function staffAction()
     {

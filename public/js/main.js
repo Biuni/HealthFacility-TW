@@ -475,6 +475,51 @@ $(document).ready(function() {
 });
 
 /**
+ * -----------------------
+ * - Admin Delete Record -
+ * -----------------------
+ */
+$(document).ready(function() {
+    // Check if typeOfRecord variable is setted
+    if (typeof typeOfRecord !== 'undefined') {
+        $('.deleteAction').on('click', function(){
+            var primaryKey = $(this).attr('data-primary');
+            var type = typeOfRecord;
+
+            var result = confirm('Sicuro di voler eliminare il record dalla tabella?');
+            if (result) {
+                // ****************************************
+                // ------------- SEND AJAX ----------------
+                // ****************************************
+                $.ajax({
+                    type : 'POST',
+                    url : ajaxUrlDel,
+                    data : {
+                        type: type,
+                        id: primaryKey
+                    },
+                    dataType : 'JSON',
+                    success : function(res){
+                        if (res.result == 1) {
+                            var type = 'success';
+                            $('#row'+primaryKey).fadeOut();
+                        } else {
+                            var type = 'danger';
+                        }
+                        bootoast({
+                            message: res.message,
+                            type: type,
+                            timeout: 6,
+                            position: 'bottom-right'
+                        });
+                    }
+                });
+            }
+        });
+    }
+});
+
+/**
  * -----------------------------------
  * - Admin DataTables Initialization -
  * -----------------------------------
@@ -642,51 +687,6 @@ $(document).ready(function() {
                     type: 'warning',
                     timeout: 6,
                     position: 'bottom-right'
-                });
-            }
-        });
-    }
-});
-
-/**
- * -----------------------
- * - Admin Delete Record -
- * -----------------------
- */
-$(document).ready(function() {
-    // Check if typeOfRecord variable is setted
-    if (typeof typeOfRecord !== 'undefined') {
-        $('.deleteAction').on('click', function(){
-            var primaryKey = $(this).attr('data-primary');
-            var type = typeOfRecord;
-
-            var result = confirm('Sicuro di voler eliminare il record dalla tabella?');
-            if (result) {
-                // ****************************************
-                // ------------- SEND AJAX ----------------
-                // ****************************************
-                $.ajax({
-                    type : 'POST',
-                    url : ajaxUrlDel,
-                    data : {
-                        type: type,
-                        id: primaryKey
-                    },
-                    dataType : 'JSON',
-                    success : function(res){
-                        if (res.result == 1) {
-                            var type = 'success';
-                            $('#row'+primaryKey).fadeOut();
-                        } else {
-                            var type = 'danger';
-                        }
-                        bootoast({
-                            message: res.message,
-                            type: type,
-                            timeout: 6,
-                            position: 'bottom-right'
-                        });
-                    }
                 });
             }
         });

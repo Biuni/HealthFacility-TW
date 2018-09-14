@@ -27,6 +27,8 @@
 							echo '<a class="text-dark deleteAction" data-toggle="tooltip" data-placement="top" title="Cancella" data-primary="'.$value['user_id'].'"><i class="fas fa-trash-alt"></i></a>';
 							echo '&nbsp;&nbsp;&nbsp;';
 							echo '<a class="text-dark updateAction" data-toggle="tooltip" data-placement="top" title="Modifica" data-primary="'.$value['user_id'].'" data-toggle="modal" data-target="#updateModal"><i class="fas fa-edit"></i></a>';
+							echo '&nbsp;&nbsp;&nbsp;';
+							echo '<a class="text-dark" data-toggle="tooltip" data-placement="top" title="Statistiche" href="'.$this->url(array('controller' => 'admin', 'action' => 'userstats', 'id' => $value['user_id'])).'"><i class="fas fa-chart-pie"></i></a>';
 						echo '</td>';
 	        			echo '</tr>';
 	        		}

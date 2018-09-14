@@ -1,0 +1,30 @@
+<div class="container pb-5">
+
+	<h2 class="mb-3">Statistiche Utente</h2>
+
+	<hr class="my-4 sepAdmin">
+
+	<h4 class="mb-2">Appuntamenti totali</h4>
+	<p class="lead pb-3">In questo grafico vengono mostrati il numero di appuntamenti prenotati dall'utente.</p>
+	<canvas id="myChart1"></canvas>
+
+	<h4 class="mt-5 mb-2">Appuntamenti per servizio</h4>
+	<p class="lead pb-3">In questo grafico vengono mostrati il numero di appuntamenti prenotati dall'utente suddivisi per tipo di prestazione.</p>
+	<canvas id="myChart2"></canvas>
+
+	<h4 class="mt-5 mb-2">Appuntamenti per dipartimento</h4>
+	<p class="lead pb-3">In questo grafico vengono mostrati il numero di appuntamenti prenotati dall'utente suddivisi per dipartimenti.</p>
+	<canvas id="myChart3"></canvas>
+</div>
+
+<script>
+	var adminUserChartInit = true;
+	var dataOfUserPerMonth = <?= json_encode($this->dataOfUserPerMonth); ?>;
+	var labelsOfUserPerMonth = <?= json_encode($this->labelsOfUserPerMonth); ?>;
+
+	var dataOfUserPerService = <?= json_encode($this->dataOfUserPerService); ?>;
+	var labelsOfUserPerService = <?= json_encode($this->labelsOfUserPerService); ?>;
+
+	var dataOfUserPerDepartment = <?= json_encode($this->dataOfUserPerDepartment); ?>;
+	var labelsOfUserPerDepartment = <?= json_encode($this->labelsOfUserPerDepartment); ?>;
+</script>
