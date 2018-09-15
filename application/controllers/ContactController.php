@@ -1,18 +1,32 @@
 <?php
 
+/**
+* ContactController
+* 
+* This is the controller class
+* of the contact page.
+*
+* @author     Gianluca Bonifazi
+* @category   controllers 
+* @copyright  Univpm (c) 2018
+*/
+
 class ContactController extends Zend_Controller_Action
 {
-
+    /**
+    * Initialize action controller
+    */
     public function init()
-    {
-        /* Initialize action controller here */
-    }
+    {}
 
+    /**
+    * indexAction
+    *
+    * @link       /contact
+    * @category   actions
+    */
     public function indexAction()
-    {
-        // action body
-    }
-
+    {}
 
 }
 

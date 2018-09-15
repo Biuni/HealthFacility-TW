@@ -8,6 +8,18 @@
 		if ($error == 1) {
 	?>
 		<div class="alert alert-danger" role="alert">
+			<strong>ATTENZIONE!</strong> Assicurati che tutti i dati siano stati inseriti correttamente!
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+	<?php
+		}
+	?>
+	<?php
+		if ($error == 2) {
+	?>
+		<div class="alert alert-danger" role="alert">
 			<strong>ATTENZIONE!</strong> Il sistema ha riscontrato un errore. Username o email <u>potrebbero essere già utilizzati</u>!
 			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 				<span aria-hidden="true">&times;</span>
