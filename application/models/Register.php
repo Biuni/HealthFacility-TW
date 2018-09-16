@@ -1,8 +1,18 @@
 <?php
 
+/**
+* Application_Model_Register
+* 
+* This is the model class
+* of the register.
+*
+* @author     Gianluca Bonifazi
+* @category   models 
+* @copyright  Univpm (c) 2018
+*/
+
 class Application_Model_Register
 {
-
 	private $_dbTable;
 	private $_primaryKey;
 

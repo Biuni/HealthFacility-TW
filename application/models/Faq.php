@@ -1,5 +1,16 @@
 <?php
 
+/**
+* Application_Model_Faq
+* 
+* This is the model class
+* of the faq.
+*
+* @author     Gianluca Bonifazi
+* @category   models 
+* @copyright  Univpm (c) 2018
+*/
+
 class Application_Model_Faq
 {
 	private $_dbTable;
@@ -57,6 +68,5 @@ class Application_Model_Faq
 		// return: The number of rows deleted.
 		return $this->_dbTable->delete("$this->_primaryKey = $id");
 	}
-
 }
 

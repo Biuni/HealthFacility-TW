@@ -1,5 +1,16 @@
 <?php 
 
+/**
+* Application_Model_Acl
+* 
+* This is the model class
+* of the acl implementation.
+*
+* @author     Gianluca Bonifazi
+* @category   models 
+* @copyright  Univpm (c) 2018
+*/
+
 class Application_Model_Acl extends Zend_Acl
 {
 	public function __construct()
@@ -33,3 +44,4 @@ class Application_Model_Acl extends Zend_Acl
 			 ->allow('admin','admin');
 	}
 }
+
