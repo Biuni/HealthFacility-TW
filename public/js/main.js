@@ -1,6 +1,7 @@
 // ***************************************************
 // ------------------- Page --------------------------
 // ***************************************************
+
 /**
  * -----------------------
  * - Service Page Script -
@@ -72,15 +73,15 @@ $(document).ready(function() {
                 // ****************************************
 
                 $.ajax({
-                    type : 'POST',
-                    url : urlAjax,
-                    data : {
+                    type: 'POST',
+                    url: urlAjax,
+                    data: {
                         userId: user_id,
                         seriviceId: service_id,
                         date: booking_date
                     },
-                    dataType : 'JSON',
-                    success : function(res){
+                    dataType: 'JSON',
+                    success: function(res) {
                         if (res.result == 1) {
                             var type = 'success';
                         } else {
@@ -133,7 +134,7 @@ $(document).ready(function() {
         });
 
         // Search into JSON by text
-        $('#searchByName').keyup(function(){
+        $('#searchByName').keyup(function() {
             searchIntoJSON(search)
         });
     }
@@ -147,20 +148,20 @@ $(document).ready(function() {
 $(document).ready(function() {
     // Check if validationForm variable is setted
     if (typeof validationForm !== 'undefined') {
-      // Fetch the form we want to apply custom Bootstrap validation styles to
-      window.addEventListener('load', function() {
-        var forms = $('.need-validation');
-        // Loop over them and prevent submission
-        var validation = Array.prototype.filter.call(forms, function(form) {
-          form.addEventListener('submit', function(event) {
-            if (form.checkValidity() === false) {
-              event.preventDefault();
-              event.stopPropagation();
-            }
-            form.classList.add('was-validated');
-          }, false);
-        });
-      }, false);
+        // Fetch the form we want to apply custom Bootstrap validation styles to
+        window.addEventListener('load', function() {
+            var forms = $('.need-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
     }
 });
 
@@ -172,7 +173,7 @@ $(document).ready(function() {
 $(document).ready(function() {
     // Check if reservedUserArea variable is setted
     if (typeof reservedUserArea !== 'undefined') {
-        $('.bookingTables .deleteBooking').on('click', function(){
+        $('.bookingTables .deleteBooking').on('click', function() {
             var booking_id = $(this).attr('data-booking');
 
             var result = confirm('Sicuro di voler annullare la prenotazione?');
@@ -181,16 +182,16 @@ $(document).ready(function() {
                 // ------------- SEND AJAX ----------------
                 // ****************************************
                 $.ajax({
-                    type : 'POST',
-                    url : urlAjax,
-                    data : {
+                    type: 'POST',
+                    url: urlAjax,
+                    data: {
                         bookingId: booking_id,
                     },
-                    dataType : 'JSON',
-                    success : function(res){
+                    dataType: 'JSON',
+                    success: function(res) {
                         if (res.result == 1) {
                             var type = 'success';
-                            $('#row'+booking_id).fadeOut();
+                            $('#row' + booking_id).fadeOut();
                         } else {
                             var type = 'danger';
                         }
@@ -223,26 +224,33 @@ $(document).ready(function() {
         $('.msg_history').scrollTop($('.msg_history')[0].scrollHeight);
 
         // Send a new message
-        $('.msg_send_btn').on('click', function(){
+        $('.msg_send_btn').on('click', function() {
             var text = $('.write_msg');
             var message = text.val();
             var userId = user_id;
 
             if (typeof userChatId !== 'undefined') {
-                var sendData = { message: message, userId: userId, userChatId: userChatId };
+                var sendData = {
+                    message: message,
+                    userId: userId,
+                    userChatId: userChatId
+                };
             } else {
-                var sendData = { message: message, userId: userId };
+                var sendData = {
+                    message: message,
+                    userId: userId
+                };
             }
             // ****************************************
             // ------------- SEND AJAX ----------------
             // ****************************************
             if (message != '') {
                 $.ajax({
-                    type : 'POST',
-                    url : urlAjaxSend,
-                    data : sendData,
-                    dataType : 'JSON',
-                    success : function(res){
+                    type: 'POST',
+                    url: urlAjaxSend,
+                    data: sendData,
+                    dataType: 'JSON',
+                    success: function(res) {
                         if (res.result == 1) {
                             text.val('');
                         }
@@ -252,30 +260,35 @@ $(document).ready(function() {
         });
 
         // Refresh the chat
-        setInterval(function(){
+        setInterval(function() {
             if (typeof userChatId !== 'undefined') {
-                var sendData = { lastData: lastRefresh, userChatId: userChatId };
+                var sendData = {
+                    lastData: lastRefresh,
+                    userChatId: userChatId
+                };
                 var image = 'chat_user';
             } else {
-                var sendData = { lastData: lastRefresh };
+                var sendData = {
+                    lastData: lastRefresh
+                };
                 var image = 'chat_doctor';
             }
             // ****************************************
             // ------------- SEND AJAX ----------------
             // ****************************************
             $.ajax({
-                type : 'GET',
-                url : urlAjaxGet,
-                data : sendData,
-                dataType : 'JSON',
-                success : function(res){
+                type: 'GET',
+                url: urlAjaxGet,
+                data: sendData,
+                dataType: 'JSON',
+                success: function(res) {
                     if (res.messages.length > 0) {
                         for (var i = 0; i < res.messages.length; i++) {
                             var timeMsg = moment(res.messages[i].time).format('HH:mm:ss');
                             if (res.messages[i].user == user_id) {
-                                $('.msg_history').append('<div class="outgoing_msg"><div class="sent_msg"><p>'+res.messages[i].message+'</p><span class="time_date"><strong>'+res.messages[i].name+' '+res.messages[i].surname+'</strong> - '+timeMsg+'</span></div></div>');
+                                $('.msg_history').append('<div class="outgoing_msg"><div class="sent_msg"><p>' + res.messages[i].message + '</p><span class="time_date"><strong>' + res.messages[i].name + ' ' + res.messages[i].surname + '</strong> - ' + timeMsg + '</span></div></div>');
                             } else {
-                                $('.msg_history').append('<div class="incoming_msg"><div class="incoming_msg_img"><img src="'+imgUrl+'/img/'+image+'.png" alt="doctor"></div><div class="received_msg"><div class="received_withd_msg"><p>'+res.messages[i].message+'</p><span class="time_date"><strong>'+res.messages[i].name+' '+res.messages[i].surname+'</strong> - '+timeMsg+'</span></div></div></div>');
+                                $('.msg_history').append('<div class="incoming_msg"><div class="incoming_msg_img"><img src="' + imgUrl + '/img/' + image + '.png" alt="doctor"></div><div class="received_msg"><div class="received_withd_msg"><p>' + res.messages[i].message + '</p><span class="time_date"><strong>' + res.messages[i].name + ' ' + res.messages[i].surname + '</strong> - ' + timeMsg + '</span></div></div></div>');
                             }
                             $('.msg_history').scrollTop($('.msg_history')[0].scrollHeight);
                         }
@@ -321,34 +334,36 @@ $(document).ready(function() {
             var newDate = val.date._d;
             $('.dateChoosed').html(moment(newDate).format('YYYY-MM-DD'));
             $.ajax({
-                type : 'GET',
-                url : ajaxUrlAgenda,
-                data : {
+                type: 'GET',
+                url: ajaxUrlAgenda,
+                data: {
                     data: moment(newDate).format('YYYY-MM-DD')
                 },
-                dataType : 'JSON',
-                success : function(res){
+                dataType: 'JSON',
+                success: function(res) {
                     $('.appointmentsTable tbody').find('tr').remove();
                     if (res.result == 1) {
                         for (var i = 0; i < res.message.length; i++) {
-                            var columns = '<td>'+moment(res.message[i].date).format('HH:mm')+'</td>';
-                            columns += '<td>'+res.message[i].name+'</td>';
-                            columns += '<td>'+res.message[i].patient_name+' '+res.message[i].patient_surname+'</td>';
+                            var columns = '<td>' + moment(res.message[i].date).format('HH:mm') + '</td>';
+                            columns += '<td>' + res.message[i].name + '</td>';
+                            columns += '<td>' + res.message[i].patient_name + ' ' + res.message[i].patient_surname + '</td>';
                             columns += '<td style="width: 100px; text-align: center;">';
-                            columns += '<a class="text-dark deleteBooking" data-toggle="tooltip" data-placement="top" title="Cancella prenotazione" data-booking="'+res.message[i].booking_id+'"><i class="fas fa-trash-alt"></i></a>';
+                            columns += '<a class="text-dark deleteBooking" data-toggle="tooltip" data-placement="top" title="Cancella prenotazione" data-booking="' + res.message[i].booking_id + '"><i class="fas fa-trash-alt"></i></a>';
                             columns += '&nbsp;&nbsp;';
-                            columns += '<a class="text-dark updateBookingNew" data-toggle="tooltip" data-placement="top" title="Modifica prenotazione" data-booking="'+res.message[i].booking_id+'" data-toggle="modal" data-target="#updateModal"><i class="fas fa-edit"></i></a>';
+                            columns += '<a class="text-dark updateBookingNew" data-toggle="tooltip" data-placement="top" title="Modifica prenotazione" data-booking="' + res.message[i].booking_id + '" data-toggle="modal" data-target="#updateModal"><i class="fas fa-edit"></i></a>';
                             columns += '&nbsp;&nbsp;';
-                            columns += '<a class="text-dark" data-toggle="tooltip" data-placement="top" title="Apri chat" href="'+chatLink+'/id/'+res.message[i].user_id+'"><i class="fas fa-comment"></i></a>';
+                            columns += '<a class="text-dark" data-toggle="tooltip" data-placement="top" title="Apri chat" href="' + chatLink + '/id/' + res.message[i].user_id + '"><i class="fas fa-comment"></i></a>';
                             columns += '</td>';
-                            $('.appointmentsTable tbody').append('<tr id="row'+res.message[i].booking_id+'">'+columns+'</tr>');
+                            $('.appointmentsTable tbody').append('<tr id="row' + res.message[i].booking_id + '">' + columns + '</tr>');
                             $('[data-toggle="tooltip"]').tooltip();
-                            $('.deleteBooking').on('click', function(){
+                            $('.deleteBooking').on('click', function() {
                                 var booking_id = $(this).attr('data-booking');
                                 var result = confirm('Sicuro di voler cancellare la prenotazione?');
-                                if (result) { deleteElement(booking_id); }
+                                if (result) {
+                                    deleteElement(booking_id);
+                                }
                             });
-                            $('.updateBookingNew').on('click', function(){
+                            $('.updateBookingNew').on('click', function() {
                                 $('#updateModal').modal();
                                 var booking_id = $(this).attr('data-booking');
                                 updateElement(booking_id);
@@ -361,15 +376,17 @@ $(document).ready(function() {
                 }
             });
         });
-        $('.updateBooking').on('click', function(){
+        $('.updateBooking').on('click', function() {
             $('#updateModal').modal();
             var booking_id = $(this).attr('data-booking');
             updateElement(booking_id);
         });
-        $('.deleteBooking').on('click', function(){
+        $('.deleteBooking').on('click', function() {
             var booking_id = $(this).attr('data-booking');
             var result = confirm('Sicuro di voler cancellare la prenotazione?');
-            if (result) { deleteElement(booking_id); }
+            if (result) {
+                deleteElement(booking_id);
+            }
         });
 
         function deleteElement(booking_id) {
@@ -377,16 +394,16 @@ $(document).ready(function() {
             // ------------- SEND AJAX ----------------
             // ****************************************
             $.ajax({
-                type : 'POST',
-                url : ajaxUrlDelete,
-                data : {
+                type: 'POST',
+                url: ajaxUrlDelete,
+                data: {
                     bookingId: booking_id,
                 },
-                dataType : 'JSON',
-                success : function(res){
+                dataType: 'JSON',
+                success: function(res) {
                     if (res.result == 1) {
                         var type = 'success';
-                        $('#row'+booking_id).fadeOut();
+                        $('#row' + booking_id).fadeOut();
                     } else {
                         var type = 'danger';
                     }
@@ -400,9 +417,9 @@ $(document).ready(function() {
             });
         }
 
-            var choosedDateUp;
-            var service_idUp;
-            var bookingIdUp;
+        var choosedDateUp;
+        var service_idUp;
+        var bookingIdUp;
         // Function to update booking
         function updateElement(booking_id) {
             var i;
@@ -410,7 +427,7 @@ $(document).ready(function() {
             var dateToday = new Date(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours() + 1);
 
             for (i = 0; i < appointmentsToday.length; i++) {
-                if(appointmentsToday[i].booking_id == booking_id) {
+                if (appointmentsToday[i].booking_id == booking_id) {
 
                     service_idUp = appointmentsToday[i].service_id;
                     bookingIdUp = appointmentsToday[i].booking_id;
@@ -448,15 +465,15 @@ $(document).ready(function() {
             // ------------- SEND AJAX ----------------
             // ****************************************
             $.ajax({
-                type : 'POST',
-                url : ajaxUrlUpdate,
-                data : {
+                type: 'POST',
+                url: ajaxUrlUpdate,
+                data: {
                     bookingId: bookingIdUp,
                     seriviceId: service_idUp,
                     date: booking_date
                 },
-                dataType : 'JSON',
-                success : function(res){
+                dataType: 'JSON',
+                success: function(res) {
                     if (res.result == 1) {
                         var type = 'success';
                     } else {
@@ -482,7 +499,7 @@ $(document).ready(function() {
 $(document).ready(function() {
     // Check if typeOfRecord variable is setted
     if (typeof typeOfRecord !== 'undefined') {
-        $('.deleteAction').on('click', function(){
+        $('.deleteAction').on('click', function() {
             var primaryKey = $(this).attr('data-primary');
             var type = typeOfRecord;
 
@@ -492,17 +509,17 @@ $(document).ready(function() {
                 // ------------- SEND AJAX ----------------
                 // ****************************************
                 $.ajax({
-                    type : 'POST',
-                    url : ajaxUrlDel,
-                    data : {
+                    type: 'POST',
+                    url: ajaxUrlDel,
+                    data: {
                         type: type,
                         id: primaryKey
                     },
-                    dataType : 'JSON',
-                    success : function(res){
+                    dataType: 'JSON',
+                    success: function(res) {
                         if (res.result == 1) {
                             var type = 'success';
-                            $('#row'+primaryKey).fadeOut();
+                            $('#row' + primaryKey).fadeOut();
                         } else {
                             var type = 'danger';
                         }
@@ -528,29 +545,29 @@ $(document).ready(function() {
     // Check if dataTableInit variable is setted
     if (typeof dataTableInit !== 'undefined') {
         // Open Update modal
-        $('.updateAction').on('click', function(){
+        $('.updateAction').on('click', function() {
             $('#updateModal').modal();
             var primaryKey = $(this).attr('data-primary');
             var type = typeOfRecord;
-            
+
             $('.modalInput-key').val(primaryKey);
             // ****************************************
             // ------------- SEND AJAX ----------------
             // ****************************************
             $.ajax({
-                type : 'POST',
-                url : ajaxUrlGet,
-                data : {
+                type: 'POST',
+                url: ajaxUrlGet,
+                data: {
                     type: type,
                     id: primaryKey
                 },
-                dataType : 'JSON',
-                success : function(res){
+                dataType: 'JSON',
+                success: function(res) {
                     if (res.result == 1) {
                         if (res.record == 'faq') {
                             $('.modalInput-question').val(res.message[0].question);
                             $('.modalInput-answer').val(res.message[0].answer);
-                        } else if(res.record == 'service') {
+                        } else if (res.record == 'service') {
                             $('.modalInput-name').val(res.message[0].name);
                             $('.modalInput-description').val(res.message[0].description);
                             $('.modalInput-prescriptions').val(res.message[0].prescriptions);
@@ -558,26 +575,26 @@ $(document).ready(function() {
                             $('.modalInput-doctor').find('option').remove().end();
                             for (var i = 0; i < res.message.department_list.length; i++) {
                                 var selected = (res.message.department_list[i].department_id == res.message[0].department) ? 'selected' : '';
-                                $('.modalInput-department').append('<option value="'+res.message.department_list[i].department_id+'" '+selected+'>'+res.message.department_list[i].name+'</option>');
+                                $('.modalInput-department').append('<option value="' + res.message.department_list[i].department_id + '" ' + selected + '>' + res.message.department_list[i].name + '</option>');
                             }
                             for (var a = 0; a < res.message.staff_list.length; a++) {
                                 var selected = (res.message.staff_list[a].user_id == res.message[0].staff) ? 'selected' : '';
-                                $('.modalInput-doctor').append('<option value="'+res.message.staff_list[a].user_id+'" '+selected+'>'+res.message.staff_list[a].name+' '+res.message.staff_list[a].surname+'</option>');
+                                $('.modalInput-doctor').append('<option value="' + res.message.staff_list[a].user_id + '" ' + selected + '>' + res.message.staff_list[a].name + ' ' + res.message.staff_list[a].surname + '</option>');
                             }
-                        } else if(res.record == 'booking') {
+                        } else if (res.record == 'booking') {
                             $('.modalInput-user').val(res.message[0].user);
                             $('.modalInput-service').val(res.message[0].service);
-                        } else if(res.record == 'department') {
+                        } else if (res.record == 'department') {
                             $('.modalInput-place').val(res.message[0].place);
                             $('.modalInput-name').val(res.message[0].name);
                             $('.modalInput-description').val(res.message[0].description);
-                        } else if(res.record == 'staff') {
+                        } else if (res.record == 'staff') {
                             $('.modalInput-username').val(res.message[0].username);
                             $('.modalInput-name').val(res.message[0].name);
                             $('.modalInput-surname').val(res.message[0].surname);
                             $('.modalInput-code').val(res.message[0].code);
                             $('.modalInput-email').val(res.message[0].email);
-                        } else if(res.record == 'user') {
+                        } else if (res.record == 'user') {
                             $('.modalInput-username').val(res.message[0].username);
                             $('.modalInput-name').val(res.message[0].name);
                             $('.modalInput-surname').val(res.message[0].surname);
@@ -591,7 +608,7 @@ $(document).ready(function() {
         $('[data-toggle="tooltip"]').tooltip();
 
         // Open the schedule
-        $('.openScheduleModal').on('click', function(){
+        $('.openScheduleModal').on('click', function() {
             $('.schedule .table tbody').find('tr').remove();
             var dataSchedule = $(this).attr('data-schedule');
             var schedule = JSON.parse(dataSchedule).schedule;
@@ -659,15 +676,15 @@ $(document).ready(function() {
                 // ------------- SEND AJAX ----------------
                 // ****************************************
                 $.ajax({
-                    type : 'POST',
-                    url : urlAjaxBookingCheck,
-                    data : {
+                    type: 'POST',
+                    url: urlAjaxBookingCheck,
+                    data: {
                         userId: userId,
                         seriviceId: serviceId,
                         date: moment(choosedDate).format('YYYY-MM-DD HH:00')
                     },
-                    dataType : 'JSON',
-                    success : function(res){
+                    dataType: 'JSON',
+                    success: function(res) {
                         if (res.result == 1) {
                             var type = 'success';
                         } else {
@@ -701,69 +718,69 @@ $(document).ready(function() {
 $(document).ready(function() {
     // Check if typeOfRecord variable is setted
     if (typeof typeOfRecord !== 'undefined') {
-        $('#sendUpdateBook').on('click', function(){
+        $('#sendUpdateBook').on('click', function() {
             var formData = JSON.parse(JSON.stringify($('#updateModal form').serializeArray()));
             var data, type, updatedId;
 
             for (var i = 0; i < formData.length; i++) {
-                if (formData[i].name == 'typeOfRecord' &&  formData[i].value == 'faq') {
+                if (formData[i].name == 'typeOfRecord' && formData[i].value == 'faq') {
                     // Update FAQ
                     type = 'faq';
                     updatedId = formData[3].value;
                     data = {
-                        question:   formData[0].value,
-                        answer:     formData[1].value
+                        question: formData[0].value,
+                        answer: formData[1].value
                     }
-                } else if(formData[i].name == 'typeOfRecord' &&  formData[i].value == 'booking') {
+                } else if (formData[i].name == 'typeOfRecord' && formData[i].value == 'booking') {
                     // Update BOOKING
                     type = 'booking';
                     updatedId = formData[7].value;
                     data = {
-                        user:         formData[4].value,
-                        service:      formData[5].value,
-                        date:         formData[2].value+'-'+formData[0].value+'-'+formData[1].value+' '+formData[3].value
+                        user: formData[4].value,
+                        service: formData[5].value,
+                        date: formData[2].value + '-' + formData[0].value + '-' + formData[1].value + ' ' + formData[3].value
                     }
-                } else if(formData[i].name == 'typeOfRecord' &&  formData[i].value == 'service') {
+                } else if (formData[i].name == 'typeOfRecord' && formData[i].value == 'service') {
                     // Update SERVICE
                     type = 'service';
                     updatedId = formData[34].value;
                     data = {
-                        name:          formData[0].value,
-                        description:   formData[2].value,
-                        department:    formData[1].value,
-                        staff:         formData[3].value,
+                        name: formData[0].value,
+                        description: formData[2].value,
+                        department: formData[1].value,
+                        staff: formData[3].value,
                         prescriptions: formData[32].value
                     }
-                } else if(formData[i].name == 'typeOfRecord' &&  formData[i].value == 'department') {
+                } else if (formData[i].name == 'typeOfRecord' && formData[i].value == 'department') {
                     // Update DEPARTMENT
                     type = 'department';
                     updatedId = formData[4].value;
                     data = {
-                        name:           formData[0].value,
-                        description:    formData[1].value,
-                        place:          formData[2].value
+                        name: formData[0].value,
+                        description: formData[1].value,
+                        place: formData[2].value
                     }
-                } else if(formData[i].name == 'typeOfRecord' &&  formData[i].value == 'staff') {
+                } else if (formData[i].name == 'typeOfRecord' && formData[i].value == 'staff') {
                     // Update STAFF
                     type = 'staff';
                     updatedId = formData[6].value;
                     data = {
                         username: formData[0].value,
-                        name:     formData[1].value,
-                        surname:  formData[2].value,
-                        code:     formData[3].value,
-                        email:    formData[4].value
+                        name: formData[1].value,
+                        surname: formData[2].value,
+                        code: formData[3].value,
+                        email: formData[4].value
                     }
-                } else if(formData[i].name == 'typeOfRecord' &&  formData[i].value == 'user') {
+                } else if (formData[i].name == 'typeOfRecord' && formData[i].value == 'user') {
                     // Update USER
                     type = 'user';
                     updatedId = formData[6].value;
                     data = {
                         username: formData[0].value,
-                        name:     formData[1].value,
-                        surname:  formData[2].value,
-                        code:     formData[3].value,
-                        email:    formData[4].value
+                        name: formData[1].value,
+                        surname: formData[2].value,
+                        code: formData[3].value,
+                        email: formData[4].value
                     }
                 }
             }
@@ -773,15 +790,15 @@ $(document).ready(function() {
                 // ------------- SEND AJAX ----------------
                 // ****************************************
                 $.ajax({
-                    type : 'POST',
-                    url : ajaxUrlUpd,
-                    data : {
+                    type: 'POST',
+                    url: ajaxUrlUpd,
+                    data: {
                         jsonData: data,
                         type: type,
                         id: updatedId
                     },
-                    dataType : 'JSON',
-                    success : function(res){
+                    dataType: 'JSON',
+                    success: function(res) {
                         if (res.result == 1) {
                             var type = 'success';
                             $('#updateModal').modal('toggle');
@@ -802,7 +819,7 @@ $(document).ready(function() {
 });
 
 // ***************************************************************
-// ------------------- Helpers Function --------------------------
+// ------------------- Helpers Functions -------------------------
 // ***************************************************************
 
 /**
@@ -861,7 +878,7 @@ $(document).ready(function() {
     };
     $.extend(BootstrapNotify.prototype, {
         defaults: {
-            message: 'Helo!',
+            message: 'Hello!',
             type: 'info',
             position: 'bottom-center',
             icon: undefined,
@@ -913,7 +930,7 @@ $(document).ready(function() {
  * -------------------------------
  */
 function searchIntoJSON(searchJSON) {
-    
+
     var input, filter, table, tr, td, i;
     input = $('#searchByName').val();
     filter = input.toUpperCase();
@@ -923,8 +940,8 @@ function searchIntoJSON(searchJSON) {
         if (searchJSON[i].service.length > 0) {
             for (j = 0; j < searchJSON[i].service.length; j++) {
                 if (searchJSON[i].service[j].name.toUpperCase().indexOf(filter) > -1) {
-                    var btnService = '<a href="service/index/id/'+searchJSON[i].service[j].service_id+'" class="btn btn-sm btn-info float-right">Vedi dettagli</a>'
-                    $('#searchResult').append('<div class="card"><div class="card-body"><em>'+searchJSON[i].service[j].name+'</em>'+btnService+'</div></div>')
+                    var btnService = '<a href="service/index/id/' + searchJSON[i].service[j].service_id + '" class="btn btn-sm btn-info float-right">Vedi dettagli</a>'
+                    $('#searchResult').append('<div class="card"><div class="card-body"><em>' + searchJSON[i].service[j].name + '</em>' + btnService + '</div></div>')
                 }
             }
         }

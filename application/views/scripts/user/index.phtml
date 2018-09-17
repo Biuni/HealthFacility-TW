@@ -72,9 +72,12 @@
 			</thead>
 			<tbody>
 				<?php
+					$italianDays = array('Domenica','Lunedì','Martedì','Mercoledì','Giovedì','Venerdì','Sabato');
 					foreach ($this->pastReservations as $value) {
+						$dateBooking = strtotime($value['date']);
+						$italianDay = $italianDays[date('w', $dateBooking)];
 						echo '<tr class="table-secondary text-dark">';
-						echo '<td>'.date('l, d/m/Y', strtotime($value['date'])).'</td>';
+						echo '<td>'.$italianDay.', '.date('d/m/Y', $dateBooking).'</td>';
 						echo '<td>'.date('H:i', strtotime($value['date'])).'</td>';
 						echo '<td>'.$value['service'].'</td>';
 						echo '<td>'.$value['department'].'</td>';

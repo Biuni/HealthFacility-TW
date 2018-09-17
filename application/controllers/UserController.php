@@ -145,7 +145,7 @@ class UserController extends Zend_Controller_Action
         
         // Push the values into an array
         $params = array(
-            'message' => $message,
+            'message' => htmlspecialchars($message),
             'user' => $userId,
             'user_chat_id' => $userId
         );
@@ -290,9 +290,10 @@ class UserController extends Zend_Controller_Action
                 'email' => $newMail
             );
             // Update the email in the database
-            if ($user->update($mail, $userId)) {
+            try {
+                $user->update($mail, $userId);
                 return $this->_redirect('user/profile?ok=2');
-            } else {
+            } catch (Exception $e) {
                 return $this->_redirect('user/profile?err=7');
             }
         }

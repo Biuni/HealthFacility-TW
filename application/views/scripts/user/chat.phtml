@@ -62,8 +62,8 @@
 				</div>
 			</div>
 		</div>
+		<p class="pt-2 text-center"><small class="text-secondary">INFO: se il messaggio inviato non viene visualizzato nella chat fare il refresh della pagina.</small></p>
 	</div>
-
 </section>
 
 <script>
@@ -77,6 +77,6 @@
 	var urlAjaxGet = '<?= $this->url(array('controller' => 'user', 'action' => 'get')); ?>';
 	var user_id = <?= Zend_Auth::getInstance()->getIdentity()->user_id; ?>;
 	var lastRefresh = '<?= $dateNow; ?>';
-	var timeRefresh = 2500;
+	var timeRefresh = 5000;
 	var imgUrl = '<?=APP_URL?>';
 </script>
